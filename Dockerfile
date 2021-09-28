@@ -28,8 +28,5 @@ RUN pip install --no-cache-dir flake8 debugpy pre-commit
 # copy source files
 COPY . /home/$USER/app/
 
-# switch to non-root $USER
-USER $USER
-
 # start app
 CMD ["flask", "run", "-h", "0.0.0.0"]

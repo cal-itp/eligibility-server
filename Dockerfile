@@ -15,9 +15,15 @@ RUN useradd --create-home --shell /bin/bash $USER && \
 # enter app directory
 WORKDIR /home/$USER/app
 
-# install python dependencies
+# install tooling: curl, git, jq, ssh
+# install python tooling: pip, flake8, debugpy, pre-commit
+RUN apt-get update \
+    && apt-get install -qq --no-install-recommends curl git jq ssh
+
+# install python app dependencies
 COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir flake8 debugpy pre-commit
 
 # copy source files
 COPY . /home/$USER/app/

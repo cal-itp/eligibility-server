@@ -1,11 +1,23 @@
-version: "3.4"
+version: "3.8"
 
 services:
   server:
     build: .
-    environment:
-      - FLASK_ENV=development
+    image: eligibility_server:latest
     ports:
       - 5000:5000
     volumes:
       - ./:/home/calitp/app/
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    environment:
+      - FLASK_ENV=development
+    image: eligibility_server:dev
+    ports:
+      - 5000:5000
+      - 5678:5678
+    volumes:
+      - ./:/home/calitp/app/
+

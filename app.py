@@ -75,6 +75,9 @@ class Database:
 app = Flask(__name__)
 api = Api(app)
 
+@app.route("/")
+def hello_world():
+    return "<p>Hello thing!</p>"
 
 class MerchantAuthToken(Resource):
 

@@ -10,12 +10,12 @@
           "request": "attach",
           "connect": {
               "host": "localhost",
-              "port": 5789
+              "port": 5678
           },
           "pathMappings": [
               {
-                  "localRoot": "${workspaceFolder}/app",
-                  "remoteRoot": "/usr/src/app"
+                  "localRoot": "${workspaceFolder}",
+                  "remoteRoot": "/home/calitp/app"
               }
           ]
       }

@@ -8,10 +8,10 @@ View the technical documentation online: <https://docs.calitp.org/benefits>
 
 ## Getting started
 
-### Create Docker image
+### Create Docker image for server
 
 ```bash
-docker compose build
+docker compose build server
 ```
 
 ### Start development in Dev Container

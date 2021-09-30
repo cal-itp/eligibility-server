@@ -75,9 +75,9 @@ class Database:
 app = Flask(__name__)
 api = Api(app)
 
-@app.route("/")
-def hello_world():
-    return "<p>Hello thing!</p>"
+@app.route("/healthcheck")
+def healthcheck():
+    return "Healthy"
 
 class MerchantAuthToken(Resource):
 

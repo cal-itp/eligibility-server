@@ -1,12 +1,11 @@
 import pytest
 
-from app import app as flask_app
+from app import app as server
 
 @pytest.fixture
 def app():
-    yield app
+    yield server
 
 @pytest.fixture
 def client(app):
-    """A test client for the app."""
     return app.test_client()

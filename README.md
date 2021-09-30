@@ -8,9 +8,15 @@ View the technical documentation online: <https://docs.calitp.org/benefits>
 
 ## Getting started
 
+### Create Docker image for server
+
 ```bash
-docker compose up
+docker compose build server
 ```
+
+### Start development in Dev Container
+
+- Build and Open in Container on VS Code
 
 ## License
 

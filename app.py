@@ -127,7 +127,6 @@ class Verify(Resource):
 
     def _check_headers(self):
         """Ensure correct request headers."""
-        breakpoint()
         req_parser = reqparse.RequestParser()
         req_parser.add_argument(self.db.token_header, location="headers", required=True)
         req_parser.add_argument(self.db.auth_header, location="headers", required=True)

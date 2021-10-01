@@ -32,7 +32,14 @@ class Database:
         return merchant_id in self._merchants
 
     def check_user(self, key, user, types):
-        """Check if the data matches a record in the database."""
+        """
+        Check if the data matches a record in the database.
+        :param key: string
+        :param user: string
+        :param types: list
+
+        :returns: list of user's eligible types or empty list
+        """
         if (
             len(types) < 1
             or key not in self._users
@@ -120,6 +127,7 @@ class Verify(Resource):
 
     def _check_headers(self):
         """Ensure correct request headers."""
+        breakpoint()
         req_parser = reqparse.RequestParser()
         req_parser.add_argument(self.db.token_header, location="headers", required=True)
         req_parser.add_argument(self.db.auth_header, location="headers", required=True)

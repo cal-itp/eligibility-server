@@ -8,4 +8,4 @@ RUN apt-get update \
     && apt-get install -qq --no-install-recommends curl git jq ssh \
     && python -m pip install --upgrade pip
 
-RUN pip install --no-cache-dir flake8 debugpy pre-commit
+RUN pip install --no-cache-dir flake8 debugpy pre-commit coverage pytest

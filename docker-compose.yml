@@ -23,4 +23,3 @@ services:
       - 5678:5678
     volumes:
       - ./:/home/calitp/app/
-

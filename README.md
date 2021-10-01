@@ -15,6 +15,19 @@ docker compose build server
 
 - Build and Open in Container on VS Code
 
+## Tests
+
+### Run tests
+```bash
+coverage run -m pytest
+```
+
+### Check test coverage
+
+```bash
+coverage report -m
+```
+
 ## License
 
 [AGPL-3.0 License](./LICENSE)

@@ -75,9 +75,11 @@ class Database:
 app = Flask(__name__)
 api = Api(app)
 
+
 @app.route("/healthcheck")
 def healthcheck():
     return "Healthy"
+
 
 class MerchantAuthToken(Resource):
 

@@ -21,5 +21,7 @@ COPY . /home/$USER/app/
 # switch to non-root $USER
 USER $USER
 
+ENV FLASK_APP=eligibility_server/app.py
+
 # start app
 CMD ["flask", "run", "-h", "0.0.0.0"]

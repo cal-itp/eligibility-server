@@ -1,10 +1,7 @@
-# Eligibility Verification Server for Benefits
+# Eligibility Server
 
-Transit benefits enrollment, minus the paperwork.
-
-This server can be used for testing `benefits` with only local resources via the service defined in [`localhost/docker-compose.yml`](https://github.com/cal-itp/benefits/blob/dev/localhost/docker-compose.yml#L56). Read more about [running the test verification server](https://docs.calitp.org/benefits/getting-started/test-verification-server/).
-
-View the technical documentation online: <https://docs.calitp.org/benefits>
+Server implementation of the [Eligibility Verification API](https://docs.calitp.org/benefits/eligibility-verification/). See
+the client implementation in [`benefits`](https://github.com/cal-itp/benefits).
 
 ## Getting started
 

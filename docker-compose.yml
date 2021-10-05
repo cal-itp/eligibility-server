@@ -13,6 +13,7 @@ services:
       context: .
       dockerfile: Dockerfile.dev
     command: sleep infinity
+    entrypoint: []
     image: eligibility_server:dev
     ports:
       - 5000

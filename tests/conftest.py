@@ -1,6 +1,6 @@
 import pytest
 
-from eligibility_server import app as server
+from eligibility_server.app import app as server
 
 
 @pytest.fixture

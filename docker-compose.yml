@@ -5,7 +5,7 @@ services:
     build: .
     image: eligibility_server:latest
     ports:
-      - 5000:5000
+      - 5000
     volumes:
       - ./:/home/calitp/app/
   dev:

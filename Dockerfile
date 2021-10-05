@@ -2,7 +2,8 @@ FROM python:3.9-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    USER=calitp
+    USER=calitp \
+    FLASK_APP=eligibility_server/app.py
 
      # create $USER and home directory
 RUN useradd --create-home --shell /bin/bash $USER && \

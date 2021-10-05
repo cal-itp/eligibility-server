@@ -2,7 +2,8 @@ FROM python:3.9-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    USER=calitp
+    USER=calitp \
+    FLASK_APP=eligibility_server/app.py
 
      # create $USER and home directory
 RUN useradd --create-home --shell /bin/bash $USER && \
@@ -20,8 +21,6 @@ COPY . /home/$USER/app/
 
 # switch to non-root $USER
 USER $USER
-
-ENV FLASK_APP=eligibility_server/app.py
 
 # start app
 CMD ["flask", "run", "-h", "0.0.0.0"]

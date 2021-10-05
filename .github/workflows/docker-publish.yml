@@ -1,0 +1,41 @@
+name: Build and publish Docker image
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'data/**'
+      - 'eligibility_server/**'
+      - 'keys/**'
+      - 'static/**'
+      - 'tests/**'
+      - '.github/workflows/docker-publish.yml'
+      - 'Dockerfile'
+      - 'requirements.txt'
+
+jobs:
+  build_push:
+    name: Package Docker image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
+        with:
+          push: true
+          tags: ghcr.io/${{github.repository}}:${{ github.event.release.tag_name }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        if: ${{ github.event_name != 'release' }}
+        with:
+          push: false
+          tags: ghcr.io/${{github.repository}}:test

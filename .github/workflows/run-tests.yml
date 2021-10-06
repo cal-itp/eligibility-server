@@ -7,7 +7,6 @@ on:
       - 'data/**'
       - 'eligibility_server/**'
       - 'keys/**'
-      - 'static/**'
       - 'tests/**'
       - 'requirements.txt'
 

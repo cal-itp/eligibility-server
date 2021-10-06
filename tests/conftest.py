@@ -1,13 +1,15 @@
 import pytest
 
-from eligibility_server.app import app as server
+from eligibility_server.app import app
+from eligibility_server.app import Database as Database
 
 
 @pytest.fixture
-def app():
-    yield server
+def database():
+    db = Database()
+    return db
 
 
 @pytest.fixture
-def client(app):
+def client():
     return app.test_client()

@@ -14,6 +14,7 @@ docker compose build server
 ### Start development in Dev Container
 
 - Build and Open in Container on VS Code
+- Check the Ports tab to find the dynamically-assigned localhost port, or run `docker ps -f name=eligibility-server` and go to `http://localhost:XXXX`
 
 ## License
 

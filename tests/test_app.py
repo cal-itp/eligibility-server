@@ -1,5 +1,5 @@
 """
-Test API
+Test app
 """
 
 

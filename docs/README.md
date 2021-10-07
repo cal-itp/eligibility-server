@@ -6,18 +6,24 @@ Documentation for the `main` (default) branch is available [online](https://docs
 
 ## Overview
 
-## Getting started with the Docs
+### Getting started with the app
 
-### Build the docs image
+```bash
+docker-compose build server
+```
+
+### Getting started with the docs
+
+#### Build the docs image
 
 ```bash
 docker build -t docs -f docs/Dockerfile .
 ```
 
-### Run the docs locally
+#### Run the docs locally
 
 ```bash
 docker run -p 8000:8000 docs
 ```
 
-## Deploy and publish docs
+### Deploy and publish docs

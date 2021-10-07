@@ -19,6 +19,7 @@ docker compose build server
 ## Tests
 
 ### Run tests
+
 ```bash
 coverage run -m pytest
 ```

@@ -10,7 +10,6 @@ with open("data/server.json", encoding="utf8") as file:
 
 def test_database_init(database):
     assert database._config
-    assert database._merchants
     assert database._users
 
 
@@ -21,19 +20,6 @@ def test_database_properties(database):
     assert database.jwe_cek_enc
     assert database.jwe_encryption_alg
     assert database.jws_signing_alg
-    assert database.request_access
-
-
-def test_database_check_merchant_in_database(database):
-    merchant_id = DATA["merchants"][1]
-    response = database.check_merchant(merchant_id)
-    assert response is True
-
-
-def test_database_check_merchant_not_in_database(database):
-    merchant_id_not_in_database = "123"
-    response = database.check_merchant(merchant_id_not_in_database)
-    assert response is False
 
 
 def test_database_check_user_in_database(database):

@@ -1,6 +1,6 @@
 import pytest
 
-from eligibility_server.app import app as app
+from eligibility_server.app import app
 from eligibility_server.database import Database as Database
 
 

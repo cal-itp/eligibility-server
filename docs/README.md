@@ -38,8 +38,6 @@ docker pull ghcr.io/cal-itp/eligibility-server:main
 coverage run -m pytests
 ```
 
-Read more about [automated tests](automated-tests).
-
 ### Getting started with the docs
 
 #### Run the docs locally

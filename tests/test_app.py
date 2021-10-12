@@ -2,6 +2,12 @@
 Test app
 """
 
+from eligibility_server.settings import APP_NAME
+
+
+def test_appname(flask):
+    assert flask.name == APP_NAME
+
 
 def test_healthcheck(client):
     response = client.get("healthcheck")

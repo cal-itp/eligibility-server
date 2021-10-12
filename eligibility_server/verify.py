@@ -10,7 +10,7 @@ import time
 from flask_restful import Resource, reqparse
 from jwcrypto import jwe, jwk, jws, jwt
 from eligibility_server.database import Database
-from eligibility_server import app
+from eligibility_server.settings import APP_NAME
 
 with open("./keys/server.key", "rb") as pemfile:
     server_private_key = jwk.JWK.from_pem(pemfile.read())
@@ -21,7 +21,6 @@ with open("./keys/client.pub", "rb") as pemfile:
 class Verify(Resource):
 
     db = Database()
-    configs = app.configs
 
     def _check_headers(self):
         """Ensure correct request headers."""
@@ -74,7 +73,7 @@ class Verify(Resource):
         encrypted_token.make_encrypted_token(client_public_key)
         return encrypted_token.serialize()
 
-    def get(self, configs):
+    def get(self):
         """Respond to a verification request."""
         # introduce small fake delay
         time.sleep(2)
@@ -100,8 +99,7 @@ class Verify(Resource):
                 sub, name, eligibility = token_payload["sub"], token_payload["name"], list(token_payload["eligibility"])
                 resp_payload = dict(
                     jti=token_payload["jti"],
-                    iss=configs.app_name(),
-                    # iss="THIS IS STUBBED",
+                    iss=APP_NAME,
                     iat=int(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).timestamp()),
                 )
                 # sub format check

@@ -5,9 +5,11 @@ Simple Test Eligibility Verification API Server.
 from flask import Flask
 from flask_restful import Api
 from eligibility_server.verify import Verify
+from eligibility_server.configuration import Configuration
 
 app = Flask(__name__)
 api = Api(app)
+configs = Configuration("app_name", app.name)
 
 
 @app.route("/healthcheck")

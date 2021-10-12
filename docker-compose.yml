@@ -5,7 +5,7 @@ services:
     build: .
     image: eligibility_server:latest
     ports:
-      - 5000
+      - "5000"
     volumes:
       - ./:/home/calitp/app/
   dev:
@@ -16,6 +16,14 @@ services:
     entrypoint: []
     image: eligibility_server:dev
     ports:
-      - 5000
+      - "5000"
     volumes:
       - ./:/home/calitp/app/
+  docs:
+    image: eligibility_server:dev
+    entrypoint: mkdocs
+    command: serve --dev-addr "0.0.0.0:8000"
+    ports:
+      - "8000"
+    volumes:
+      - ./:/home/calitp/app:cached

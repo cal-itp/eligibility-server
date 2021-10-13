@@ -9,8 +9,9 @@ import time
 
 from flask_restful import Resource, reqparse
 from jwcrypto import jwe, jwk, jws, jwt
-from eligibility_server.database import Database
-from eligibility_server.settings import APP_NAME
+
+from .database import Database
+from . import settings
 
 with open("./keys/server.key", "rb") as pemfile:
     server_private_key = jwk.JWK.from_pem(pemfile.read())
@@ -99,7 +100,7 @@ class Verify(Resource):
                 sub, name, eligibility = token_payload["sub"], token_payload["name"], list(token_payload["eligibility"])
                 resp_payload = dict(
                     jti=token_payload["jti"],
-                    iss=APP_NAME,
+                    iss=settings.APP_NAME,
                     iat=int(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).timestamp()),
                 )
                 # sub format check

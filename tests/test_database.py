@@ -9,17 +9,7 @@ with open("data/server.json", encoding="utf8") as file:
 
 
 def test_database_init(database):
-    assert database._config
     assert database._users
-
-
-def test_database_properties(database):
-    assert database.auth_header
-    assert database.auth_token
-    assert database.token_header
-    assert database.jwe_cek_enc
-    assert database.jwe_encryption_alg
-    assert database.jws_signing_alg
 
 
 def test_database_check_user_in_database(database):

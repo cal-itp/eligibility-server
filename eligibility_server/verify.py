@@ -11,6 +11,12 @@ from flask_restful import Resource, reqparse
 from jwcrypto import jwe, jwk, jws, jwt
 from eligibility_server.database import Database
 from eligibility_server.settings import APP_NAME
+from eligibility_server.settings import AUTH_HEADER
+from eligibility_server.settings import AUTH_TOKEN
+from eligibility_server.settings import TOKEN_HEADER
+from eligibility_server.settings import JWE_CEK_ENC
+from eligibility_server.settings import JWE_ENCRYPTION_ALG
+from eligibility_server.settings import JWS_SIGNING_ALG
 
 with open("./keys/server.key", "rb") as pemfile:
     server_private_key = jwk.JWK.from_pem(pemfile.read())
@@ -25,18 +31,18 @@ class Verify(Resource):
     def _check_headers(self):
         """Ensure correct request headers."""
         req_parser = reqparse.RequestParser()
-        req_parser.add_argument(self.db.token_header, location="headers", required=True)
-        req_parser.add_argument(self.db.auth_header, location="headers", required=True)
+        req_parser.add_argument(TOKEN_HEADER, location="headers", required=True)
+        req_parser.add_argument(AUTH_HEADER, location="headers", required=True)
         headers = req_parser.parse_args()
         # verify auth_header's value
-        if headers.get(self.db.auth_header) == self.db.auth_token:
+        if headers.get(AUTH_HEADER) == AUTH_TOKEN:
             return headers
         else:
             return False
 
     def _get_token(self, headers):
         """Get the token from request headers"""
-        token = headers.get(self.db.token_header, "").split(" ")
+        token = headers.get(TOKEN_HEADER, "").split(" ")
         if len(token) == 2:
             return token[1]
         elif len(token) == 1:
@@ -48,12 +54,12 @@ class Verify(Resource):
         """Decode a token (JWE(JWS))."""
         try:
             # decrypt
-            decrypted_token = jwe.JWE(algs=[self.db.jwe_encryption_alg, self.db.jwe_cek_enc])
+            decrypted_token = jwe.JWE(algs=[JWE_ENCRYPTION_ALG, JWE_CEK_ENC])
             decrypted_token.deserialize(token, key=server_private_key)
             decrypted_payload = str(decrypted_token.payload, "utf-8")
             # verify signature
             signed_token = jws.JWS()
-            signed_token.deserialize(decrypted_payload, key=client_public_key, alg=self.db.jws_signing_alg)
+            signed_token.deserialize(decrypted_payload, key=client_public_key, alg=JWS_SIGNING_ALG)
             # return final payload
             payload = str(signed_token.payload, "utf-8")
             return json.loads(payload)
@@ -63,12 +69,12 @@ class Verify(Resource):
     def _make_token(self, payload):
         """Wrap payload in a signed and encrypted JWT for response."""
         # sign the payload with server's private key
-        header = {"typ": "JWS", "alg": self.db.jws_signing_alg}
+        header = {"typ": "JWS", "alg": JWS_SIGNING_ALG}
         signed_token = jwt.JWT(header=header, claims=payload)
         signed_token.make_signed_token(server_private_key)
         signed_payload = signed_token.serialize()
         # encrypt the signed payload with client's public key
-        header = {"typ": "JWE", "alg": self.db.jwe_encryption_alg, "enc": self.db.jwe_cek_enc}
+        header = {"typ": "JWE", "alg": JWE_ENCRYPTION_ALG, "enc": JWE_CEK_ENC}
         encrypted_token = jwt.JWT(header=header, claims=signed_payload)
         encrypted_token.make_encrypted_token(client_public_key)
         return encrypted_token.serialize()

@@ -10,8 +10,9 @@ import time
 from flask_restful import Resource, reqparse
 from jwcrypto import jwe, jwk, jws, jwt
 
-from .database import Database
 from . import settings
+from .database import Database
+
 
 with open("./keys/server.key", "rb") as pemfile:
     server_private_key = jwk.JWK.from_pem(pemfile.read())

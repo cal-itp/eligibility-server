@@ -18,6 +18,4 @@ def test_settings():
 
 def test_debug():
     if settings.DEBUG_MODE:
-        assert settings.DEBUG_MODE
-    else:
-        assert False
+        assert True

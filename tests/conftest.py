@@ -1,7 +1,12 @@
 import pytest
 
 from eligibility_server.app import app
-from eligibility_server.app import Database as Database
+from eligibility_server.database import Database as Database
+
+
+@pytest.fixture
+def flask():
+    yield app
 
 
 @pytest.fixture

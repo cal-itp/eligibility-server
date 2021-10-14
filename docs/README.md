@@ -6,7 +6,7 @@ Documentation for the `main` (default) branch is available [online](https://docs
 
 ## Overview
 
-`eligibility-server` is a [Flask 1.1 web application](https://flask.palletsprojects.com/en/1.1.x/) that implements an [Eligibility Verification API](API).
+`eligibility-server` is a [Flask 1.1 web application](https://flask.palletsprojects.com/en/1.1.x/) that implements an [Eligibility Verification API](specification).
 
 The API is designed for privacy and security of user information:
 
@@ -35,7 +35,7 @@ docker pull ghcr.io/cal-itp/eligibility-server:main
 #### Run the tests
 
 ```bash
-coverage run -m pytests
+coverage run -m pytest
 ```
 
 ### Getting started with the docs

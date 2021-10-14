@@ -22,5 +22,5 @@ api = Api(app)
 api.add_resource(Verify, "/verify")
 
 
-if __name__ == settings.__name__:
+if __name__ == "__main__":
     app.run(host=settings.HOST, debug=settings.DEBUG_MODE)  # nosec

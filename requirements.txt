@@ -1,4 +1,4 @@
-cryptography==3.4.7
+cryptography==35.0.0
 Flask==2.0.2
 Flask-RESTful==0.3.9
 jwcrypto==0.9.1

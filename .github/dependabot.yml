@@ -10,7 +10,7 @@ updates:
     schedule:
       interval: "daily"
     commit-message:
-      prefix: "chore(dependabot): "
+      prefix: "chore(deps): "
       include: "scope"
     labels:
       - "dependencies"
@@ -19,7 +19,7 @@ updates:
     schedule:
       interval: "daily"
     commit-message:
-      prefix: "chore(dependabot): "
+      prefix: "chore(deps): "
       include: "scope"
     labels:
       - "dependencies"
@@ -30,7 +30,7 @@ updates:
     schedule:
       interval: "daily"
     commit-message:
-      prefix: "chore(dependabot): "
+      prefix: "chore(deps): "
       include: "scope"
     labels:
       - "dependencies"

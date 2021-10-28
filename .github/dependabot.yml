@@ -14,15 +14,6 @@ updates:
       include: "scope"
     labels:
       - "dependencies"
-  - package-ecosystem: "pip"
-    directory: "/tests" # tests/requirements.txt
-    schedule:
-      interval: "daily"
-    commit-message:
-      prefix: "chore(deps): "
-      include: "scope"
-    labels:
-      - "dependencies"
   - package-ecosystem: "github-actions"
     # Workflow files stored in the
     # default location of `.github/workflows`

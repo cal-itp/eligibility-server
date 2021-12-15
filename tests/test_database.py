@@ -34,7 +34,7 @@ def test_database_check_user_in_database_not_eligible(database):
 
 def test_database_check_user_in_database_not_found(database):
     key = "A1234567"
-    user = "Aaron"
+    user = "Aaron"  # This key/user pair does not exist
     types = ["type1"]
 
     response = database.check_user(key, user, types, False)
@@ -61,17 +61,17 @@ def test_database_check_user_in_database_with_hashing(database):
 def test_database_check_ineligible_user_in_database_with_hashing(database):
     key = "A1234568"
     user = "Garcia"
-    types = ["type2"]
+    types = ["type2"]  # This key/user pair does not have "type2" in its associated array
 
     response = database.check_user(key, user, types, True)
 
     assert response == []
 
 
-def test_database_check_ineligible_user_not_foundin_database_with_hashing(database):
+def test_database_check_ineligible_user_not_found_in_database_with_hashing(database):
     key = "A1234568"
-    user = "Aaron"
-    types = ["type1"]  # This key/user pair does not have "type2" in its associated array
+    user = "Aaron"  # This key/user pair does not exist
+    types = ["type1"]
 
     response = database.check_user(key, user, types, True)
 

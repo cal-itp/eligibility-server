@@ -12,18 +12,20 @@ class Database:
             data = json.load(f)
             self._users = data["users"]
 
-    def hash_input(self, input):
+    def hash_input(self, input, hash_type):
         """
-        Return a SHA-256 hash of inputted string
+        Return a hash of inputted string
 
         @param input: string
+        @param hash_type: optional, string of hashlib available algorithms defaults to 'sha256'
+        options: 'sha256', 'sha384', 'sha512' and others
 
-        @return string
+        @return string - hashed string
         """
 
-        return hashlib.sha256(input.encode("utf-8")).hexdigest()
+        return hashlib.new(hash_type, input.encode("utf-8")).hexdigest()
 
-    def check_user(self, key, user, types, hash_inputs=False):
+    def check_user(self, key, user, types, hash_inputs=False, hash_type="sha256"):
         """
         Check if the data matches a record in the database, optionally, check with hashed key and user strings.
 
@@ -40,8 +42,8 @@ class Database:
         user_to_check = user
 
         if hash_inputs:
-            key_to_check = self.hash_input(key)
-            user_to_check = self.hash_input(user)
+            key_to_check = self.hash_input(key, hash_type)
+            user_to_check = self.hash_input(user, hash_type)
 
         if (
             len(types) < 1

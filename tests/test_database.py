@@ -13,9 +13,9 @@ def test_database_init(database):
 
 
 def test_database_check_user_in_database(database):
-    key = min(DATA["users"])
-    user = DATA["users"][key][0]
-    types = DATA["users"][key][1]
+    key = "A1234567"
+    user = "Garcia"
+    types = ["type1"]
 
     response = database.check_user(key, user, types)
 
@@ -23,9 +23,19 @@ def test_database_check_user_in_database(database):
 
 
 def test_database_check_user_in_database_not_eligible(database):
-    key = min(DATA["users"])
-    user = DATA["users"][key][0]
-    types = ["type2"]
+    key = "A1234567"
+    user = "Garcia"
+    types = ["type2"]  # This key/user pair does not have "type2" in its associated array
+
+    response = database.check_user(key, user, types, False)
+
+    assert response == []
+
+
+def test_database_check_user_in_database_not_found(database):
+    key = "A1234567"
+    user = "Aaron"
+    types = ["type1"]
 
     response = database.check_user(key, user, types, False)
 
@@ -46,3 +56,29 @@ def test_database_check_user_in_database_with_hashing(database):
     response = database.check_user(key, user, types, True)
 
     assert response == types
+
+
+def test_database_check_ineligible_user_in_database_with_hashing(database):
+    key = "A1234568"
+    user = "Garcia"
+    types = ["type2"]
+
+    response = database.check_user(key, user, types, True)
+
+    assert response == []
+
+
+def test_database_check_ineligible_user_not_foundin_database_with_hashing(database):
+    key = "A1234568"
+    user = "Aaron"
+    types = ["type1"]  # This key/user pair does not have "type2" in its associated array
+
+    response = database.check_user(key, user, types, True)
+
+    assert response == []
+
+
+def test_database_check_user_not_in_database_with_hashing(database):
+    response = database.check_user("G7778889", "Thomas", ["type1"], True)
+
+    assert response == []

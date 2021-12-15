@@ -33,7 +33,7 @@ class Database:
         @param types: string - type of eligibility
         @param hash_inputs: boolean - default False, defaults to not hashing inputs
 
-        @return boolean
+        @return array - empty array or array of strings of types user is eligible for
         """
 
         key_to_check = key

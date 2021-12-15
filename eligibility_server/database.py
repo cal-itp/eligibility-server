@@ -3,7 +3,8 @@ Simple hard-coded server database.
 """
 
 import json
-import hashlib
+
+from .hash import Hash
 
 
 class Database:
@@ -11,19 +12,6 @@ class Database:
         with open("data/server.json") as f:
             data = json.load(f)
             self._users = data["users"]
-
-    def hash_input(self, input, hash_type):
-        """
-        Return a hash of inputted string
-
-        @param input: string
-        @param hash_type: optional, string of hashlib available algorithms defaults to 'sha256'
-        options: 'sha256', 'sha384', 'sha512' and others
-
-        @return string - hashed string
-        """
-
-        return hashlib.new(hash_type, input.encode("utf-8")).hexdigest()
 
     def check_user(self, key, user, types, hash_inputs=False, hash_type="sha256"):
         """
@@ -42,8 +30,8 @@ class Database:
         user_to_check = user
 
         if hash_inputs:
-            key_to_check = self.hash_input(key, hash_type)
-            user_to_check = self.hash_input(user, hash_type)
+            key_to_check = Hash.hash_input(key, hash_type)
+            user_to_check = Hash.hash_input(user, hash_type)
 
         if (
             len(types) < 1

@@ -87,7 +87,7 @@ def test_database_check_user_not_in_database_with_hashing(database):
 def test_database_check_user_in_database_with_hashing_specific_type(database):
     key = "D4567891"
     user = "James"
-    types = ["type1", "type2"]
+    types = ["type1"]
 
     response = database.check_user(key, user, types, True, "sha512")
 

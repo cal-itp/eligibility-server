@@ -6,14 +6,20 @@ Test hash class method
 from eligibility_server.hash import Hash
 
 
+def test_hash_false():
+    hashed_string = Hash.hash_input("Test", False, "sha256")
+
+    assert hashed_string == "Test"
+
+
 def test_hash_input_default():
-    hashed_string = Hash.hash_input("Test", "sha256")
+    hashed_string = Hash.hash_input("Test", True, "sha256")
 
     assert hashed_string == "532eaabd9574880dbf76b9b8cc00832c20a6ec113d682299550d7a6e0f345e25"  # noqa: E501
 
 
 def test_hash_input_sha512():
-    hashed_string = Hash.hash_input("Test", "sha512")
+    hashed_string = Hash.hash_input("Test", True, "sha512")
 
     assert (
         hashed_string
@@ -22,7 +28,7 @@ def test_hash_input_sha512():
 
 
 def test_hash_input_whirlpool():
-    hashed_string = Hash.hash_input("Test", "whirlpool")
+    hashed_string = Hash.hash_input("Test", True, "whirlpool")
 
     assert (
         hashed_string

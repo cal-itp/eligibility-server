@@ -21,17 +21,12 @@ class Database:
         @param key: string - key to check for
         @param user: string - name of user to check for
         @param types: string - type of eligibility
-        @param hash_inputs: boolean - default False, defaults to not hashing inputs
 
         @return array - empty array or array of strings of types user is eligible for
         """
 
-        key_to_check = key
-        user_to_check = user
-
-        if hash_inputs:
-            key_to_check = Hash.hash_input(key, hash_type)
-            user_to_check = Hash.hash_input(user, hash_type)
+        key_to_check = Hash.hash_input(key, hash_inputs, hash_type)
+        user_to_check = Hash.hash_input(user, hash_inputs, hash_type)
 
         if (
             len(types) < 1

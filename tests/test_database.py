@@ -27,7 +27,7 @@ def test_database_check_user_in_database_not_eligible(database):
     user = "Garcia"
     types = ["type2"]  # This key/user pair does not have "type2" in its associated array
 
-    response = database.check_user(key, user, types, False)
+    response = database.check_user(key, user, types)
 
     assert response == []
 
@@ -37,7 +37,7 @@ def test_database_check_user_in_database_not_found(database):
     user = "Aaron"  # This key/user pair does not exist
     types = ["type1"]
 
-    response = database.check_user(key, user, types, False)
+    response = database.check_user(key, user, types)
 
     assert response == []
 

@@ -4,6 +4,7 @@ Simple hard-coded server database.
 
 import json
 
+from . import settings
 from .hash import Hash
 
 
@@ -13,7 +14,7 @@ class Database:
             data = json.load(f)
             self._users = data["users"]
 
-    def check_user(self, key, user, types, hash_inputs=False, hash_type="sha256"):
+    def check_user(self, key, user, types):
         """
         Check if the data matches a record in the database, optionally, check with hashed key and user strings.
 
@@ -24,6 +25,9 @@ class Database:
 
         @return array - empty array or array of strings of types user is eligible for
         """
+
+        hash_inputs = settings.HASH_INPUTS or False
+        hash_type = settings.HASH_TYPE or "sha256"
 
         key_to_check = Hash.hash_input(key, hash_inputs, hash_type)
         user_to_check = Hash.hash_input(user, hash_inputs, hash_type)

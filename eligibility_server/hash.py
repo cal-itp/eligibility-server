@@ -11,8 +11,8 @@ class Hash:
         Return a hash of inputted string
 
         @param input: string
-        @param hash_inputs: boolean - default False, defaults to not hashing inputs
-        @param hash_type: optional, string of hashlib available algorithms defaults to 'sha256'
+        @param hash_inputs: boolean - default False, set in settings
+        @param hash_type: optional, string of hashlib available algorithms defaults to 'sha256', set in settings
         options: 'sha256', 'sha384', 'sha512' and others
 
         @return string - hashed string

@@ -25,8 +25,9 @@ class Database:
         @return list of strings of types user is eligible for, or empty list
         """
 
-        key_to_check = Hash.hash_input(key)
-        user_to_check = Hash.hash_input(user)
+        hash = Hash()
+        key_to_check = hash.hash_input(key)
+        user_to_check = hash.hash_input(user)
 
         if (
             len(types) < 1

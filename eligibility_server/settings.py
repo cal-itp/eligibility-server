@@ -2,6 +2,8 @@
 App settings for server.
 """
 
+import os
+
 APP_NAME = "eligibility_server.app"
 DEBUG_MODE = True
 HOST = "0.0.0.0"  # nosec
@@ -15,7 +17,7 @@ JWE_CEK_ENC = "A256CBC-HS512"
 JWE_ENCRYPTION_ALG = "RSA-OAEP"
 JWS_SIGNING_ALG = "RS256"
 
-# Hash Configs
+# Hash Configs from .env file
 
-HASH_INPUTS = True
-HASH_TYPE = "sha256"
+HASH_INPUTS = os.environ.get("HASH_INPUTS") == "true"
+HASH_TYPE = os.environ.get("HASH_TYPE")

@@ -2,6 +2,7 @@ import pytest
 
 from eligibility_server.app import app
 from eligibility_server.database import Database as Database
+from eligibility_server.hash import Hash as Hash
 
 
 @pytest.fixture
@@ -11,8 +12,14 @@ def flask():
 
 @pytest.fixture
 def database():
-    db = Database()
-    return db
+    database = Database()
+    return database
+
+
+@pytest.fixture
+def hash():
+    hash = Hash()
+    return hash
 
 
 @pytest.fixture

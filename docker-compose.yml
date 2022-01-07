@@ -3,6 +3,9 @@ version: "3.8"
 services:
   server:
     build: .
+    environment:
+      - HASH_INPUTS
+      - HASH_TYPE
     image: eligibility_server:latest
     ports:
       - "5000"
@@ -14,6 +17,9 @@ services:
       dockerfile: Dockerfile.dev
     command: sleep infinity
     entrypoint: []
+    environment:
+      - HASH_INPUTS
+      - HASH_TYPE
     image: eligibility_server:dev
     ports:
       - "5000"

@@ -2,13 +2,30 @@
 Test hash class method
 """
 
+import os
+
+from unittest.mock import patch
 from eligibility_server import settings
 
 
 def test_hash_init(hash):
+    assert os.environ.get("HASH_INPUTS") == "true"
+    assert os.environ.get("HASH_TYPE") == "sha256"
+    assert settings.HASH_TYPE == "sha256"
+    assert settings.HASH_INPUTS == True  # noqa e712
     assert hash._hash_type == settings.HASH_TYPE
-    if hash._hash_inputs:
-        assert settings.HASH_INPUTS
+    assert hash._hash_inputs == settings.HASH_INPUTS  # noqa e712
+
+
+@patch("eligibility_server.settings.HASH_INPUTS", False)
+@patch("eligibility_server.settings.HASH_TYPE", "sha512")
+def test_hash_init_new(hash):
+    assert os.environ.get("HASH_INPUTS") == "true"
+    assert os.environ.get("HASH_TYPE") == "sha256"
+    assert settings.HASH_TYPE == "sha512"
+    assert settings.HASH_INPUTS == False  # noqa e712
+    assert hash._hash_type == settings.HASH_TYPE
+    assert hash._hash_inputs == settings.HASH_INPUTS  # noqa e712
 
 
 def test_hash_input_default(hash):
@@ -20,10 +37,23 @@ def test_hash_input_default(hash):
     assert hashed_string == "532eaabd9574880dbf76b9b8cc00832c20a6ec113d682299550d7a6e0f345e25"  # noqa: E501
 
 
-def test_hash_false():
+@patch("eligibility_server.settings.HASH_INPUTS", False)
+@patch("eligibility_server.settings.HASH_TYPE", "sha512")
+def test_hash_false(hash):
     # This test currently failing because
     # HASH_INPUT should be set to False
     # hashed_string = Hash.hash_input("Test", False, "sha256")
+    #
+    # monkeypatch.setenv("HASH_INPUTS", "False")
+    # assert os.environ.get("HASH_INPUTS") == "False"
+    # monkeypatch.setitem(settings, "HASH_INPUTS", False)
+    # assert settings.HASH_TYPE == "sha512"  # noqa: E712
+    # assert hash._hash_inputs == False  # noqa: E712
+    # assert hash._hash_type == settings.HASH_TYPE
+    # hashInstance = hash()
+    # assert hash._hash_type == "sha256"
+    # assert hash._hash_input == False  # noqa: E712
+
     hashed_string = hash.hash_input("Test")
 
     assert hashed_string == "Test"

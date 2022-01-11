@@ -24,7 +24,7 @@ with open("./keys/client.pub", "rb") as pemfile:
 class Verify(Resource):
     def __init__(self):
         """Initialize Database with hash type or no hash"""
-        if settings.HASH_INPUTS:
+        if settings.HASH_TYPE != "":
             hash = Hash(settings.HASH_TYPE)
             self._db = Database(hash=hash)
         else:

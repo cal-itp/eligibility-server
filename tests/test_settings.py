@@ -18,8 +18,6 @@ def test_settings():
 
 def test_hash_settings():
     assert settings.HASH_TYPE == "sha256"
-    if settings.HASH_INPUTS:
-        assert True
 
 
 def test_debug():

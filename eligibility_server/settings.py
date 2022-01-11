@@ -19,5 +19,4 @@ JWS_SIGNING_ALG = "RS256"
 
 # Hash Configs from .env file
 
-HASH_INPUTS = os.environ.get("HASH_INPUTS", "False").lower() == "true"
 HASH_TYPE = os.environ.get("HASH_TYPE", "")

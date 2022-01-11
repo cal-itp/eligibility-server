@@ -4,7 +4,6 @@ services:
   server:
     build: .
     environment:
-      - HASH_INPUTS
       - HASH_TYPE
     image: eligibility_server:latest
     ports:
@@ -18,7 +17,6 @@ services:
     command: sleep infinity
     entrypoint: []
     environment:
-      - HASH_INPUTS
       - HASH_TYPE
     image: eligibility_server:dev
     ports:

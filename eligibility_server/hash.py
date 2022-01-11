@@ -4,17 +4,14 @@ Hashing tool.
 
 import hashlib
 
-from . import settings
-
 
 class Hash:
-    def __init__(self):
+    def __init__(self, hash_type="sha256"):
         """
-        Initialize variables (hash_inputs, hash_type) from settings.py variables
+        Initialize variable (hash_type) from settings.py variables
         """
 
-        self._hash_inputs = settings.HASH_INPUTS or False
-        self._hash_type = settings.HASH_TYPE or "sha256"
+        self._hash_type = hash_type or "sha256"
 
     def hash_input(self, input: str) -> str:
         """
@@ -25,7 +22,6 @@ class Hash:
         @return string - hashed string
         """
 
-        if self._hash_inputs:
-            return hashlib.new(self._hash_type, input.encode("utf-8")).hexdigest()
+        return hashlib.new(self._hash_type, input.encode("utf-8")).hexdigest()
 
         return input

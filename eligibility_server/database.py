@@ -4,11 +4,17 @@ Simple hard-coded server database.
 
 import json
 
-from .hash import Hash
-
 
 class Database:
-    def __init__(self):
+    def __init__(self, hash: bool):
+        """
+        Initialize database with server data and initialize hash
+
+        @param hash: Boolean, whether to hash inputs or not
+        """
+
+        self._hash = hash or False
+
         with open("data/server.json") as f:
             data = json.load(f)
             self._users = data["users"]
@@ -25,9 +31,12 @@ class Database:
         @return list of strings of types user is eligible for, or empty list
         """
 
-        hash = Hash()
-        key_to_check = hash.hash_input(key)
-        user_to_check = hash.hash_input(user)
+        if self._hash:
+            key_to_check = hash.hash_input(key)
+            user_to_check = hash.hash_input(user)
+        else:
+            key_to_check = key
+            user_to_check = user
 
         if (
             len(types) < 1

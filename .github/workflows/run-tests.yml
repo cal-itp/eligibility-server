@@ -23,5 +23,8 @@ jobs:
           pip install -r requirements.txt
       - name: Test with pytest
         run: |
+          set -a
+          source tests/.env.tests
           coverage run -m pytest
           coverage report -m
+          set +a

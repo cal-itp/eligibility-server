@@ -23,6 +23,6 @@ jobs:
           pip install -r requirements.txt
       - name: Test with pytest
         run: |
-          source tests/.env.tests
+          export HASH_TYPE=sha256
           coverage run -m pytest
           coverage report -m

@@ -4,96 +4,118 @@ Test database class and methods
 
 import json
 
+from eligibility_server.database import Database as Database
+from eligibility_server.hash import Hash as Hash
+
 
 with open("data/server.json", encoding="utf8") as file:
     DATA = json.load(file)
 
 
-def test_database_init(database):
+def test_database_init():
+    hash = Hash()
+    database = Database(hash)
+
     assert database._users
+    if database._hash:
+        assert True
 
 
-def test_database_check_user_in_database(database):
-    # This test is currently failing, because HASH_INPUTS is set to True
-    # This test should pass when HASH_INPUTS is set to False
+def test_database_init_default():
+    database = Database()
+
+    assert database._users
+    if database._hash:
+        assert False
+
+
+def test_database_check_user_in_database():
     key = "A1234567"
     user = "Garcia"
     types = ["type1"]
+    database = Database()
 
     response = database.check_user(key, user, types)
 
     assert response == types
 
 
-def test_database_check_user_in_database_not_eligible(database):
+def test_database_check_user_in_database_not_eligible():
     key = "A1234567"
     user = "Garcia"
     types = ["type2"]  # This key/user pair does not have "type2" in its associated array
+    database = Database()
 
     response = database.check_user(key, user, types)
 
     assert response == []
 
 
-def test_database_check_user_in_database_not_found(database):
+def test_database_check_user_in_database_not_found():
     key = "A1234567"
     user = "Aaron"  # This key/user pair does not exist
     types = ["type1"]
+    database = Database()
 
     response = database.check_user(key, user, types)
 
     assert response == []
 
 
-def test_database_check_user_not_in_database(database):
+def test_database_check_user_not_in_database():
+    database = Database()
+
     response = database.check_user("G7778889", "Thomas", ["type1"])
 
     assert response == []
 
 
-def test_database_check_user_in_database_with_hashing(database):
+def test_database_check_user_in_database_with_hashing():
     key = "A1234568"
     user = "Garcia"
     types = ["type1"]
+    database = Database(Hash())
 
     response = database.check_user(key, user, types)
 
     assert response == types
 
 
-def test_database_check_ineligible_user_in_database_with_hashing(database):
+def test_database_check_ineligible_user_in_database_with_hashing():
     key = "A1234568"
     user = "Garcia"
     types = ["type2"]  # This key/user pair does not have "type2" in its associated array
+    database = Database(Hash())
 
     response = database.check_user(key, user, types)
 
     assert response == []
 
 
-def test_database_check_ineligible_user_not_found_in_database_with_hashing(database):
+def test_database_check_ineligible_user_not_found_in_database_with_hashing():
     key = "A1234568"
     user = "Aaron"  # This key/user pair does not exist
     types = ["type1"]
+    database = Database(Hash())
 
     response = database.check_user(key, user, types)
 
     assert response == []
 
 
-def test_database_check_user_not_in_database_with_hashing(database):
+def test_database_check_user_not_in_database_with_hashing():
+    database = Database(Hash())
+
     response = database.check_user("G7778889", "Thomas", ["type1"])
 
     assert response == []
 
 
-def test_database_check_user_in_database_with_hashing_specific_type(database):
-    # settings.HASH_TYPE == "sha512"
-    # This test is currently failing because HASH_TYPE needs to be
-    # set to "sha512"
+def test_database_check_user_in_database_with_hashing_specific_type():
     key = "D4567891"
     user = "James"
     types = ["type1"]
+    database = Database(Hash("sha512"))
 
     response = database.check_user(key, user, types)
 

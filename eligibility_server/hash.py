@@ -23,5 +23,3 @@ class Hash:
         """
 
         return hashlib.new(self._hash_type, input.encode("utf-8")).hexdigest()
-
-        return input

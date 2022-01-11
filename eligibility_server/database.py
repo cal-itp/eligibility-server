@@ -6,14 +6,14 @@ import json
 
 
 class Database:
-    def __init__(self, hash: bool):
+    def __init__(self, hash=False):
         """
-        Initialize database with server data and initialize hash
+        Initialize database with server data and set hash_inputs as True or False
 
-        @param hash: Boolean, whether to hash inputs or not
+        @param hash: Hash object
         """
 
-        self._hash = hash or False
+        self._hash = hash
 
         with open("data/server.json") as f:
             data = json.load(f)
@@ -32,8 +32,8 @@ class Database:
         """
 
         if self._hash:
-            key_to_check = hash.hash_input(key)
-            user_to_check = hash.hash_input(user)
+            key_to_check = self._hash.hash_input(key)
+            user_to_check = self._hash.hash_input(user)
         else:
             key_to_check = key
             user_to_check = user

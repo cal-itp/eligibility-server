@@ -10,7 +10,7 @@ class Database:
         """
         Initialize database with server data and set hash_inputs as True or False
 
-        @param hash: Hash object
+        @param hash: Hash object or False
         """
 
         self._hash = hash

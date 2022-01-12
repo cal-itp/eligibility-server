@@ -1,6 +1,8 @@
 """
 Test hash class method
 """
+import pytest
+
 
 from eligibility_server.hash import Hash as Hash
 
@@ -11,21 +13,18 @@ def test_hash_init():
     assert hash._hash_type == "whirlpool"
 
 
-def test_hash_init_blank():
-    hash = Hash()
+def test_hash_init_invalid_type():
+    with pytest.raises(ValueError):
+        Hash("thing")
 
-    assert hash._hash_type == "sha256"
+
+def test_hash_init_invalid_blank():
+    with pytest.raises(TypeError):
+        Hash()
 
 
 def test_hash_input_default():
     hash = Hash("sha256")
-    hashed_string = hash.hash_input("Test")
-
-    assert hashed_string == "532eaabd9574880dbf76b9b8cc00832c20a6ec113d682299550d7a6e0f345e25"  # noqa: E501
-
-
-def test_hash_input_default_blank():
-    hash = Hash()
     hashed_string = hash.hash_input("Test")
 
     assert hashed_string == "532eaabd9574880dbf76b9b8cc00832c20a6ec113d682299550d7a6e0f345e25"  # noqa: E501

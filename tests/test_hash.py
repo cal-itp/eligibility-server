@@ -10,7 +10,7 @@ from eligibility_server.hash import Hash as Hash
 def test_hash_init():
     hash = Hash("whirlpool")
 
-    assert hash._hash_type == "whirlpool"
+    assert hash._input_hash_algo == "whirlpool"
 
 
 def test_hash_init_invalid_type():

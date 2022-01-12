@@ -17,7 +17,7 @@ def test_settings():
 
 
 def test_hash_settings():
-    assert settings.HASH_TYPE == "sha256"
+    assert settings.INPUT_HASH_ALGO == "sha256"
 
 
 def test_debug():

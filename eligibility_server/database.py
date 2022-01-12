@@ -8,9 +8,9 @@ import json
 class Database:
     def __init__(self, hash=False):
         """
-        Initialize database with server data and set hash_inputs as True or False
+        Initialize database with server data and optionally lookup by hashing inputs
 
-        @param hash: Hash object or False
+        @param hash: Hash object to lookup hashed inputs. False to lookup raw inputs.
         """
 
         self._hash = hash
@@ -21,7 +21,7 @@ class Database:
 
     def check_user(self, key: str, user: str, types: str) -> list:
         """
-        Check if the data matches a record in the database, optionally, check with hashed key and user strings.
+        Check if the data matches a record in the database
 
         @param self: self
         @param key: key to check for
@@ -32,18 +32,15 @@ class Database:
         """
 
         if self._hash:
-            key_to_check = self._hash.hash_input(key)
-            user_to_check = self._hash.hash_input(user)
-        else:
-            key_to_check = key
-            user_to_check = user
+            key = self._hash.hash_input(key)
+            user = self._hash.hash_input(user)
 
         if (
             len(types) < 1
-            or key_to_check not in self._users
-            or self._users[key_to_check][0] != user_to_check
-            or len(set(self._users[key_to_check][1]) & set(types)) < 1
+            or key not in self._users
+            or self._users[key][0] != user
+            or len(set(self._users[key][1]) & set(types)) < 1
         ):
             return []
 
-        return list(set(self._users[key_to_check][1]) & set(types))
+        return list(set(self._users[key][1]) & set(types))

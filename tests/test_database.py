@@ -6,20 +6,11 @@ from eligibility_server.database import Database as Database
 from eligibility_server.hash import Hash as Hash
 
 
-def test_database_init():
-    hash = Hash("sha256")
-    database = Database(hash)
-
-    assert database._users
-    if database._hash:
-        assert True
-
-
 def test_database_init_default():
     database = Database()
 
     assert database._users
-    assert database._hash == False  # noqa: E712
+    assert database._hash is False
 
 
 def test_database_check_user_in_database():

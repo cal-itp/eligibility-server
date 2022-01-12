@@ -4,7 +4,7 @@ Test hash class method
 import pytest
 
 
-from eligibility_server.hash import Hash as Hash
+from eligibility_server.hash import Hash
 
 
 def test_hash_init():

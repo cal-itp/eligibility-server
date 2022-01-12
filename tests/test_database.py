@@ -2,8 +2,8 @@
 Test database class and methods
 """
 
-from eligibility_server.database import Database as Database
-from eligibility_server.hash import Hash as Hash
+from eligibility_server.database import Database
+from eligibility_server.hash import Hash
 
 
 def test_database_init_default():

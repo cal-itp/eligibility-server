@@ -12,6 +12,7 @@ from jwcrypto import jwe, jwk, jws, jwt
 
 from . import settings
 from .database import Database
+from .hash import Hash
 
 
 with open("./keys/server.key", "rb") as pemfile:
@@ -21,8 +22,13 @@ with open("./keys/client.pub", "rb") as pemfile:
 
 
 class Verify(Resource):
-
-    db = Database()
+    def __init__(self):
+        """Initialize Verify class with a Database and optionally a Hash"""
+        if settings.INPUT_HASH_ALGO != "":
+            hash = Hash(settings.INPUT_HASH_ALGO)
+            self._db = Database(hash=hash)
+        else:
+            self._db = Database()
 
     def _check_headers(self):
         """Ensure correct request headers."""
@@ -107,7 +113,7 @@ class Verify(Resource):
                 # sub format check
                 if re.match(r"^[A-Z]\d{7}$", sub):
                     # eligibility check against db
-                    resp_payload["eligibility"] = self.db.check_user(sub, name, eligibility)
+                    resp_payload["eligibility"] = self._db.check_user(sub, name, eligibility)
                     code = 200
                 else:
                     resp_payload["error"] = {"sub": "invalid"}

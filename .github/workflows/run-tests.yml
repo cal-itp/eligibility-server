@@ -26,5 +26,9 @@ jobs:
           set -a
           source tests/.env.tests
           coverage run -m pytest -m "not settingstest"
+          set +a
+          set -a
+          source tests/.env.settingstests
+          coverage run -m pytest -m settingstest
           coverage report -m
           set +a

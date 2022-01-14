@@ -1,9 +1,25 @@
 """
 Test database class and methods
 """
+import pytest
+
 
 from eligibility_server.database import Database
 from eligibility_server.hash import Hash
+
+
+test_data = [
+    (Database(), "A1234567", "Garcia", ["type1"], ["type1"]),  # This key/user pair is in the database
+    (Database(), "A1234567", "Garcia", ["type2"], []),  # This key/user pair does not have "type2" in its associated array
+    (Database(), "A1234567", "Aaron", ["type1"], []),  # This key/user pair does not exist
+    (Database(), "G7778889", "Thomas", ["type1"], []),  # User not in database
+    (Database(Hash("sha256")), "A1234568", "Garcia", ["type1"], ["type1"]),  # Correct key/user pair and correct hash algo type
+    (Database(Hash("sha256")), "A1234568", "Garcia", ["type2"], []),  # This key/user pair does not have "type2" in its array
+    (Database(Hash("sha256")), "A1234568", "Aaron", ["type1"], []),  # This key/user pair does not exist
+    (Database(Hash("sha256")), "G7778889", "Thomas", ["type1"], []),  # User does not exist
+    (Database(Hash("sha512")), "D4567891", "James", ["type1"], ["type1"]),  # Specific hash algo type
+    (Database(Hash("sha256")), "D4567891", "James", ["type1"], []),  # Wrong hash algo type
+]
 
 
 def test_database_init_default():
@@ -13,105 +29,6 @@ def test_database_init_default():
     assert database._hash is False
 
 
-def test_database_check_user_in_database():
-    key = "A1234567"
-    user = "Garcia"
-    types = ["type1"]
-    database = Database()
-
-    response = database.check_user(key, user, types)
-
-    assert response == types
-
-
-def test_database_check_user_in_database_not_eligible():
-    key = "A1234567"
-    user = "Garcia"
-    types = ["type2"]  # This key/user pair does not have "type2" in its associated array
-    database = Database()
-
-    response = database.check_user(key, user, types)
-
-    assert response == []
-
-
-def test_database_check_user_in_database_not_found():
-    key = "A1234567"
-    user = "Aaron"  # This key/user pair does not exist
-    types = ["type1"]
-    database = Database()
-
-    response = database.check_user(key, user, types)
-
-    assert response == []
-
-
-def test_database_check_user_not_in_database():
-    database = Database()
-
-    response = database.check_user("G7778889", "Thomas", ["type1"])
-
-    assert response == []
-
-
-def test_database_check_user_in_database_with_hashing():
-    key = "A1234568"
-    user = "Garcia"
-    types = ["type1"]
-    database = Database(Hash("sha256"))
-
-    response = database.check_user(key, user, types)
-
-    assert response == types
-
-
-def test_database_check_ineligible_user_in_database_with_hashing():
-    key = "A1234568"
-    user = "Garcia"
-    types = ["type2"]  # This key/user pair does not have "type2" in its associated array
-    database = Database(Hash("sha256"))
-
-    response = database.check_user(key, user, types)
-
-    assert response == []
-
-
-def test_database_check_ineligible_user_not_found_in_database_with_hashing():
-    key = "A1234568"
-    user = "Aaron"  # This key/user pair does not exist
-    types = ["type1"]
-    database = Database(Hash("sha256"))
-
-    response = database.check_user(key, user, types)
-
-    assert response == []
-
-
-def test_database_check_user_not_in_database_with_hashing():
-    database = Database(Hash("sha256"))
-
-    response = database.check_user("G7778889", "Thomas", ["type1"])
-
-    assert response == []
-
-
-def test_database_check_user_in_database_with_hashing_specific_type():
-    key = "D4567891"
-    user = "James"
-    types = ["type1"]
-    database = Database(Hash("sha512"))
-
-    response = database.check_user(key, user, types)
-
-    assert response == types
-
-
-def test_database_check_user_in_database_with_wrong_hashing_type():
-    key = "D4567891"
-    user = "James"
-    types = ["type1"]
-    database = Database(Hash("sha256"))
-
-    response = database.check_user(key, user, types)
-
-    assert response == []
+@pytest.mark.parametrize("db, key, user, types, expected", test_data)
+def test_database_check_user(db, key, user, types, expected):
+    assert db.check_user(key, user, types) == expected

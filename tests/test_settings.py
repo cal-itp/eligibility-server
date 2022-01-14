@@ -1,6 +1,7 @@
 """
 Test config settings
 """
+import pytest
 
 from eligibility_server import settings
 
@@ -18,6 +19,11 @@ def test_settings():
 
 def test_hash_settings():
     assert settings.INPUT_HASH_ALGO == "sha256"
+
+
+@pytest.mark.settingstest
+def test_hash_settings_env():
+    assert settings.INPUT_HASH_ALGO == "sha512"
 
 
 def test_debug():

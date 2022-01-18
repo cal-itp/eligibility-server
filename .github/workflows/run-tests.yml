@@ -3,12 +3,6 @@ name: Run pytests
 on:
   pull_request:
     branches: [ "*" ]
-    paths:
-      - 'data/**'
-      - 'eligibility_server/**'
-      - 'keys/**'
-      - 'tests/**'
-      - 'requirements.txt'
 
 jobs:
   tests:
@@ -24,7 +18,9 @@ jobs:
       - name: Test with pytest
         run: |
           set -a
-          source tests/.env.tests
-          coverage run -m pytest
+          source tests/.env.settingstest
+          coverage run -m pytest -m settingstest
           coverage report -m
+          source tests/.env.tests
+          coverage run -m pytest -m "not settingstest"
           set +a

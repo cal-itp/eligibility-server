@@ -8,6 +8,11 @@ APP_NAME = "eligibility_server.app"
 DEBUG_MODE = True
 HOST = "0.0.0.0"  # nosec
 
+# Database Configs
+
+SQLALCHEMY_DATABASE_URI = "sqlite:////tmp/test.db"
+SQLALCHEMY_TRACK_MODIFICATIONS = False
+
 # Server Configs
 
 AUTH_HEADER = "X-Server-API-Key"

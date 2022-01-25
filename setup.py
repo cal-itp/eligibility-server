@@ -7,24 +7,20 @@ User = app.User
 
 
 def import_users(db, User):
-    print("importing users from", settings.IMPORT_FILEPATH)
+    print("Importing users from", settings.IMPORT_FILEPATH)
     with open(settings.IMPORT_FILEPATH) as f:
         data = json.load(f)
-        print(data)
         for user in data["users"]:
-            user_id = user
             key = data["users"][user][0]
             types = str(data["users"][user][1])
-            row = User(user_id=user_id, key=key, types=str(types))
-            print(row)
+            row = User(user_id=user, key=key, types=str(types))
             db.session.add(row)
             db.session.commit()
-    print(User.query.all())
 
 
 if __name__ == "__main__":
-    print("Creating tables...")
+    print("Creating table...")
     db.create_all()
-    print("Tables created!")
+    print("Table created!")
     import_users(db, User)
-    print("Users added")
+    print("Users added!")

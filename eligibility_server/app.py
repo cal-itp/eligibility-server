@@ -16,6 +16,16 @@ app = Flask(__name__)
 app.name = settings.APP_NAME
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:////tmp/test.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+
+@app.route("/healthcheck")
+def healthcheck():
+    return "Healthy"
+
+
+api = Api(app)
+api.add_resource(Verify, "/verify")
+
 db = SQLAlchemy(app)
 
 
@@ -27,11 +37,6 @@ class User(db.Model):
 
     def __repr__(self):
         return "<User %r>" % self.user_id
-
-
-@app.route("/healthcheck")
-def healthcheck():
-    return "Healthy"
 
 
 def create_users():
@@ -49,10 +54,5 @@ def create_users():
             db.session.commit()
 
 
-api = Api(app)
-api.add_resource(Verify, "/verify")
-
-
 if __name__ == "__main__":
     app.run(host=settings.HOST, debug=settings.DEBUG_MODE)  # nosec
-    # Run this file directly to create the database tables.

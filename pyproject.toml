@@ -9,3 +9,9 @@
 line-length = 127
 target-version = ['py38']
 include = '\.pyi?$'
+
+[tool.pytest.ini_options]
+markers = [
+    "settingstest: mark a test to test hash_input_algo",
+    "databasetest: mark a test to test all types of import_file_format"
+]

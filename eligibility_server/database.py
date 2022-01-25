@@ -2,7 +2,9 @@
 Simple hard-coded server database.
 """
 
-import json
+import ast
+
+from . import app
 
 
 class Database:
@@ -15,9 +17,14 @@ class Database:
 
         self._hash = hash
 
-        with open("data/server.json") as f:
-            data = json.load(f)
-            self._users = data["users"]
+        users = app.User.query.all()
+        all_users = {}
+        for user in users:
+            user_id = user.user_id
+            key = user.key
+            types = ast.literal_eval(user.types)
+            all_users[user_id] = [key, types]
+        self._users = all_users
 
     def check_user(self, key: str, user: str, types: str) -> list:
         """

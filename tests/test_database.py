@@ -7,7 +7,6 @@ import pytest
 from eligibility_server.database import Database
 from eligibility_server.hash import Hash
 
-
 test_data = [
     (Database(), "A1234567", "Garcia", ["type1"], ["type1"]),  # This key/user pair is in the database
     (Database(), "A1234567", "Garcia", ["type2"], []),  # This key/user pair does not have "type2" in its associated array

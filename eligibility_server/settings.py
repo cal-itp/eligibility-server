@@ -12,7 +12,8 @@ HOST = "0.0.0.0"  # nosec
 
 SQLALCHEMY_DATABASE_URI = "sqlite:////tmp/test.db"
 SQLALCHEMY_TRACK_MODIFICATIONS = False
-IMPORT_FILEPATH = "data/server.json"
+IMPORT_FILE_PATH = "data/server.csv"
+IMPORT_FILE_FORMAT = "csv"
 
 # Server Configs
 

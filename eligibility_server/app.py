@@ -2,8 +2,6 @@
 Simple Test Eligibility Verification API Server.
 """
 
-import json
-
 from flask import Flask
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
@@ -37,21 +35,6 @@ class User(db.Model):
 
     def __repr__(self):
         return "<User %r>" % self.user_id
-
-
-def import_users():
-    print("import_users()")
-    with open("data/server.json") as f:
-        data = json.load(f)
-        print(data)
-        for user in data["users"]:
-            user_id = user
-            key = data["users"][user][0]
-            types = str(data["users"][user][1])
-            row = User(user_id=user_id, key=key, types=str(types))
-            print(row)
-            db.session.add(row)
-            db.session.commit()
 
 
 if __name__ == "__main__":

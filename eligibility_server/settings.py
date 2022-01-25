@@ -12,6 +12,7 @@ HOST = "0.0.0.0"  # nosec
 
 SQLALCHEMY_DATABASE_URI = "sqlite:////tmp/test.db"
 SQLALCHEMY_TRACK_MODIFICATIONS = False
+IMPORT_FILEPATH = "data/server.json"
 
 # Server Configs
 

@@ -15,8 +15,8 @@ def test_settings():
     assert settings.JWE_CEK_ENC == "A256CBC-HS512"
     assert settings.JWE_ENCRYPTION_ALG == "RSA-OAEP"
     assert settings.JWS_SIGNING_ALG == "RS256"
-    assert settings.IMPORT_FILE_FORMAT == "csv"
-    assert settings.IMPORT_FILE_PATH == "data/server.csv"
+    assert settings.IMPORT_FILE_FORMAT == "json"
+    assert settings.IMPORT_FILE_PATH == "data/server.json"
 
 
 def test_hash_settings():

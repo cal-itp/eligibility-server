@@ -7,4 +7,4 @@ if __name__ == "__main__":
     print(User.query.count(), "users to be deleted.")
     User.query.delete()
     db.session.commit()
-    print(User.query.count(), "users.")
+    print(User.query.count(), "users deleted.")

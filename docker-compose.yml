@@ -5,6 +5,8 @@ services:
     build: .
     environment:
       - INPUT_HASH_ALGO
+      - IMPORT_FILE_FORMAT
+      - IMPORT_FILE_PATH
     image: eligibility_server:latest
     ports:
       - "5000"
@@ -18,6 +20,8 @@ services:
     entrypoint: []
     environment:
       - INPUT_HASH_ALGO
+      - IMPORT_FILE_FORMAT
+      - IMPORT_FILE_PATH
     image: eligibility_server:dev
     ports:
       - "5000"

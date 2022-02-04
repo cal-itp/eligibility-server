@@ -12,8 +12,8 @@ HOST = "0.0.0.0"  # nosec
 
 SQLALCHEMY_DATABASE_URI = "sqlite:////tmp/test.db"
 SQLALCHEMY_TRACK_MODIFICATIONS = False
-IMPORT_FILE_FORMAT = os.environ.get("IMPORT_FILE_FORMAT")
 IMPORT_FILE_PATH = os.environ.get("IMPORT_FILE_PATH")
+IMPORT_FILE_FORMAT = os.environ.get("IMPORT_FILE_PATH").split(".")[-1]
 
 # Server Configs
 

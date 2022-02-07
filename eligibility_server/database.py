@@ -2,22 +2,27 @@
 Simple hard-coded server database.
 """
 
-import json
+import ast
+
+from . import app
 
 
 class Database:
     def __init__(self, hash=False):
         """
-        Initialize database with server data and optionally lookup by hashing inputs
+        Initialize with database data and optionally lookup by hashing inputs
 
         @param hash: Hash object to lookup hashed inputs. False to lookup raw inputs.
         """
 
         self._hash = hash
 
-        with open("data/server.json") as f:
-            data = json.load(f)
-            self._users = data["users"]
+        users = app.User.query.all()
+        all_users = {}
+        for user in users:
+            types = ast.literal_eval(user.types)
+            all_users[user.user_id] = [user.key, types]
+        self._users = all_users
 
     def check_user(self, key: str, user: str, types: str) -> list:
         """

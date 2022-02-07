@@ -19,8 +19,12 @@ jobs:
         run: |
           set -a
           source tests/.env.settingstest
+          python setup.py
           coverage run -m pytest -m settingstest
-          coverage report -m
+          coverage run -m pytest -m databasetest
+          python teardown.py
           source tests/.env.tests
+          python setup.py
           coverage run -m pytest -m "not settingstest"
+          coverage report -m
           set +a

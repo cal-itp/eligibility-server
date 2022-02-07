@@ -3,8 +3,7 @@ version: "3.8"
 services:
   server:
     build: .
-    environment:
-      - INPUT_HASH_ALGO
+    env_file: .env
     image: eligibility_server:latest
     ports:
       - "5000"
@@ -16,8 +15,7 @@ services:
       dockerfile: Dockerfile.dev
     command: sleep infinity
     entrypoint: []
-    environment:
-      - INPUT_HASH_ALGO
+    env_file: .env
     image: eligibility_server:dev
     ports:
       - "5000"

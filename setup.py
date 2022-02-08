@@ -36,5 +36,5 @@ if __name__ == "__main__":
     print("Creating table...")
     app.db.create_all()
     print("Table created.")
-    import_users(app.db, app.User)
+    import_users()
     print(app.User.query.count(), "users added.")

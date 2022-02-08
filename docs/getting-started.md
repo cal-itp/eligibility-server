@@ -11,6 +11,14 @@ git clone https://github.com/cal-itp/eligibility-server.git
 cd eligibility-server
 ```
 
+## Create an environment file
+
+Use the sample as the template.
+
+```bash
+cp .env.sample .env
+```
+
 ## Build image using Docker Compose
 
 ```bash

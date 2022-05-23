@@ -27,7 +27,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push release
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
         with:
           push: true
@@ -36,7 +36,7 @@ jobs:
             ghcr.io/${{github.repository}}:latest
 
       - name: Build and push main
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         if: ${{ github.event_name != 'release' }}
         with:
           push: true

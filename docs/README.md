@@ -16,36 +16,18 @@ The API is designed for privacy and security of user information:
 
 The server is published as a Docker container on the [GitHub Container Registry](https://github.com/cal-itp/eligibility-server/pkgs/container/eligibility-server).
 
-### Getting started with the app
+## Getting started with the app
 
 Running the application locally is possible with [Docker and Docker Compose](https://www.docker.com/products/docker-desktop).
 
-#### Build the Docker container for local development
+### Build the Docker container for local development
 
 ```bash
 docker compose build server
 ```
 
-#### Use the Docker container locally
+### Use the Docker container locally
 
 ```bash
 docker pull ghcr.io/cal-itp/eligibility-server:main
 ```
-
-#### Run the tests
-
-```bash
-coverage run -m pytest
-```
-
-### Getting started with the docs
-
-#### Run the docs locally
-
-```bash
-docker compose up docs
-```
-
-### Deploy and publish docs
-
-These docs are built and published with GitHub Actions.

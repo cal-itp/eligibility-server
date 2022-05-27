@@ -24,6 +24,7 @@ Running the application locally is possible with [Docker and Docker Compose](htt
 
 ```bash
 cd .devcontainer
+cp .env.sample .env
 docker compose build server
 ```
 

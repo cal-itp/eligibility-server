@@ -91,7 +91,7 @@ class Verify(Resource):
                 iat=int(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).timestamp()),
             )
             # sub format check
-            if re.match(r"^[A-Z]\d{7}$", sub):
+            if re.match(settings.SUB_FORMAT_REGEX, sub):
                 # eligibility check against db
                 resp_payload["eligibility"] = self._db.check_user(sub, name, eligibility)
                 code = 200

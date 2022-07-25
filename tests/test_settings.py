@@ -33,3 +33,8 @@ def test_hash_settings_env():
 def test_debug():
     if settings.DEBUG_MODE:
         assert True
+
+
+@pytest.mark.settingstest
+def test_sub_format_regex_env():
+    assert settings.SUB_FORMAT_REGEX == "test\\"

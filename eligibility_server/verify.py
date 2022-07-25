@@ -81,6 +81,28 @@ class Verify(Resource):
         encrypted_token.make_encrypted_token(client_public_key)
         return encrypted_token.serialize()
 
+    def _get_response(self, token_payload):
+        try:
+            # craft the response payload using parsed request token
+            sub, name, eligibility = token_payload["sub"], token_payload["name"], list(token_payload["eligibility"])
+            resp_payload = dict(
+                jti=token_payload["jti"],
+                iss=settings.APP_NAME,
+                iat=int(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).timestamp()),
+            )
+            # sub format check
+            if re.match(r"^[A-Z]\d{7}$", sub):
+                # eligibility check against db
+                resp_payload["eligibility"] = self._db.check_user(sub, name, eligibility)
+                code = 200
+            else:
+                resp_payload["error"] = {"sub": "invalid"}
+                code = 400
+            # make a response token with appropriate response code
+            return self._make_token(resp_payload), code
+        except Exception as ex:
+            return str(ex), 500
+
     def get(self):
         """Respond to a verification request."""
         # introduce small fake delay
@@ -102,25 +124,6 @@ class Verify(Resource):
             return str(ex), 400
 
         if token_payload:
-            try:
-                # craft the response payload using parsed request token
-                sub, name, eligibility = token_payload["sub"], token_payload["name"], list(token_payload["eligibility"])
-                resp_payload = dict(
-                    jti=token_payload["jti"],
-                    iss=settings.APP_NAME,
-                    iat=int(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).timestamp()),
-                )
-                # sub format check
-                if re.match(r"^[A-Z]\d{7}$", sub):
-                    # eligibility check against db
-                    resp_payload["eligibility"] = self._db.check_user(sub, name, eligibility)
-                    code = 200
-                else:
-                    resp_payload["error"] = {"sub": "invalid"}
-                    code = 400
-                # make a response token with appropriate response code
-                return self._make_token(resp_payload), code
-            except Exception as ex:
-                return str(ex), 500
+            return self._get_response(token_payload)
         else:
             return "Invalid token format", 400

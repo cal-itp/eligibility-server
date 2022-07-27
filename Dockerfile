@@ -23,4 +23,5 @@ COPY . /home/$USER/app/
 USER $USER
 
 # start app
-CMD ["flask", "run", "-h", "0.0.0.0"]
+ENTRYPOINT ["/bin/bash"]
+CMD ["bin/start.sh"]

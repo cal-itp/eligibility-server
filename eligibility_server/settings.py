@@ -23,6 +23,7 @@ TOKEN_HEADER = "Authorization"
 JWE_CEK_ENC = "A256CBC-HS512"
 JWE_ENCRYPTION_ALG = "RSA-OAEP"
 JWS_SIGNING_ALG = "RS256"
+SUB_FORMAT_REGEX = os.environ.get("SUB_FORMAT_REGEX", ".*")
 
 # Hash Configs from .env file
 

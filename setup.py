@@ -24,7 +24,6 @@ def import_users():
             data = csv.reader(
                 file,
                 delimiter=settings.CSV_DELIMITER,
-                newline=settings.CSV_NEWLINE,
                 quoting=settings.CSV_QUOTING,
                 quotechar=settings.CSV_QUOTECHAR,
             )

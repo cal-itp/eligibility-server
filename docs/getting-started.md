@@ -63,28 +63,12 @@ This repository comes with a [VS Code Remote Containers](https://code.visualstud
 Once you clone the repository locally, open it within VS Code, which will prompt you to re-open the repository within the Remote Container.
 
  1. Build and Open the Dev Container
- 2. Start the `eligibility-server` app with `F5`
- 3. Run any database scripts and test commands from within the container
+ 2. Start the `eligibility-server` Flask app and database with `F5`
+ 3. Now you can run tests from the container.
 
-## Set up database and run tests
+Starting the Dev Container will run `bin/start.sh`, which runs `setup.py` and starts the Flask app. The `setup.py` script creates a table, imports and saves users from a JSON or CSV file specified in the .env file from the `IMPORT_FILE_PATH` key. CSV files will require
 
-To run the API, you will have to set up the database first.
-
-### Create and destroy database
-
-The set up script creates a table, imports and saves users from a JSON or CSV file specified in the .env file from the `IMPORT_FILE_PATH` key. Each user has a name (string), key (string) and an array of eligibility types (string).
-
-To set up the database, run:
-
-```bash
-python setup.py
-```
-
-The teardown script removes all users and drops the database. To tear down the database, run:
-
-```bash
-python teardown.py
-```
+## Run tests
 
 ### Run unit tests
 
@@ -96,6 +80,22 @@ There are two different .env files to test against, to ensure the tests cover di
 
 1. From the main directory, run `coverage run -m pytest -m databasetest; coverage run -m pytest -m settingstest`
 2. To see the test coverage report, run `coverage report -m`
+
+### Destroy and recreate database
+
+In testing the database, you may need to teardown the database and restart a database from scratch.
+
+The teardown script removes all users and drops the database. To tear down the database, run:
+
+```bash
+python teardown.py
+```
+
+To set up the database with a new import file or other configuration variables, after making any new environment variable changes, run:
+
+```bash
+python setup.py
+```
 
 ## Run and develop the Documentation
 

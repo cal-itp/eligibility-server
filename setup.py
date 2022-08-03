@@ -1,6 +1,7 @@
 import csv
 import json
 
+from flask_sqlalchemy import inspect
 from eligibility_server import app, settings
 
 
@@ -33,8 +34,13 @@ def save_users(user_id: str, key: str, types: str):
 
 
 if __name__ == "__main__":
-    print("Creating table...")
-    app.db.create_all()
-    print("Table created.")
-    import_users()
-    print(app.User.query.count(), "users added.")
+    inspector = inspect(app.db.engine)
+
+    if inspector.get_table_names():
+        print("Tables already exist.")
+    else:
+        print("Creating table...")
+        app.db.create_all()
+        print("Table created.")
+        import_users()
+        print(app.User.query.count(), "users added.")

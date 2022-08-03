@@ -1,6 +1,7 @@
 import csv
 import json
 
+from flask_sqlalchemy import inspect
 from eligibility_server import app, settings
 
 
@@ -11,11 +12,15 @@ def import_users():
             data = json.load(file)["users"]
             for user in data:
                 save_users(user, data[user][0], str(data[user][1]))
-    if settings.IMPORT_FILE_FORMAT == "csv":
+    elif settings.IMPORT_FILE_FORMAT == "csv":
         with open(settings.IMPORT_FILE_PATH, newline="", encoding="utf-8") as file:
             data = csv.reader(file, delimiter=";", quotechar="", quoting=csv.QUOTE_NONE)
             for user in data:
                 save_users(user[0], user[1], user[2])
+    else:
+        print(f"File format {settings.IMPORT_FILE_FORMAT} is not supported.")
+
+    print(app.User.query.count(), "users added.")
 
 
 def save_users(user_id: str, key: str, types: str):
@@ -33,8 +38,16 @@ def save_users(user_id: str, key: str, types: str):
 
 
 if __name__ == "__main__":
-    print("Creating table...")
-    app.db.create_all()
-    print("Table created.")
-    import_users()
-    print(app.User.query.count(), "users added.")
+    inspector = inspect(app.db.engine)
+
+    if inspector.get_table_names():
+        print("Tables already exist.")
+        if app.User.query.count() == 0:
+            import_users()
+        else:
+            print("User table already has data.")
+    else:
+        print("Creating table...")
+        app.db.create_all()
+        print("Table created.")
+        import_users()

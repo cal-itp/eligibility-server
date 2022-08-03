@@ -12,8 +12,14 @@ def import_users():
             for user in data:
                 save_users(user, data[user][0], str(data[user][1]))
     if settings.IMPORT_FILE_FORMAT == "csv":
-        with open(settings.IMPORT_FILE_PATH, newline="", encoding="utf-8") as file:
-            data = csv.reader(file, delimiter=";", quotechar="", quoting=csv.QUOTE_NONE)
+        with open(settings.IMPORT_FILE_PATH, newline=settings.CSV_NEWLINE, encoding="utf-8") as file:
+            data = csv.reader(
+                file,
+                delimiter=settings.CSV_DELIMITER,
+                newline=settings.CSV_NEWLINE,
+                quoting=settings.CSV_QUOTING,
+                quotechar=settings.CSV_QUOTECHAR,
+            )
             for user in data:
                 save_users(user[0], user[1], user[2])
 

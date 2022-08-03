@@ -18,6 +18,8 @@ def import_users():
             for user in data:
                 save_users(user[0], user[1], user[2])
 
+    print(app.User.query.count(), "users added.")
+
 
 def save_users(user_id: str, key: str, types: str):
     """
@@ -38,9 +40,12 @@ if __name__ == "__main__":
 
     if inspector.get_table_names():
         print("Tables already exist.")
+        if app.User.query.count() == 0:
+            import_users()
+        else:
+            print("User table already has data.")
     else:
         print("Creating table...")
         app.db.create_all()
         print("Table created.")
         import_users()
-        print(app.User.query.count(), "users added.")

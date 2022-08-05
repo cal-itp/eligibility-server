@@ -25,7 +25,7 @@ def import_users():
             data = csv.reader(
                 file,
                 delimiter=settings.CSV_DELIMITER,
-                quoting=settings.CSV_QUOTING,
+                quoting=int(settings.CSV_QUOTING),
                 quotechar=settings.CSV_QUOTECHAR,
             )
             for user in data:

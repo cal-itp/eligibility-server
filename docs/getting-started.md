@@ -22,10 +22,26 @@ cd .devcontainer
 cp .env.sample .env
 ```
 
-The .env file specifies two values:
+The .env file specifies the following values:
 
-- the `IMPORT_FILE_PATH`: Must be either CSV or JSON.
+- `IMPORT_FILE_PATH`*: Must be either CSV or JSON.
 - `INPUT_HASH_ALGO`: Must be one of the types available in the [`hashlib` library's `algorithms_available` function](https://docs.python.org/3/library/hashlib.html#hashlib.algorithms_available).
+
+When using a CSV file, the following variables can be configured:
+
+- `CSV_DELIMITER`: specify a custom delimiter or use the default ","
+- `CSV_NEWLINE`: specify a newline or use the default of ""
+- `CSV_QUOTECHAR`: specify a quote character or use the default of none
+- `CSV_QUOTING`: default of 3 (no quotes)
+
+These are the possible values for the `CSV_QUOTING` variable:
+
+- `csv.QUOTE_MINIMAL`: 0 - To be used when the CSV file has quotes around entries which contain special characters such as delimiters, quotechar or any of the characters in lineterminator
+- `csv.QUOTE_ALL`: 1 - To be used when all the values in the CSV file are present inside quotation marks
+- `csv.QUOTE_NONNUMERIC`: 2 - To be used when the CSV file uses quotes around non-numeric entries
+- `csv.QUOTE_NONE`: 3 - To be used when the CSV file does not use quotes around entries
+
+Asterisk * indicates required
 
 ### Build image using Docker Compose
 
@@ -63,28 +79,12 @@ This repository comes with a [VS Code Remote Containers](https://code.visualstud
 Once you clone the repository locally, open it within VS Code, which will prompt you to re-open the repository within the Remote Container.
 
  1. Build and Open the Dev Container
- 2. Start the `eligibility-server` app with `F5`
- 3. Run any database scripts and test commands from within the container
+ 2. Start the `eligibility-server` Flask app and database with `F5`
+ 3. Now you can run tests from the container.
 
-## Set up database and run tests
+Starting the Dev Container will run `bin/start.sh`, which runs `setup.py` and starts the Flask app. The `setup.py` script creates a table, imports and saves users from a JSON or CSV file specified in the .env file from the `IMPORT_FILE_PATH` key. CSV files will require
 
-To run the API, you will have to set up the database first.
-
-### Create and destroy database
-
-The set up script creates a table, imports and saves users from a JSON or CSV file specified in the .env file from the `IMPORT_FILE_PATH` key. Each user has a name (string), key (string) and an array of eligibility types (string).
-
-To set up the database, run:
-
-```bash
-python setup.py
-```
-
-The teardown script removes all users and drops the database. To tear down the database, run:
-
-```bash
-python teardown.py
-```
+## Run tests
 
 ### Run unit tests
 
@@ -96,6 +96,22 @@ There are two different .env files to test against, to ensure the tests cover di
 
 1. From the main directory, run `coverage run -m pytest -m databasetest; coverage run -m pytest -m settingstest`
 2. To see the test coverage report, run `coverage report -m`
+
+### Destroy and recreate database
+
+In testing the database, you may need to teardown the database and restart a database from scratch.
+
+The teardown script removes all users and drops the database. To tear down the database, run:
+
+```bash
+python teardown.py
+```
+
+To set up the database with a new import file or other configuration variables, after making any new environment variable changes, run:
+
+```bash
+python setup.py
+```
 
 ## Run and develop the Documentation
 

@@ -28,3 +28,9 @@ SUB_FORMAT_REGEX = os.environ.get("SUB_FORMAT_REGEX", ".*")
 # Hash Configs from .env file
 
 INPUT_HASH_ALGO = os.environ.get("INPUT_HASH_ALGO", "")
+
+# CSV Configs from .env file
+CSV_DELIMITER = os.environ.get("CSV_DELIMITER", ",")
+CSV_NEWLINE = os.environ.get("CSV_NEWLINE", "")
+CSV_QUOTING = os.environ.get("CSV_QUOTING", 3)
+CSV_QUOTECHAR = os.environ.get("CSV_QUOTECHAR", "")

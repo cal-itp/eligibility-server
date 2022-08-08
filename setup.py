@@ -6,6 +6,14 @@ from eligibility_server import app, settings
 
 
 def import_users():
+    """
+    Imports user data to be added to database and saves user to database
+
+    Users can be imported from either a JSON file or CSV file, as configured
+    with settings from environment variables. CSV files take extra setting
+    configurations: CSV_DELIMITER, CSV_NEWLINE, CSV_QUOTING, CSV_QUOTECHAR
+    """
+
     print("Importing users from", settings.IMPORT_FILE_PATH)
     if settings.IMPORT_FILE_FORMAT == "json":
         with open(settings.IMPORT_FILE_PATH) as file:
@@ -13,8 +21,13 @@ def import_users():
             for user in data:
                 save_users(user, data[user][0], str(data[user][1]))
     elif settings.IMPORT_FILE_FORMAT == "csv":
-        with open(settings.IMPORT_FILE_PATH, newline="", encoding="utf-8") as file:
-            data = csv.reader(file, delimiter=";", quotechar="", quoting=csv.QUOTE_NONE)
+        with open(settings.IMPORT_FILE_PATH, newline=settings.CSV_NEWLINE, encoding="utf-8") as file:
+            data = csv.reader(
+                file,
+                delimiter=settings.CSV_DELIMITER,
+                quoting=int(settings.CSV_QUOTING),
+                quotechar=settings.CSV_QUOTECHAR,
+            )
             for user in data:
                 save_users(user[0], user[1], user[2])
     else:

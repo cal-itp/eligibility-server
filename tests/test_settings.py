@@ -25,7 +25,7 @@ def test_hash_settings():
 
 @pytest.mark.settingstest
 def test_hash_settings_env():
-    assert settings.INPUT_HASH_ALGO == "sha512"
+    assert settings.INPUT_HASH_ALGO == "sha256"
     assert settings.IMPORT_FILE_FORMAT == "csv"
     assert settings.IMPORT_FILE_PATH == "data/server.csv"
 

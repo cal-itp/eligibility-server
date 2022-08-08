@@ -4,7 +4,7 @@ USER root
 
 # install container tooling
 RUN apt-get update \
-    && apt-get install -qq --no-install-recommends curl git jq ssh build-essential \
+    && apt-get install -qq --no-install-recommends build-essential \
     && python -m pip install --upgrade pip
 
 # install python tooling

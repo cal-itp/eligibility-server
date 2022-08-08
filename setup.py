@@ -3,6 +3,7 @@ import json
 
 from flask_sqlalchemy import inspect
 from eligibility_server import app, settings
+import logging
 
 
 def import_users():
@@ -14,7 +15,7 @@ def import_users():
     configurations: CSV_DELIMITER, CSV_NEWLINE, CSV_QUOTING, CSV_QUOTECHAR
     """
 
-    print("Importing users from", settings.IMPORT_FILE_PATH)
+    logging.info(f"Importing users from {settings.IMPORT_FILE_PATH}")
     if settings.IMPORT_FILE_FORMAT == "json":
         with open(settings.IMPORT_FILE_PATH) as file:
             data = json.load(file)["users"]
@@ -31,9 +32,9 @@ def import_users():
             for user in data:
                 save_users(user[0], user[1], user[2])
     else:
-        print(f"File format {settings.IMPORT_FILE_FORMAT} is not supported.")
+        logging.warning(f"File format {settings.IMPORT_FILE_FORMAT} is not supported.")
 
-    print(app.User.query.count(), "users added.")
+    logging.info(f"{app.User.query.count()} users added.")
 
 
 def save_users(user_id: str, key: str, types: str):
@@ -54,13 +55,13 @@ if __name__ == "__main__":
     inspector = inspect(app.db.engine)
 
     if inspector.get_table_names():
-        print("Tables already exist.")
+        logging.info("Tables already exist.")
         if app.User.query.count() == 0:
             import_users()
         else:
-            print("User table already has data.")
+            logging.info("User table already has data.")
     else:
-        print("Creating table...")
+        logging.info("Creating table...")
         app.db.create_all()
-        print("Table created.")
+        logging.info("Table created.")
         import_users()

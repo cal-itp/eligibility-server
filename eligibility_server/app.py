@@ -31,9 +31,7 @@ dictConfig(
 )
 
 app = Flask(__name__)
-app.name = settings.APP_NAME
-app.config["SQLALCHEMY_DATABASE_URI"] = settings.SQLALCHEMY_DATABASE_URI
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = settings.SQLALCHEMY_TRACK_MODIFICATIONS
+app.config.from_object("eligibility_server.settings")
 
 
 @app.route("/healthcheck")

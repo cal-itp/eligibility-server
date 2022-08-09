@@ -32,7 +32,7 @@ def import_users():
             for user in data:
                 save_users(user[0], user[1], user[2])
     else:
-        logging.warning(f"File format {settings.IMPORT_FILE_FORMAT} is not supported.")
+        logging.warning(f"File format is not supported: {settings.IMPORT_FILE_FORMAT}")
 
     logging.info(f"Users added: {app.User.query.count()}")
 

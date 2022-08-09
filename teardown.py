@@ -2,14 +2,17 @@ from flask_sqlalchemy import inspect
 from eligibility_server import app
 import logging
 
+
+logger = logging.getLogger(__name__)
+
 if __name__ == "__main__":
     inspector = inspect(app.db.engine)
 
     if inspector.get_table_names():
-        logging.info(f"Users to be deleted: {app.User.query.count()}")
+        logger.info(f"Users to be deleted: {app.User.query.count()}")
         app.User.query.delete()
         app.db.session.commit()
         app.db.drop_all()
-        logging.info("Database dropped.")
+        logger.info("Database dropped.")
     else:
-        logging.info("Database does not exist.")
+        logger.info("Database does not exist.")

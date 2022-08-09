@@ -6,6 +6,9 @@ from eligibility_server import app, settings
 import logging
 
 
+logger = logging.getLogger(__name__)
+
+
 def import_users():
     """
     Imports user data to be added to database and saves user to database
@@ -15,7 +18,7 @@ def import_users():
     configurations: CSV_DELIMITER, CSV_NEWLINE, CSV_QUOTING, CSV_QUOTECHAR
     """
 
-    logging.info(f"Importing users from {settings.IMPORT_FILE_PATH}")
+    logger.info(f"Importing users from {settings.IMPORT_FILE_PATH}")
     if settings.IMPORT_FILE_FORMAT == "json":
         with open(settings.IMPORT_FILE_PATH) as file:
             data = json.load(file)["users"]
@@ -32,9 +35,9 @@ def import_users():
             for user in data:
                 save_users(user[0], user[1], user[2])
     else:
-        logging.warning(f"File format is not supported: {settings.IMPORT_FILE_FORMAT}")
+        logger.warning(f"File format is not supported: {settings.IMPORT_FILE_FORMAT}")
 
-    logging.info(f"Users added: {app.User.query.count()}")
+    logger.info(f"Users added: {app.User.query.count()}")
 
 
 def save_users(user_id: str, key: str, types: str):
@@ -55,13 +58,13 @@ if __name__ == "__main__":
     inspector = inspect(app.db.engine)
 
     if inspector.get_table_names():
-        logging.info("Tables already exist.")
+        logger.info("Tables already exist.")
         if app.User.query.count() == 0:
             import_users()
         else:
-            logging.info("User table already has data.")
+            logger.info("User table already has data.")
     else:
-        logging.info("Creating table...")
+        logger.info("Creating table...")
         app.db.create_all()
-        logging.info("Table created.")
+        logger.info("Table created.")
         import_users()

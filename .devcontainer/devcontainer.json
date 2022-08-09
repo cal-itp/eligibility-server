@@ -21,6 +21,8 @@
   "extensions": [
       "batisteo.vscode-django",
       "ms-python.python",
-      "ms-python.vscode-pylance"
+      "ms-python.vscode-pylance",
+      "eamodio.gitlens",
+      "mhutchie.git-graph"
   ]
 }

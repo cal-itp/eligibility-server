@@ -2,7 +2,7 @@ import csv
 import json
 
 from flask_sqlalchemy import inspect
-from eligibility_server import app, settings
+from eligibility_server import app
 import logging
 
 
@@ -18,24 +18,25 @@ def import_users():
     configurations: CSV_DELIMITER, CSV_NEWLINE, CSV_QUOTING, CSV_QUOTECHAR
     """
 
-    logger.info(f"Importing users from {settings.IMPORT_FILE_PATH}")
-    if settings.IMPORT_FILE_FORMAT == "json":
-        with open(settings.IMPORT_FILE_PATH) as file:
+    logger.info(f"Importing users from {app.app.config["IMPORT_FILE_PATH"]}")
+    if app.app.config["IMPORT_FILE_FORMAT"] == "json":
+        with open(app.app.config["IMPORT_FILE_PATH"]) as file:
             data = json.load(file)["users"]
             for user in data:
                 save_users(user, data[user][0], str(data[user][1]))
-    elif settings.IMPORT_FILE_FORMAT == "csv":
-        with open(settings.IMPORT_FILE_PATH, newline=settings.CSV_NEWLINE, encoding="utf-8") as file:
+    elif app.app.config["IMPORT_FILE_FORMAT"] == "csv":
+        with open(app.app.config["IMPORT_FILE_PATH"], newline=app.app.config["CSV_NEWLINE"], encoding="utf-8") as file:
             data = csv.reader(
                 file,
-                delimiter=settings.CSV_DELIMITER,
-                quoting=int(settings.CSV_QUOTING),
-                quotechar=settings.CSV_QUOTECHAR,
+                delimiter=app.app.config["CSV_DELIMITER"],
+                quoting=int(app.app.config["CSV_QUOTING"]),
+                quotechar=app.app.config["CSV_QUOTECHAR"],
             )
             for user in data:
                 save_users(user[0], user[1], user[2])
     else:
-        logger.warning(f"File format is not supported: {settings.IMPORT_FILE_FORMAT}")
+        file_format = app.app.config["IMPORT_FILE_FORMAT"]
+        logger.warning(f"File format is not supported: {file_format}")
 
     logger.info(f"Users added: {app.User.query.count()}")
 

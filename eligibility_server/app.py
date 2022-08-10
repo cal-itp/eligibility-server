@@ -7,7 +7,6 @@ from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from logging.config import dictConfig
 
-from . import settings
 from .verify import Verify
 
 dictConfig(
@@ -57,4 +56,4 @@ class User(db.Model):
 
 
 if __name__ == "__main__":
-    app.run(host=settings.HOST, debug=settings.DEBUG_MODE)  # nosec
+    app.run(host=app.config["HOST"], debug=app.config["DEBUG_MODE"])  # nosec

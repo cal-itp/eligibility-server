@@ -3,38 +3,38 @@ Test config settings
 """
 import pytest
 
-from eligibility_server import settings
+from eligibility_server.app import app
 
 
 def test_settings():
-    assert settings.APP_NAME == "eligibility_server.app"
-    assert settings.HOST == "0.0.0.0"  # nosec
-    assert settings.AUTH_HEADER == "X-Server-API-Key"
-    assert settings.AUTH_TOKEN == "server-auth-token"
-    assert settings.TOKEN_HEADER == "Authorization"
-    assert settings.JWE_CEK_ENC == "A256CBC-HS512"
-    assert settings.JWE_ENCRYPTION_ALG == "RSA-OAEP"
-    assert settings.JWS_SIGNING_ALG == "RS256"
-    assert settings.IMPORT_FILE_FORMAT == "json"
-    assert settings.IMPORT_FILE_PATH == "data/server.json"
+    assert app.config["APP_NAME"] == "eligibility_server.app"
+    assert app.config["HOST"] == "0.0.0.0"  # nosec
+    assert app.config["AUTH_HEADER"] == "X-Server-API-Key"
+    assert app.config["AUTH_TOKEN"] == "server-auth-token"
+    assert app.config["TOKEN_HEADER"] == "Authorization"
+    assert app.config["JWE_CEK_ENC"] == "A256CBC-HS512"
+    assert app.config["JWE_ENCRYPTION_ALG"] == "RSA-OAEP"
+    assert app.config["JWS_SIGNING_ALG"] == "RS256"
+    assert app.config["IMPORT_FILE_FORMAT"] == "json"
+    assert app.config["IMPORT_FILE_PATH"] == "data/server.json"
 
 
 def test_hash_settings():
-    assert settings.INPUT_HASH_ALGO == "sha256"
+    assert app.config["INPUT_HASH_ALGO"] == "sha256"
 
 
 @pytest.mark.settingstest
 def test_hash_settings_env():
-    assert settings.INPUT_HASH_ALGO == "sha256"
-    assert settings.IMPORT_FILE_FORMAT == "csv"
-    assert settings.IMPORT_FILE_PATH == "data/server.csv"
+    assert app.config["INPUT_HASH_ALGO"] == "sha256"
+    assert app.config["IMPORT_FILE_FORMAT"] == "csv"
+    assert app.config["IMPORT_FILE_PATH"] == "data/server.csv"
 
 
 def test_debug():
-    if settings.DEBUG_MODE:
+    if app.config["DEBUG_MODE"]:
         assert True
 
 
 @pytest.mark.settingstest
 def test_sub_format_regex_env():
-    assert settings.SUB_FORMAT_REGEX == "test\\"
+    assert app.config["SUB_FORMAT_REGEX"] == "test\\"

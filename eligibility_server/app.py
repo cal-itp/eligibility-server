@@ -31,6 +31,7 @@ dictConfig(
 
 app = Flask(__name__)
 app.config.from_object("eligibility_server.settings")
+app.config.from_envvar("ELIGIBILITY_SERVER_SETTINGS", silent=True)
 
 
 @app.route("/healthcheck")

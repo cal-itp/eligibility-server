@@ -1,0 +1,6 @@
+IMPORT_FILE_PATH = "data/server.csv"
+INPUT_HASH_ALGO = "sha256"
+CSV_DELIMITER = ";"
+CSV_NEWLINE = ""
+CSV_QUOTING = 3
+CSV_QUOTECHAR = ""

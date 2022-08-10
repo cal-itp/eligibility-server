@@ -18,14 +18,18 @@ def import_users():
     configurations: CSV_DELIMITER, CSV_NEWLINE, CSV_QUOTING, CSV_QUOTECHAR
     """
 
-    logger.info(f"Importing users from {app.app.config["IMPORT_FILE_PATH"]}")
-    if app.app.config["IMPORT_FILE_FORMAT"] == "json":
-        with open(app.app.config["IMPORT_FILE_PATH"]) as file:
+    file_path = app.app.config["IMPORT_FILE_PATH"]
+    logger.info(f"Importing users from {file_path}")
+
+    file_format = file_path.split(".")[-1]
+
+    if file_format == "json":
+        with open(file_path) as file:
             data = json.load(file)["users"]
             for user in data:
                 save_users(user, data[user][0], str(data[user][1]))
-    elif app.app.config["IMPORT_FILE_FORMAT"] == "csv":
-        with open(app.app.config["IMPORT_FILE_PATH"], newline=app.app.config["CSV_NEWLINE"], encoding="utf-8") as file:
+    elif file_format == "csv":
+        with open(file_path, newline=app.app.config["CSV_NEWLINE"], encoding="utf-8") as file:
             data = csv.reader(
                 file,
                 delimiter=app.app.config["CSV_DELIMITER"],
@@ -35,7 +39,6 @@ def import_users():
             for user in data:
                 save_users(user[0], user[1], user[2])
     else:
-        file_format = app.app.config["IMPORT_FILE_FORMAT"]
         logger.warning(f"File format is not supported: {file_format}")
 
     logger.info(f"Users added: {app.User.query.count()}")

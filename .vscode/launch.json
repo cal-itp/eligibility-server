@@ -16,7 +16,8 @@
             ],
             "env": {
                 "FLASK_DEBUG": "1",
-            }
+                "ELIGIBILITY_SERVER_SETTINGS": "../config/sample.py"
+            },
         },
     ]
 }

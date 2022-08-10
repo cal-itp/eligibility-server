@@ -22,7 +22,11 @@ cd .devcontainer
 cp .env.sample .env
 ```
 
-The .env file specifies the following values:
+The .env file specifies the following value:
+
+- `ELIGIBILITY_SERVER_SETTINGS`: Path to a [Python configuration file](https://flask.palletsprojects.com/en/2.2.x/config/#configuring-from-python-files) which will override default settings
+
+The settings that can be overriden are:
 
 - `IMPORT_FILE_PATH`*: Must be either CSV or JSON.
 - `INPUT_HASH_ALGO`: Must be one of the types available in the [`hashlib` library's `algorithms_available` function](https://docs.python.org/3/library/hashlib.html#hashlib.algorithms_available).

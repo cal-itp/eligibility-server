@@ -6,7 +6,7 @@ from eligibility_server import app, settings
 import logging
 
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("setup")
 
 
 def import_users():

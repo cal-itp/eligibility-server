@@ -3,7 +3,7 @@ from eligibility_server import app
 import logging
 
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("teardown")
 
 if __name__ == "__main__":
     inspector = inspect(app.db.engine)

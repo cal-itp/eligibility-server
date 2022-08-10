@@ -9,14 +9,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - uses: actions/setup-python@v4
         with:
           python-version-file: .github/workflows/.python-version
+
       - name: Install package and dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r tests/requirements.txt
           pip install -r requirements.txt
+
+      - name: Load environment variables
+        uses: cardinalby/export-env-action@v1
+        with:
+          envFile: .devcontainer/.env.sample
+
       - name: Test with pytest
         run: |
           python setup.py

@@ -29,7 +29,6 @@ def test_database_init_default():
     assert database._hash is False
 
 
-@pytest.mark.databasetest
 @pytest.mark.parametrize("db, key, user, types, expected", test_data)
 def test_database_check_user(db, key, user, types, expected):
     assert db.check_user(key, user, types) == expected

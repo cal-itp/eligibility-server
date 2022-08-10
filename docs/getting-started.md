@@ -92,11 +92,6 @@ Unit tests are implemented with [`pytest`](https://docs.pytest.org/en/6.2.x/) an
 
 The test suite runs against every pull request via a GitHub Action.
 
-There are two different .env files to test against, to ensure the tests cover different `INPUT_HASH_ALGO` and `INPUT_FILE_PATH` types. To run tests on both files:
-
-1. From the main directory, run `coverage run -m pytest -m databasetest; coverage run -m pytest -m settingstest`
-2. To see the test coverage report, run `coverage report -m`
-
 ### Destroy and recreate database
 
 In testing the database, you may need to teardown the database and restart a database from scratch.

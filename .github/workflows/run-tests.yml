@@ -19,14 +19,6 @@ jobs:
           pip install -r requirements.txt
       - name: Test with pytest
         run: |
-          set -a
-          source tests/.env.settingstest
           python setup.py
-          coverage run -m pytest -m settingstest
-          coverage run -m pytest -m databasetest
-          python teardown.py
-          source tests/.env.tests
-          python setup.py
-          coverage run -m pytest -m "not settingstest"
+          coverage run -m pytest
           coverage report -m
-          set +a

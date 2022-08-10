@@ -13,8 +13,7 @@ services:
     build:
       context: ..
       dockerfile: .devcontainer/Dockerfile
-    command: sleep infinity
-    entrypoint: []
+    entrypoint: sleep infinity
     env_file: .env
     image: eligibility_server:dev
     ports:

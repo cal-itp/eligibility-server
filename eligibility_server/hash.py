@@ -3,6 +3,10 @@ Hashing tool.
 """
 
 import hashlib
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 class Hash:
@@ -15,6 +19,7 @@ class Hash:
 
         if input_hash_algo in algorithms_available:
             self._input_hash_algo = input_hash_algo
+            logger.info(f"Input hash algorithm set to: {input_hash_algo}")
         else:
             raise ValueError("Invalid input_hash_algo, must be one of: " + (" ").join(algorithms_available))
 

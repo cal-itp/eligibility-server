@@ -13,7 +13,10 @@ from jwcrypto import jwe, jwk, jws, jwt
 from . import settings
 from .database import Database
 from .hash import Hash
+import logging
 
+
+logger = logging.getLogger(__name__)
 
 with open("./keys/server.key", "rb") as pemfile:
     server_private_key = jwk.JWK.from_pem(pemfile.read())
@@ -50,6 +53,7 @@ class Verify(Resource):
         elif len(token) == 1:
             return token[0]
         else:
+            logger.warning("Invalid token format")
             raise ValueError("Invalid token format")
 
     def _get_token_payload(self, token):
@@ -66,6 +70,7 @@ class Verify(Resource):
             payload = str(signed_token.payload, "utf-8")
             return json.loads(payload)
         except Exception:
+            logger.warning("Get token payload failed")
             return False
 
     def _make_token(self, payload):
@@ -101,6 +106,7 @@ class Verify(Resource):
             # make a response token with appropriate response code
             return self._make_token(resp_payload), code
         except Exception as ex:
+            logger.warning(f"Internal server error: {ex}")
             return str(ex), 500
 
     def get(self):
@@ -114,6 +120,7 @@ class Verify(Resource):
         try:
             headers = self._check_headers()
         except Exception:
+            logger.warning("Unauthorized")
             return "Unauthorized", 403
 
         # parse inner payload from request token
@@ -121,9 +128,11 @@ class Verify(Resource):
             token = self._get_token(headers)
             token_payload = self._get_token_payload(token)
         except Exception as ex:
+            logger.warning(f"Bad request: {ex}")
             return str(ex), 400
 
         if token_payload:
             return self._get_response(token_payload)
         else:
+            logger.warning("Invalid token format")
             return "Invalid token format", 400

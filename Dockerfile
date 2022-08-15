@@ -9,6 +9,10 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 RUN useradd --create-home --shell /bin/bash $USER && \
     chown -R $USER /home/$USER
 
+RUN apt-get update \
+    && apt-get install -qq --no-install-recommends build-essential \
+    && python -m pip install --upgrade pip
+
 # enter app directory
 WORKDIR /home/$USER/app
 

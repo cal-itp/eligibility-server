@@ -1,14 +1,8 @@
 FROM eligibility_server:latest
 
-USER root
-
-# install container tooling
-RUN apt-get update \
-    && apt-get install -qq --no-install-recommends curl git jq ssh build-essential \
-    && python -m pip install --upgrade pip
-
 # install python tooling
-RUN pip install --no-cache-dir flake8 pre-commit
+COPY .devcontainer/requirements.txt .devcontainer/requirements.txt
+RUN pip install --no-cache-dir -r .devcontainer/requirements.txt
 
 # install docs tooling
 COPY docs/requirements.txt docs/requirements.txt

@@ -28,6 +28,10 @@ The .env file specifies the following value:
 
 The settings that can be overriden are:
 
+- `APP_NAME`: The name set on the Flask app
+- `DEBUG_MODE`: Value passed as a keyword argument for `debug` in `app.run`
+- `HOST`: Value passed as a keyword argument for `host` in `app.run`
+- `LOG_LEVEL`: The log level used in the application's [logging configuration](https://flask.palletsprojects.com/en/2.2.x/logging/). If `DEBUG_MODE` is set to `True`, this will not have any effect.
 - `IMPORT_FILE_PATH`*: Must be either CSV or JSON.
 - `INPUT_HASH_ALGO`: Must be one of the types available in the [`hashlib` library's `algorithms_available` function](https://docs.python.org/3/library/hashlib.html#hashlib.algorithms_available).
 

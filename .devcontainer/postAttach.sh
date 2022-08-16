@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -eu
+set -eux
 
 # initialize hook environments
 pre-commit install --install-hooks --overwrite

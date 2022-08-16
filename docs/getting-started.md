@@ -22,7 +22,11 @@ cd .devcontainer
 cp .env.sample .env
 ```
 
-The .env file specifies the following values:
+The .env file specifies the following value:
+
+- `ELIGIBILITY_SERVER_SETTINGS`: Path to a [Python configuration file](https://flask.palletsprojects.com/en/2.2.x/config/#configuring-from-python-files) which will override default settings
+
+The settings that can be overriden are:
 
 - `IMPORT_FILE_PATH`*: Must be either CSV or JSON.
 - `INPUT_HASH_ALGO`: Must be one of the types available in the [`hashlib` library's `algorithms_available` function](https://docs.python.org/3/library/hashlib.html#hashlib.algorithms_available).
@@ -91,11 +95,6 @@ Starting the Dev Container will run `bin/start.sh`, which runs `setup.py` and st
 Unit tests are implemented with [`pytest`](https://docs.pytest.org/en/6.2.x/) and can be found in the [`tests/`](https://github.com/cal-itp/eligibility-server/tree/main/tests) directory in the repository. `pytest` is installed and available to run directly in the devcontainer.
 
 The test suite runs against every pull request via a GitHub Action.
-
-There are two different .env files to test against, to ensure the tests cover different `INPUT_HASH_ALGO` and `INPUT_FILE_PATH` types. To run tests on both files:
-
-1. From the main directory, run `coverage run -m pytest -m databasetest; coverage run -m pytest -m settingstest`
-2. To see the test coverage report, run `coverage report -m`
 
 ### Destroy and recreate database
 

@@ -7,7 +7,6 @@ from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from logging.config import dictConfig
 
-from . import settings
 from .verify import Verify
 
 dictConfig(
@@ -31,9 +30,8 @@ dictConfig(
 )
 
 app = Flask(__name__)
-app.name = settings.APP_NAME
-app.config["SQLALCHEMY_DATABASE_URI"] = settings.SQLALCHEMY_DATABASE_URI
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = settings.SQLALCHEMY_TRACK_MODIFICATIONS
+app.config.from_object("eligibility_server.settings")
+app.config.from_envvar("ELIGIBILITY_SERVER_SETTINGS", silent=True)
 
 
 @app.route("/healthcheck")
@@ -59,4 +57,4 @@ class User(db.Model):
 
 
 if __name__ == "__main__":
-    app.run(host=settings.HOST, debug=settings.DEBUG_MODE)  # nosec
+    app.run(host=app.config["HOST"], debug=app.config["DEBUG_MODE"])  # nosec

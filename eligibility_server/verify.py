@@ -10,7 +10,7 @@ import time
 from flask_restful import Resource, reqparse
 from jwcrypto import jwe, jwk, jws, jwt
 
-from . import settings
+from . import app
 from .database import Database
 from .hash import Hash
 import logging
@@ -27,8 +27,8 @@ with open("./keys/client.pub", "rb") as pemfile:
 class Verify(Resource):
     def __init__(self):
         """Initialize Verify class with a Database and optionally a Hash"""
-        if settings.INPUT_HASH_ALGO != "":
-            hash = Hash(settings.INPUT_HASH_ALGO)
+        if app.app.config["INPUT_HASH_ALGO"] != "":
+            hash = Hash(app.app.config["INPUT_HASH_ALGO"])
             self._db = Database(hash=hash)
         else:
             self._db = Database()
@@ -36,18 +36,18 @@ class Verify(Resource):
     def _check_headers(self):
         """Ensure correct request headers."""
         req_parser = reqparse.RequestParser()
-        req_parser.add_argument(settings.TOKEN_HEADER, location="headers", required=True)
-        req_parser.add_argument(settings.AUTH_HEADER, location="headers", required=True)
+        req_parser.add_argument(app.app.config["TOKEN_HEADER"], location="headers", required=True)
+        req_parser.add_argument(app.app.config["AUTH_HEADER"], location="headers", required=True)
         headers = req_parser.parse_args()
         # verify auth_header's value
-        if headers.get(settings.AUTH_HEADER) == settings.AUTH_TOKEN:
+        if headers.get(app.app.config["AUTH_HEADER"]) == app.app.config["AUTH_TOKEN"]:
             return headers
         else:
             return False
 
     def _get_token(self, headers):
         """Get the token from request headers"""
-        token = headers.get(settings.TOKEN_HEADER, "").split(" ")
+        token = headers.get(app.app.config["TOKEN_HEADER"], "").split(" ")
         if len(token) == 2:
             return token[1]
         elif len(token) == 1:
@@ -60,12 +60,12 @@ class Verify(Resource):
         """Decode a token (JWE(JWS))."""
         try:
             # decrypt
-            decrypted_token = jwe.JWE(algs=[settings.JWE_ENCRYPTION_ALG, settings.JWE_CEK_ENC])
+            decrypted_token = jwe.JWE(algs=[app.app.config["JWE_ENCRYPTION_ALG"], app.app.config["JWE_CEK_ENC"]])
             decrypted_token.deserialize(token, key=server_private_key)
             decrypted_payload = str(decrypted_token.payload, "utf-8")
             # verify signature
             signed_token = jws.JWS()
-            signed_token.deserialize(decrypted_payload, key=client_public_key, alg=settings.JWS_SIGNING_ALG)
+            signed_token.deserialize(decrypted_payload, key=client_public_key, alg=app.app.config["JWS_SIGNING_ALG"])
             # return final payload
             payload = str(signed_token.payload, "utf-8")
             return json.loads(payload)
@@ -76,12 +76,12 @@ class Verify(Resource):
     def _make_token(self, payload):
         """Wrap payload in a signed and encrypted JWT for response."""
         # sign the payload with server's private key
-        header = {"typ": "JWS", "alg": settings.JWS_SIGNING_ALG}
+        header = {"typ": "JWS", "alg": app.app.config["JWS_SIGNING_ALG"]}
         signed_token = jwt.JWT(header=header, claims=payload)
         signed_token.make_signed_token(server_private_key)
         signed_payload = signed_token.serialize()
         # encrypt the signed payload with client's public key
-        header = {"typ": "JWE", "alg": settings.JWE_ENCRYPTION_ALG, "enc": settings.JWE_CEK_ENC}
+        header = {"typ": "JWE", "alg": app.app.config["JWE_ENCRYPTION_ALG"], "enc": app.app.config["JWE_CEK_ENC"]}
         encrypted_token = jwt.JWT(header=header, claims=signed_payload)
         encrypted_token.make_encrypted_token(client_public_key)
         return encrypted_token.serialize()
@@ -92,11 +92,11 @@ class Verify(Resource):
             sub, name, eligibility = token_payload["sub"], token_payload["name"], list(token_payload["eligibility"])
             resp_payload = dict(
                 jti=token_payload["jti"],
-                iss=settings.APP_NAME,
+                iss=app.app.config["APP_NAME"],
                 iat=int(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).timestamp()),
             )
             # sub format check
-            if re.match(settings.SUB_FORMAT_REGEX, sub):
+            if re.match(app.app.config["SUB_FORMAT_REGEX"], sub):
                 # eligibility check against db
                 resp_payload["eligibility"] = self._db.check_user(sub, name, eligibility)
                 code = 200

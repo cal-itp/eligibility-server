@@ -1,7 +1,7 @@
 // For format details, see https://aka.ms/vscode-remote/devcontainer.json
 {
   "name": "cal-itp/eligibility-server",
-  "dockerComposeFile": ["compose.yml"],
+  "dockerComposeFile": ["../compose.yml"],
   "service": "dev",
   "runServices": ["dev", "docs"],
   "workspaceFolder": "/home/calitp/app",

@@ -1,17 +1,19 @@
+name: eligibility-server
 version: "3.8"
 
 services:
   server:
-    build: ..
+    build: .
     env_file: .env
     image: eligibility_server:latest
     ports:
       - "5000"
     volumes:
-      - ../:/home/calitp/app/
+      - .:/home/calitp/app/
+
   dev:
     build:
-      context: ..
+      context: .
       dockerfile: .devcontainer/Dockerfile
     entrypoint: sleep infinity
     env_file: .env
@@ -19,7 +21,8 @@ services:
     ports:
       - "5000"
     volumes:
-      - ../:/home/calitp/app/
+      - .:/home/calitp/app/
+
   docs:
     image: eligibility_server:dev
     entrypoint: mkdocs
@@ -27,4 +30,4 @@ services:
     ports:
       - "8000"
     volumes:
-      - ../:/home/calitp/app:cached
+      - .:/home/calitp/app

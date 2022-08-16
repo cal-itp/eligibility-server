@@ -1,0 +1,5 @@
+.git/
+.github/
+.vscode/
+.flake8
+.*ignore

@@ -45,6 +45,7 @@ def import_users():
         logger.warning(f"File format is not supported: {file_format}")
 
     logger.info(f"Users added: {app.User.query.count()}")
+    logger.info(f"Eligibility types added: {app.Eligibility.query.count()}")
 
 
 def save_users(user_id: str, user_name: str, types):

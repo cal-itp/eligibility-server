@@ -12,6 +12,10 @@ if __name__ == "__main__":
         try:
             logger.info(f"Users to be deleted: {app.User.query.count()}")
             app.User.query.delete()
+
+            logger.info(f"Eligibility types to be deleted: {app.Eligibility.query.count()}")
+            app.Eligibility.query.delete()
+
             app.db.session.commit()
         except Exception as e:
             logger.warning("Failed to query for Users", e)

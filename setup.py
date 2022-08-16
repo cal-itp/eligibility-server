@@ -4,7 +4,6 @@ import json
 from flask_sqlalchemy import inspect
 from eligibility_server import app
 import logging
-import ast  # needed while sample CSV contains Python-style list
 
 
 logger = logging.getLogger("setup")
@@ -31,15 +30,16 @@ def import_users():
                 save_users(user, data[user][0], data[user][1])
     elif file_format == "csv":
         with open(file_path, newline=app.app.config["CSV_NEWLINE"], encoding="utf-8") as file:
+            CSV_QUOTECHAR = app.app.config["CSV_QUOTECHAR"]
             data = csv.reader(
                 file,
                 delimiter=app.app.config["CSV_DELIMITER"],
                 quoting=int(app.app.config["CSV_QUOTING"]),
-                quotechar=app.app.config["CSV_QUOTECHAR"],
+                quotechar=CSV_QUOTECHAR,
             )
             for user in data:
-                # todo: update sample CSV to use expected list format and change this parsing
-                types = ast.literal_eval(user[2])
+                # lists are expected to be a comma-separated value and quoted if the CSV delimiter is a comma
+                types = [type.replace(CSV_QUOTECHAR, "") for type in user[2].split(",") if type]
                 save_users(user[0], user[1], types)
     else:
         logger.warning(f"File format is not supported: {file_format}")

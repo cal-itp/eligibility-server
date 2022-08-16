@@ -64,7 +64,7 @@ class Eligibility(db.Model):
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.String, unique=True, nullable=False)
-    key = db.Column(db.String, unique=True, nullable=False)
+    user_name = db.Column(db.String, unique=True, nullable=False)
     types = db.relationship("Eligibility", secondary=user_eligibility, lazy="subquery", backref=db.backref("users", lazy=True))
 
     def __repr__(self):

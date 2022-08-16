@@ -47,7 +47,7 @@ def import_users():
     logger.info(f"Users added: {app.User.query.count()}")
 
 
-def save_users(user_id: str, key: str, types):
+def save_users(user_id: str, user_name: str, types):
     """
     Add users to the database User table
 
@@ -56,7 +56,7 @@ def save_users(user_id: str, key: str, types):
     @param types - Types of eligibilities, in a stringified list
     """
 
-    user = app.User(user_id=user_id, key=key)
+    user = app.User(user_id=user_id, user_name=user_name)
     eligibility_types = [app.Eligibility.query.filter_by(name=type).first() or app.Eligibility(name=type) for type in types]
     user.types.extend(eligibility_types)
 

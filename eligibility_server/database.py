@@ -19,10 +19,10 @@ class Database:
         all_users = {}
         for user in users:
             types = [type.name for type in user.types]
-            all_users[user.user_id] = [user.key, types]
+            all_users[user.user_id] = [user.user_name, types]
         self._users = all_users
 
-    def check_user(self, key: str, user: str, types: str) -> list:
+    def check_user(self, user_id: str, user_name: str, types: str) -> list:
         """
         Check if the data matches a record in the database
 
@@ -35,15 +35,15 @@ class Database:
         """
 
         if self._hash:
-            key = self._hash.hash_input(key)
-            user = self._hash.hash_input(user)
+            user_id = self._hash.hash_input(user_id)
+            user_name = self._hash.hash_input(user_name)
 
         if (
             len(types) < 1
-            or key not in self._users
-            or self._users[key][0] != user
-            or len(set(self._users[key][1]) & set(types)) < 1
+            or user_id not in self._users
+            or self._users[user_id][0] != user_name
+            or len(set(self._users[user_id][1]) & set(types)) < 1
         ):
             return []
 
-        return list(set(self._users[key][1]) & set(types))
+        return list(set(self._users[user_id][1]) & set(types))

@@ -4,6 +4,7 @@ import json
 from flask_sqlalchemy import inspect
 from eligibility_server import app
 import logging
+import ast  # needed while sample CSV contains Python-style list
 
 
 logger = logging.getLogger("setup")
@@ -27,7 +28,7 @@ def import_users():
         with open(file_path) as file:
             data = json.load(file)["users"]
             for user in data:
-                save_users(user, data[user][0], str(data[user][1]))
+                save_users(user, data[user][0], data[user][1])
     elif file_format == "csv":
         with open(file_path, newline=app.app.config["CSV_NEWLINE"], encoding="utf-8") as file:
             data = csv.reader(
@@ -37,14 +38,16 @@ def import_users():
                 quotechar=app.app.config["CSV_QUOTECHAR"],
             )
             for user in data:
-                save_users(user[0], user[1], user[2])
+                # todo: update sample CSV to use expected list format and change this parsing
+                types = ast.literal_eval(user[2])
+                save_users(user[0], user[1], types)
     else:
         logger.warning(f"File format is not supported: {file_format}")
 
     logger.info(f"Users added: {app.User.query.count()}")
 
 
-def save_users(user_id: str, key: str, types: str):
+def save_users(user_id: str, key: str, types):
     """
     Add users to the database User table
 
@@ -53,8 +56,13 @@ def save_users(user_id: str, key: str, types: str):
     @param types - Types of eligibilities, in a stringified list
     """
 
-    item = app.User(user_id=user_id, key=key, types=types)
-    app.db.session.add(item)
+    user = app.User(user_id=user_id, key=key)
+    eligibility_types = [app.Eligibility.query.filter_by(name=type).first() or app.Eligibility(name=type) for type in types]
+    user.types.extend(eligibility_types)
+
+    app.db.session.add(user)
+    app.db.session.add_all(eligibility_types)
+
     app.db.session.commit()
 
 

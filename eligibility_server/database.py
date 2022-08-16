@@ -2,8 +2,6 @@
 Simple hard-coded server database.
 """
 
-import ast
-
 from . import app
 
 
@@ -20,7 +18,7 @@ class Database:
         users = app.User.query.all()
         all_users = {}
         for user in users:
-            types = ast.literal_eval(user.types)
+            types = [type.name for type in user.types]
             all_users[user.user_id] = [user.key, types]
         self._users = all_users
 

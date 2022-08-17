@@ -34,6 +34,9 @@ class Verify(Resource):
         else:
             self._db = Database()
 
+    def _resource_unauthorized(e):
+        return jsonify(error=str(e)), 403
+
     def _check_headers(self):
         """Ensure correct request headers."""
         req_parser = reqparse.RequestParser()
@@ -109,9 +112,6 @@ class Verify(Resource):
         except Exception as ex:
             logger.warning(f"Internal server error: {ex}")
             return str(ex), 500
-
-    def resource_unauthorized(e):
-        return jsonify(error=str(e)), 403
 
     def get(self):
         """Respond to a verification request."""

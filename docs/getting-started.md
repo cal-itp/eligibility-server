@@ -84,7 +84,8 @@ Once you clone the repository locally, open it within VS Code, which will prompt
  2. Start the `eligibility-server` Flask app and database with `F5`
  3. Now you can run tests from the container.
 
-Starting the Dev Container will run `bin/start.sh`, which runs `setup.py` and starts the Flask app. The `setup.py` script creates a table, imports and saves users from a JSON or CSV file specified in the .env file from the `IMPORT_FILE_PATH` key. CSV files will require
+Starting the Dev Container will run `bin/init.sh`, which runs `setup.py` and starts the Flask app. The `setup.py` script creates the database and imports and saves users
+based on the configured settings.
 
 ## Run tests
 

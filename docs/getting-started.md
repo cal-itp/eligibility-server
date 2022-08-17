@@ -18,7 +18,6 @@ cd eligibility-server
 Use the sample as the template.
 
 ```bash
-cd .devcontainer
 cp .env.sample .env
 ```
 
@@ -50,7 +49,6 @@ Asterisk * indicates required
 ### Build image using Docker Compose
 
 ```bash
-cd .devcontainer
 docker compose build --no-cache server
 ```
 

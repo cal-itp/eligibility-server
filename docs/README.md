@@ -23,7 +23,6 @@ Running the application locally is possible with [Docker and Docker Compose](htt
 ### Build the Docker container for local development
 
 ```bash
-cd .devcontainer
 cp .env.sample .env
 docker compose build server
 ```

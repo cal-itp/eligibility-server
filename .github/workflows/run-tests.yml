@@ -2,7 +2,7 @@ name: Run pytests
 
 on:
   pull_request:
-    branches: [ "*" ]
+    branches: ["*"]
 
 jobs:
   tests:
@@ -23,7 +23,7 @@ jobs:
       - name: Load environment variables
         uses: cardinalby/export-env-action@v1
         with:
-          envFile: .devcontainer/.env.sample
+          envFile: .env.sample
 
       - name: Test with pytest
         run: |

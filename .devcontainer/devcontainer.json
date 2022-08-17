@@ -1,28 +1,30 @@
 // For format details, see https://aka.ms/vscode-remote/devcontainer.json
 {
   "name": "cal-itp/eligibility-server",
-  "dockerComposeFile": ["compose.yml"],
+  "dockerComposeFile": ["../compose.yml"],
   "service": "dev",
   "runServices": ["dev", "docs"],
   "workspaceFolder": "/home/calitp/app",
-  "postAttachCommand": ["/bin/bash", ".devcontainer/pre-commit.sh"],
+  "postStartCommand": ["/bin/bash", "bin/init.sh"],
+  "postAttachCommand": ["/bin/bash", ".devcontainer/postAttach.sh"],
 
   // Set *default* container specific settings.json values on container create.
   "settings": {
-      "terminal.integrated.defaultProfile.linux": "bash",
-      "terminal.integrated.profiles.linux": {
-          "bash": {
-              "path": "/bin/bash"
-          }
+    "terminal.integrated.defaultProfile.linux": "bash",
+    "terminal.integrated.profiles.linux": {
+      "bash": {
+        "path": "/bin/bash"
       }
+    }
   },
 
   // Add the IDs of extensions you want installed when the container is created.
   "extensions": [
-      "batisteo.vscode-django",
-      "ms-python.python",
-      "ms-python.vscode-pylance",
-      "eamodio.gitlens",
-      "mhutchie.git-graph"
+    "bpruitt-goddard.mermaid-markdown-syntax-highlighting",
+    "eamodio.gitlens",
+    "esbenp.prettier-vscode",
+    "mhutchie.git-graph",
+    "ms-python.python",
+    "ms-python.vscode-pylance"
   ]
 }

@@ -37,6 +37,9 @@ class Verify(Resource):
     def _resource_unauthorized(e):
         return jsonify(error=str(e)), 403
 
+    def _resource_error(e):
+        return jsonify(error=str(e)), 500
+
     def _check_headers(self):
         """Ensure correct request headers."""
         req_parser = reqparse.RequestParser()
@@ -111,7 +114,8 @@ class Verify(Resource):
             return self._make_token(resp_payload), code
         except Exception as ex:
             logger.warning(f"Internal server error: {ex}")
-            return str(ex), 500
+            abort(500, description=f"Internal server error: {ex}")
+            return jsonify()
 
     def get(self):
         """Respond to a verification request."""

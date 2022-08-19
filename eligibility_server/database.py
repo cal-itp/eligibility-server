@@ -44,12 +44,19 @@ class Database:
             key = self._hash.hash_input(key)
             user = self._hash.hash_input(user)
 
-        if (
-            len(types) < 1
-            or key not in self._users
-            or self._users[key][0] != user
-            or len(set(self._users[key][1]) & set(types)) < 1
-        ):
+        if len(types) < 1:
+            app.app.logger.debug("List of types to check was empty.")
+            return []
+        elif key not in self._users:
+            app.app.logger.debug(f"Database does not contain requested sub: {key}")
+            return []
+        elif self._users[key][0] != user:
+            app.app.logger.debug(f"Database contains user with matching sub, but does not match name: {user}")
+            return []
+        elif len(set(self._users[key][1]) & set(types)) < 1:
+            app.app.logger.debug(
+                f"Database contains user with matching sub and name, but user's types do not contain: {types}"
+            )
             return []
 
         return list(set(self._users[key][1]) & set(types))

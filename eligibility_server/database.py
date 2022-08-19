@@ -56,4 +56,5 @@ class Database:
             logger.debug(f"Database contains user with matching sub and name, but user's types do not contain: {types}")
             return []
         else:
-            return list(set(existing_user_types) & set(types))
+            matching_types = set(existing_user_types) & set(types)
+            return list(matching_types)

@@ -5,6 +5,9 @@ Simple hard-coded server database.
 import ast
 
 from . import app
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class Database:
@@ -17,9 +20,9 @@ class Database:
 
         self._hash = hash
         if hash:
-            app.app.logger.debug(f"Database initialized with hash: {hash}")
+            logger.debug(f"Database initialized with hash: {hash}")
         else:
-            app.app.logger.debug("Database initialized without hashing")
+            logger.debug("Database initialized without hashing")
 
     def check_user(self, key: str, user: str, types: str) -> list:
         """
@@ -44,15 +47,13 @@ class Database:
             existing_user_types = None
 
         if len(types) < 1:
-            app.app.logger.debug("List of types to check was empty.")
+            logger.debug("List of types to check was empty.")
             return []
         elif existing_user is None:
-            app.app.logger.debug(f"Database does not contain requested user with sub, name: {key, user}")
+            logger.debug(f"Database does not contain requested user with sub, name: {key, user}")
             return []
         elif len(set(existing_user_types) & set(types)) < 1:
-            app.app.logger.debug(
-                f"Database contains user with matching sub and name, but user's types do not contain: {types}"
-            )
+            logger.debug(f"Database contains user with matching sub and name, but user's types do not contain: {types}")
             return []
         else:
             return list(set(existing_user_types) & set(types))

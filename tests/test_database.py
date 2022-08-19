@@ -25,7 +25,6 @@ test_data = [
 def test_database_init_default():
     database = Database()
 
-    assert database._users
     assert database._hash is False
 
 

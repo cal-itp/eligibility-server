@@ -21,13 +21,6 @@ class Database:
         else:
             app.app.logger.debug("Database initialized without hashing")
 
-        users = app.User.query.all()
-        all_users = {}
-        for user in users:
-            types = ast.literal_eval(user.types)
-            all_users[user.user_id] = [user.key, types]
-        self._users = all_users
-
     def check_user(self, key: str, user: str, types: str) -> list:
         """
         Check if the data matches a record in the database
@@ -45,6 +38,10 @@ class Database:
             user = self._hash.hash_input(user)
 
         existing_user = app.User.query.filter_by(user_id=key, key=user).first()
+        if existing_user:
+            existing_user_types = ast.literal_eval(existing_user.types)
+        else:
+            existing_user_types = None
 
         if len(types) < 1:
             app.app.logger.debug("List of types to check was empty.")
@@ -52,10 +49,10 @@ class Database:
         elif existing_user is None:
             app.app.logger.debug(f"Database does not contain requested user with sub, name: {key, user}")
             return []
-        elif len(set(self._users[key][1]) & set(types)) < 1:
+        elif len(set(existing_user_types) & set(types)) < 1:
             app.app.logger.debug(
                 f"Database contains user with matching sub and name, but user's types do not contain: {types}"
             )
             return []
-
-        return list(set(self._users[key][1]) & set(types))
+        else:
+            return list(set(existing_user_types) & set(types))

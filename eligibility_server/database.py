@@ -16,6 +16,10 @@ class Database:
         """
 
         self._hash = hash
+        if hash:
+            app.app.logger.debug(f"Database initialized with hash: {hash}")
+        else:
+            app.app.logger.debug("Database initialized without hashing")
 
         users = app.User.query.all()
         all_users = {}

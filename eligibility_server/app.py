@@ -48,12 +48,12 @@ db = SQLAlchemy(app)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.String, unique=True, nullable=False)
-    key = db.Column(db.String, unique=True, nullable=False)
+    sub = db.Column(db.String, unique=True, nullable=False)
+    name = db.Column(db.String, unique=True, nullable=False)
     types = db.Column(db.String, unique=False, nullable=False)
 
     def __repr__(self):
-        return "<User %r>" % self.user_id
+        return "<User %r>" % self.sub
 
 
 if __name__ == "__main__":

@@ -40,7 +40,7 @@ class Database:
             key = self._hash.hash_input(key)
             user = self._hash.hash_input(user)
 
-        existing_user = app.User.query.filter_by(user_id=key, key=user).first()
+        existing_user = app.User.query.filter_by(sub=key, name=user).first()
         if existing_user:
             existing_user_types = ast.literal_eval(existing_user.types)
         else:

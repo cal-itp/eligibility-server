@@ -44,7 +44,9 @@ class Database:
         if existing_user:
             existing_user_types = ast.literal_eval(existing_user.types)
         else:
-            existing_user_types = None
+            existing_user_types = []
+
+        matching_types = set(existing_user_types) & set(types)
 
         if len(types) < 1:
             logger.debug("List of types to check was empty.")
@@ -52,9 +54,8 @@ class Database:
         elif existing_user is None:
             logger.debug("Database does not contain requested user.")
             return []
-        elif len(set(existing_user_types) & set(types)) < 1:
-            logger.debug(f"Database contains user with matching sub and name, but user's types do not contain: {types}")
+        elif len(matching_types) < 1:
+            logger.debug(f"User's types do not contain any of the requested types: {types}")
             return []
         else:
-            matching_types = set(existing_user_types) & set(types)
             return list(matching_types)

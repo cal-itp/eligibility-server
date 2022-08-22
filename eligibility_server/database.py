@@ -24,23 +24,23 @@ class Database:
         else:
             logger.debug("Database initialized without hashing")
 
-    def check_user(self, key: str, user: str, types: str) -> list:
+    def check_user(self, sub: str, name: str, types: str) -> list:
         """
         Check if the data matches a record in the database
 
         @param self: self
-        @param key: key to check for
-        @param user: name of user to check for
+        @param sub: sub to check for
+        @param name: name of user to check for
         @param types: type of eligibility
 
         @return list of strings of types user is eligible for, or empty list
         """
 
         if self._hash:
-            key = self._hash.hash_input(key)
-            user = self._hash.hash_input(user)
+            sub = self._hash.hash_input(sub)
+            name = self._hash.hash_input(name)
 
-        existing_user = app.User.query.filter_by(sub=key, name=user).first()
+        existing_user = app.User.query.filter_by(sub=sub, name=name).first()
         if existing_user:
             existing_user_types = ast.literal_eval(existing_user.types)
         else:
@@ -50,7 +50,7 @@ class Database:
             logger.debug("List of types to check was empty.")
             return []
         elif existing_user is None:
-            logger.debug(f"Database does not contain requested user with sub, name: {key, user}")
+            logger.debug(f"Database does not contain requested user with sub, name: {sub, name}")
             return []
         elif len(set(existing_user_types) & set(types)) < 1:
             logger.debug(f"Database contains user with matching sub and name, but user's types do not contain: {types}")

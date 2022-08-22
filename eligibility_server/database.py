@@ -50,7 +50,7 @@ class Database:
             logger.debug("List of types to check was empty.")
             return []
         elif existing_user is None:
-            logger.debug(f"Database does not contain requested user with sub, name: {sub, name}")
+            logger.debug("Database does not contain requested user.")
             return []
         elif len(set(existing_user_types) & set(types)) < 1:
             logger.debug(f"Database contains user with matching sub and name, but user's types do not contain: {types}")

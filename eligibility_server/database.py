@@ -36,6 +36,10 @@ class Database:
         @return list of strings of types user is eligible for, or empty list
         """
 
+        if len(types) < 1:
+            logger.debug("List of types to check was empty.")
+            return []
+
         if self._hash:
             sub = self._hash.hash_input(sub)
             name = self._hash.hash_input(name)
@@ -48,10 +52,7 @@ class Database:
 
         matching_types = set(existing_user_types) & set(types)
 
-        if len(types) < 1:
-            logger.debug("List of types to check was empty.")
-            return []
-        elif existing_user is None:
+        if existing_user is None:
             logger.debug("Database does not contain requested user.")
             return []
         elif len(matching_types) < 1:

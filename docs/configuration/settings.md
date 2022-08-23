@@ -22,6 +22,48 @@ Value passed as a keyword argument for `host` in `app.run`
 
 The log level used in the application's [logging configuration](https://flask.palletsprojects.com/en/2.2.x/logging/). If [`DEBUG_MODE`](#debug_mode) is set to `True`, this will not have any effect.
 
+## Server settings
+
+These settings configure how the server parses, composes, and validates requests and responses according to the [Eligibility API specification](https://docs.calitp.org/eligibility-api/specification/).
+
+### `AUTH_HEADER`
+
+The header name that the server expects to see from authenticated/authorized requests.
+
+See the Eligibility API's documentation on [Authentication/Authorization](https://docs.calitp.org/eligibility-api/specification/#authenticationauthorization).
+
+### `AUTH_TOKEN`
+
+The header value that the server expects to see from authenticated/authorized requests.
+
+See the Eligibility API's documentation on [Authentication/Authorization](https://docs.calitp.org/eligibility-api/specification/#authenticationauthorization).
+
+### `TOKEN_HEADER`
+
+The header name that the server expects to see for the header containing the token value.
+
+### `JWE_CEK_ENC`
+
+The value used for `enc` in the JOSE header of the [JWE](https://jwcrypto.readthedocs.io/en/latest/jwe.html).
+
+See the Eligibility API's documentation on [Composing a message](https://docs.calitp.org/eligibility-api/specification/#composing-a-message).
+
+### `JWE_ENCRYPTION_ALG`
+
+The value used for `alg` in the JOSE header of the [JWE](https://jwcrypto.readthedocs.io/en/latest/jwe.html).
+
+See the Eligibility API's documentation on [Composing a message](https://docs.calitp.org/eligibility-api/specification/#composing-a-message).
+
+### `JWS_SIGNING_ALG`
+
+The value used for `alg` in the JOSE header of the [JWS](https://jwcrypto.readthedocs.io/en/latest/jwt.html#jwcrypto.jwt.JWT.make_signed_token)
+
+See the Eligibility API's documentation on [Composing a message](https://docs.calitp.org/eligibility-api/specification/#composing-a-message).
+
+### `SUB_FORMAT_REGEX`
+
+A regular expression that the request's `sub` field must match.
+
 ## Database settings
 
 ### `SQLALCHEMY_DATABASE_URI`

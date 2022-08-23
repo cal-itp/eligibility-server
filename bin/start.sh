@@ -1,4 +1,4 @@
-#! usr/bin/env bash
+#!/usr/bin/env bash
 set -eux
 
 # initialize Flask
@@ -7,4 +7,6 @@ bin/init.sh
 
 # start the web server
 
-flask run -h 0.0.0.0
+nginx
+
+python -m gunicorn -c $GUNICORN_CONF eligibility_server.app:app

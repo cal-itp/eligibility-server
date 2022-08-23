@@ -57,4 +57,4 @@ class User(db.Model):
 
 
 if __name__ == "__main__":
-    app.run(host=app.config["HOST"], debug=app.config["DEBUG_MODE"])  # nosec
+    app.run(host=app.config["HOST"], debug=app.config["DEBUG_MODE"], port="8000")  # nosec

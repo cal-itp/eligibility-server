@@ -44,16 +44,16 @@ def import_users():
     logger.info(f"Users added: {app.User.query.count()}")
 
 
-def save_users(user_id: str, key: str, types: str):
+def save_users(sub: str, name: str, types: str):
     """
     Add users to the database User table
 
-    @param user_id - User's ID, not to be confused with Database row ID
-    @param key - User's key
+    @param sub - User's ID, not to be confused with Database row ID
+    @param name - User's name
     @param types - Types of eligibilities, in a stringified list
     """
 
-    item = app.User(user_id=user_id, key=key, types=types)
+    item = app.User(sub=sub, name=name, types=types)
     app.db.session.add(item)
     app.db.session.commit()
 

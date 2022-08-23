@@ -5,6 +5,9 @@ Simple hard-coded server database.
 import ast
 
 from . import app
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class Database:
@@ -16,36 +19,44 @@ class Database:
         """
 
         self._hash = hash
+        if hash:
+            logger.debug(f"Database initialized with hash: {hash}")
+        else:
+            logger.debug("Database initialized without hashing")
 
-        users = app.User.query.all()
-        all_users = {}
-        for user in users:
-            types = ast.literal_eval(user.types)
-            all_users[user.user_id] = [user.key, types]
-        self._users = all_users
-
-    def check_user(self, key: str, user: str, types: str) -> list:
+    def check_user(self, sub: str, name: str, types: str) -> list:
         """
         Check if the data matches a record in the database
 
         @param self: self
-        @param key: key to check for
-        @param user: name of user to check for
+        @param sub: sub to check for
+        @param name: name of user to check for
         @param types: type of eligibility
 
         @return list of strings of types user is eligible for, or empty list
         """
 
-        if self._hash:
-            key = self._hash.hash_input(key)
-            user = self._hash.hash_input(user)
-
-        if (
-            len(types) < 1
-            or key not in self._users
-            or self._users[key][0] != user
-            or len(set(self._users[key][1]) & set(types)) < 1
-        ):
+        if len(types) < 1:
+            logger.debug("List of types to check was empty.")
             return []
 
-        return list(set(self._users[key][1]) & set(types))
+        if self._hash:
+            sub = self._hash.hash_input(sub)
+            name = self._hash.hash_input(name)
+
+        existing_user = app.User.query.filter_by(sub=sub, name=name).first()
+        if existing_user:
+            existing_user_types = ast.literal_eval(existing_user.types)
+        else:
+            existing_user_types = []
+
+        matching_types = set(existing_user_types) & set(types)
+
+        if existing_user is None:
+            logger.debug("Database does not contain requested user.")
+            return []
+        elif len(matching_types) < 1:
+            logger.debug(f"User's types do not contain any of the requested types: {types}")
+            return []
+        else:
+            return list(matching_types)

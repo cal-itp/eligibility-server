@@ -22,6 +22,15 @@ Value passed as a keyword argument for `host` in `app.run`
 
 The log level used in the application's [logging configuration](https://flask.palletsprojects.com/en/2.2.x/logging/). If [`DEBUG_MODE`](#debug_mode) is set to `True`, this will not have any effect.
 
+## Database settings
+
+### `SQLALCHEMY_DATABASE_URI`
+
+The URI that should be used for database connection.
+
+!!! note
+    See other configurable settings from [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/config/).
+
 ## Data settings
 
 ### `IMPORT_FILE_PATH`*

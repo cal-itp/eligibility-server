@@ -7,7 +7,7 @@ import json
 import re
 import time
 
-from flask import abort, jsonify
+from flask import abort
 from flask_restful import Resource, reqparse
 from jwcrypto import jwe, jwk, jws, jwt
 
@@ -33,12 +33,6 @@ class Verify(Resource):
             self._db = Database(hash=hash)
         else:
             self._db = Database()
-
-    def _resource_unauthorized(e):
-        return jsonify(error=str(e)), 403
-
-    def _resource_error(e):
-        return jsonify(error=str(e)), 500
 
     def _check_headers(self):
         """Ensure correct request headers."""
@@ -115,7 +109,6 @@ class Verify(Resource):
         except Exception as ex:
             logger.warning(f"Internal server error: {ex}")
             abort(500, description=f"Internal server error: {ex}")
-            return jsonify()
 
     def get(self):
         """Respond to a verification request."""
@@ -130,7 +123,6 @@ class Verify(Resource):
         except Exception:
             logger.warning("Unauthorized")
             abort(403, description="Unauthorized")
-            return jsonify()
 
         # parse inner payload from request token
         try:

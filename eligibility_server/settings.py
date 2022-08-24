@@ -17,9 +17,14 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 AUTH_HEADER = "X-Server-API-Key"
 AUTH_TOKEN = "server-auth-token"
 TOKEN_HEADER = "Authorization"
+
+# Eligibility Verification Configs
+
+CLIENT_KEY_PATH = "./keys/client.pub"
 JWE_CEK_ENC = "A256CBC-HS512"
 JWE_ENCRYPTION_ALG = "RSA-OAEP"
 JWS_SIGNING_ALG = "RS256"
+SERVER_KEY_PATH = "./keys/server.key"
 SUB_FORMAT_REGEX = ".*"
 
 # Hash Configs

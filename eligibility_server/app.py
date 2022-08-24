@@ -2,7 +2,7 @@
 Simple Test Eligibility Verification API Server.
 """
 
-from flask import Flask
+from flask import Flask, jsonify
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from logging.config import dictConfig
@@ -38,6 +38,11 @@ app.config.from_envvar("ELIGIBILITY_SERVER_SETTINGS", silent=True)
 def healthcheck():
     app.logger.info("Healthcheck")
     return "Healthy"
+
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return jsonify(error=str(error)), 404
 
 
 api = Api(app)

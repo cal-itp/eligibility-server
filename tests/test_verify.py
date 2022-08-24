@@ -1,7 +1,17 @@
+import builtins
 import json
 import uuid
 
+from os.path import exists
+
+import pytest
+
 from eligibility_server.verify import Verify
+
+
+@pytest.fixture
+def open_spy(mocker):
+    return mocker.spy(builtins, "open")
 
 
 def test_Verify_client_get_unauthorized_request(client):
@@ -46,3 +56,20 @@ def test_Verify_get_response_sub_format_no_match(mocker):
     _, response_code = Verify()._get_response(token_payload)
 
     assert response_code == 400
+
+
+@pytest.mark.parametrize("key_path_setting", ["CLIENT_KEY_PATH", "SERVER_KEY_PATH"])
+def test_Verify_init_keypair_default(flask, mocker, open_spy, key_path_setting):
+    assert key_path_setting in flask.config
+    default_path = flask.config[key_path_setting]
+    assert exists(default_path)
+
+    verify = Verify()
+
+    # check that there was a call to open the default path
+    assert mocker.call(default_path, "rb") in open_spy.call_args_list
+
+    if "CLIENT" in key_path_setting:
+        assert verify.client_public_key
+    elif "SERVER" in key_path_setting:
+        assert verify.server_private_key

@@ -4,6 +4,7 @@ Eligibility Verification route
 
 import datetime
 import json
+import logging
 import re
 import time
 
@@ -14,20 +15,19 @@ from jwcrypto import jwe, jwk, jws, jwt
 from . import app
 from .database import Database
 from .hash import Hash
-import logging
 
 
 logger = logging.getLogger(__name__)
 
-with open("./keys/server.key", "rb") as pemfile:
-    server_private_key = jwk.JWK.from_pem(pemfile.read())
-with open("./keys/client.pub", "rb") as pemfile:
-    client_public_key = jwk.JWK.from_pem(pemfile.read())
-
 
 class Verify(Resource):
     def __init__(self):
-        """Initialize Verify class with a Database and optionally a Hash"""
+        """Initialize Verify class with a keypair and Database"""
+        with open(app.app.config["CLIENT_KEY_PATH"], "rb") as pemfile:
+            self.client_public_key = jwk.JWK.from_pem(pemfile.read())
+        with open(app.app.config["SERVER_KEY_PATH"], "rb") as pemfile:
+            self.server_private_key = jwk.JWK.from_pem(pemfile.read())
+
         if app.app.config["INPUT_HASH_ALGO"] != "":
             hash = Hash(app.app.config["INPUT_HASH_ALGO"])
             self._db = Database(hash=hash)
@@ -62,11 +62,11 @@ class Verify(Resource):
         try:
             # decrypt
             decrypted_token = jwe.JWE(algs=[app.app.config["JWE_ENCRYPTION_ALG"], app.app.config["JWE_CEK_ENC"]])
-            decrypted_token.deserialize(token, key=server_private_key)
+            decrypted_token.deserialize(token, key=self.server_private_key)
             decrypted_payload = str(decrypted_token.payload, "utf-8")
             # verify signature
             signed_token = jws.JWS()
-            signed_token.deserialize(decrypted_payload, key=client_public_key, alg=app.app.config["JWS_SIGNING_ALG"])
+            signed_token.deserialize(decrypted_payload, key=self.client_public_key, alg=app.app.config["JWS_SIGNING_ALG"])
             # return final payload
             payload = str(signed_token.payload, "utf-8")
             return json.loads(payload)
@@ -79,12 +79,12 @@ class Verify(Resource):
         # sign the payload with server's private key
         header = {"typ": "JWS", "alg": app.app.config["JWS_SIGNING_ALG"]}
         signed_token = jwt.JWT(header=header, claims=payload)
-        signed_token.make_signed_token(server_private_key)
+        signed_token.make_signed_token(self.server_private_key)
         signed_payload = signed_token.serialize()
         # encrypt the signed payload with client's public key
         header = {"typ": "JWE", "alg": app.app.config["JWE_ENCRYPTION_ALG"], "enc": app.app.config["JWE_CEK_ENC"]}
         encrypted_token = jwt.JWT(header=header, claims=signed_payload)
-        encrypted_token.make_encrypted_token(client_public_key)
+        encrypted_token.make_encrypted_token(self.client_public_key)
         return encrypted_token.serialize()
 
     def _get_response(self, token_payload):

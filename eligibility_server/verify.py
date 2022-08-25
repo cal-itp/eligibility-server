@@ -23,9 +23,14 @@ logger = logging.getLogger(__name__)
 class Verify(Resource):
     def __init__(self):
         """Initialize Verify class with a keypair and Database"""
-        with open(app.app.config["CLIENT_KEY_PATH"], "rb") as pemfile:
+        client_key = app.app.config["CLIENT_KEY_PATH"]
+        logger.info(f"Reading client key file: {client_key}")
+        with open(client_key, "rb") as pemfile:
             self.client_public_key = jwk.JWK.from_pem(pemfile.read())
-        with open(app.app.config["SERVER_KEY_PATH"], "rb") as pemfile:
+
+        server_key = app.app.config["SERVER_KEY_PATH"]
+        logger.info(f"Reading server key file: {server_key}")
+        with open(server_key, "rb") as pemfile:
             self.server_private_key = jwk.JWK.from_pem(pemfile.read())
 
         if app.app.config["INPUT_HASH_ALGO"] != "":

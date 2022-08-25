@@ -108,7 +108,7 @@ class Verify(Resource):
             return self._make_token(resp_payload), code
         except Exception as ex:
             logger.warning(f"Error: {ex}")
-            if ex.__doc__ == "Inappropriate argument type.":
+            if ex.__class__ == TypeError or ValueError:
                 abort(400, description="Bad request")
             else:
                 abort(500, description="Internal server error")

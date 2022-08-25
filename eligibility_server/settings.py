@@ -2,25 +2,25 @@
 Default settings for server.
 """
 
-# App Configs
+# App settings
 
 APP_NAME = "eligibility_server.app"
 DEBUG_MODE = True
 HOST = "0.0.0.0"  # nosec
 LOG_LEVEL = "INFO"
 
-# Database Configs
+# Database settings
 
 SQLALCHEMY_DATABASE_URI = "sqlite:////tmp/test.db"
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-# API Configs
+# API settings
 
 AUTH_HEADER = "X-Server-API-Key"
 AUTH_TOKEN = "server-auth-token"
 TOKEN_HEADER = "Authorization"
 
-# Eligibility Verification Configs
+# Eligibility Verification settings
 
 CLIENT_KEY_PATH = "./keys/client.pub"
 JWE_CEK_ENC = "A256CBC-HS512"
@@ -29,11 +29,12 @@ JWS_SIGNING_ALG = "RS256"
 SERVER_KEY_PATH = "./keys/server.key"
 SUB_FORMAT_REGEX = ".*"
 
-# Hashing Configs
+# Data settings
 
+IMPORT_FILE_PATH = ""
 INPUT_HASH_ALGO = ""
 
-# CSV Configs
+# CSV-specific settings
 
 CSV_DELIMITER = ","
 CSV_NEWLINE = ""

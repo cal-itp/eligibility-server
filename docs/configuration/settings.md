@@ -22,9 +22,19 @@ Value passed as a keyword argument for `host` in `app.run`
 
 The log level used for the server's logging.
 
-## Server settings
+## Database settings
 
-These settings configure how the server parses, composes, and validates requests and responses according to the [Eligibility API specification](https://docs.calitp.org/eligibility-api/specification/).
+!!! note
+
+    See other configurable settings from [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/config/).
+
+### `SQLALCHEMY_DATABASE_URI`
+
+The URI that should be used for database connection.
+
+## API settings
+
+These settings configure access to the API endpoints on the server.
 
 ### `AUTH_HEADER`
 
@@ -40,7 +50,11 @@ See the Eligibility API's documentation on [Authentication/Authorization](https:
 
 ### `TOKEN_HEADER`
 
-The header name that the server expects to see for the header containing the token value.
+The header name that the server expects to see for the header containing the Eligibility Verification request token.
+
+## Eligibility Verification settings
+
+These settings configure how the server parses, composes, and validates requests and responses according to the [Eligibility API specification](https://docs.calitp.org/eligibility-api/specification/).
 
 ### `JWE_CEK_ENC`
 
@@ -64,18 +78,9 @@ See the Eligibility API's documentation on [Composing a message](https://docs.ca
 
 A regular expression that the request's `sub` field must match.
 
-## Database settings
-
-### `SQLALCHEMY_DATABASE_URI`
-
-The URI that should be used for database connection.
-
-!!! note
-    See other configurable settings from [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/config/).
-
 ## Data settings
 
-### `IMPORT_FILE_PATH`*
+### `IMPORT_FILE_PATH`\*
 
 The path to file containing data to be imported into the server's database. Must be either CSV or JSON.
 

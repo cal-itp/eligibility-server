@@ -1,37 +1,21 @@
 """
 Simple Test Eligibility Verification API Server.
 """
+import logging
 
 from flask import Flask
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
-from logging.config import dictConfig
+from flask.logging import default_handler
 
 from .verify import Verify
-
-dictConfig(
-    {
-        "version": 1,
-        "formatters": {
-            "default": {
-                "format": "[%(asctime)s] %(levelname)s %(name)s:%(lineno)s %(message)s",
-                "datefmt": "%d/%b/%Y %H:%M:%S",
-            }
-        },
-        "handlers": {
-            "wsgi": {
-                "class": "logging.StreamHandler",
-                "stream": "ext://flask.logging.wsgi_errors_stream",
-                "formatter": "default",
-            }
-        },
-        "root": {"level": "INFO", "handlers": ["wsgi"]},
-    }
-)
 
 app = Flask(__name__)
 app.config.from_object("eligibility_server.settings")
 app.config.from_envvar("ELIGIBILITY_SERVER_SETTINGS", silent=True)
+
+app.logger.setLevel(app.config["LOG_LEVEL"])
+default_handler.formatter = logging.Formatter("[%(asctime)s] %(levelname)s %(name)s:%(lineno)s %(message)s")
 
 
 @app.route("/healthcheck")

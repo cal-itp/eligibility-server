@@ -5,7 +5,7 @@ Default settings for server.
 APP_NAME = "eligibility_server.app"
 DEBUG_MODE = True
 HOST = "0.0.0.0"  # nosec
-LOG_LEVEL = "INFO"  # will only have an effect if DEBUG_MODE is switched to False
+LOG_LEVEL = "INFO"
 
 # Database Configs
 

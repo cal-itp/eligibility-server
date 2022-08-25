@@ -1,23 +1,21 @@
 """
 Simple Test Eligibility Verification API Server.
 """
+import logging
 
 from flask import Flask
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from flask.logging import default_handler
 
-from . import logging
 from .verify import Verify
 
 app = Flask(__name__)
 app.config.from_object("eligibility_server.settings")
 app.config.from_envvar("ELIGIBILITY_SERVER_SETTINGS", silent=True)
 
-logging.configure(app.config["LOG_LEVEL"])
-# remove the default handler since we configured logging after creating the app
-# https://flask.palletsprojects.com/en/2.2.x/logging/#removing-the-default-handler
-app.logger.removeHandler(default_handler)
+app.logger.setLevel(app.config["LOG_LEVEL"])
+default_handler.formatter = logging.Formatter("[%(asctime)s] %(levelname)s %(name)s:%(lineno)s %(message)s")
 
 
 @app.route("/healthcheck")

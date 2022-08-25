@@ -20,7 +20,7 @@ Value passed as a keyword argument for `host` in `app.run`
 
 ### `LOG_LEVEL`
 
-The log level used in the application's [logging configuration](https://flask.palletsprojects.com/en/2.2.x/logging/). If [`DEBUG_MODE`](#debug_mode) is set to `True`, this will not have any effect.
+The log level used for the server's logging.
 
 ## Server settings
 

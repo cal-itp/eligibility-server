@@ -22,7 +22,7 @@ def test_Verify_client_get_bad_request(mocker, client):
 
     assert response.status_code == 400
     assert response.content_type == "application/json"
-    assert response.json["message"].startswith("Bad request??")
+    assert response.json["message"].startswith("Bad request")
 
 
 def test_Verify_get_response_sub_format_match(mocker, mock_config):

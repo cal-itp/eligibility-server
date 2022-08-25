@@ -56,6 +56,11 @@ The header name that the server expects to see for the header containing the Eli
 
 These settings configure how the server parses, composes, and validates requests and responses according to the [Eligibility API specification](https://docs.calitp.org/eligibility-api/specification/).
 
+### `CLIENT_KEY_PATH`
+
+The path to the Eligibility Verification _client's_ public key, stored as a PEM text file. Used to verify the client's request
+signature, and to encrypt the server's response.
+
 ### `JWE_CEK_ENC`
 
 The value used for `enc` in the JOSE header of the [JWE](https://jwcrypto.readthedocs.io/en/latest/jwe.html).
@@ -73,6 +78,10 @@ See the Eligibility API's documentation on [Composing a message](https://docs.ca
 The value used for `alg` in the JOSE header of the [JWS](https://jwcrypto.readthedocs.io/en/latest/jwt.html#jwcrypto.jwt.JWT.make_signed_token)
 
 See the Eligibility API's documentation on [Composing a message](https://docs.calitp.org/eligibility-api/specification/#composing-a-message).
+
+### `SERVER_KEY_PATH`
+
+The path to the server's private key, stored as a PEM text file. Used to decrypt the client's request and sign the server's response.
 
 ### `SUB_FORMAT_REGEX`
 

@@ -12,7 +12,7 @@ def test_Verify_client_get_unauthorized_request(client):
     assert response.json["message"] == "Unauthorized"
 
 
-def test_Verify_client_get_bad_token(mocker, client):
+def test_Verify_client_get_bad_request(mocker, client):
     token_payload = dict(sub="A1234567", name="Garcia", eligibility=["type1"])
     mocked_headers = {"TOKEN_HEADER": "blah"}
     mocker.patch("eligibility_server.verify.Verify._check_headers", return_value=mocked_headers)
@@ -20,9 +20,9 @@ def test_Verify_client_get_bad_token(mocker, client):
     mocker.patch("eligibility_server.verify.Verify._get_token_payload", return_value="bad token")
     response = client.get("/verify", json=token_payload)
 
-    assert response.status_code == 500
+    assert response.status_code == 400
     assert response.content_type == "application/json"
-    assert response.json["message"].startswith("Internal server error")
+    assert response.json["message"].startswith("Bad request??")
 
 
 def test_Verify_get_response_sub_format_match(mocker, mock_config):

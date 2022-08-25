@@ -22,7 +22,7 @@ def test_Verify_client_get_bad_token(mocker, client):
 
     assert response.status_code == 500
     assert response.content_type == "application/json"
-    assert response.json["message"].startswith("Internal server error:")
+    assert response.json["message"].startswith("Internal server error")
 
 
 def test_Verify_get_response_sub_format_match(mocker, mock_config):

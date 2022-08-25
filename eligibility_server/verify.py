@@ -108,7 +108,7 @@ class Verify(Resource):
             return self._make_token(resp_payload), code
         except Exception as ex:
             logger.warning(f"Internal server error: {ex}")
-            abort(500, description=f"Internal server error: {ex}")
+            abort(500, description="Internal server error")
 
     def get(self):
         """Respond to a verification request."""

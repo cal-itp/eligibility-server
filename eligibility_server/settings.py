@@ -26,7 +26,7 @@ CLIENT_KEY_PATH = "./keys/client.pub"
 JWE_CEK_ENC = "A256CBC-HS512"
 JWE_ENCRYPTION_ALG = "RSA-OAEP"
 JWS_SIGNING_ALG = "RS256"
-SERVER_KEY_PATH = "./keys/server.key"
+SERVER_PRIVATE_KEY_PATH = "./keys/server.key"
 SUB_FORMAT_REGEX = ".*"
 
 # Data settings

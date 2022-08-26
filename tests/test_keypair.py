@@ -19,7 +19,7 @@ def reset_cache():
     keypair._CACHE = {}
 
 
-@pytest.mark.parametrize("key_path_setting", ["CLIENT_KEY_PATH", "SERVER_KEY_PATH"])
+@pytest.mark.parametrize("key_path_setting", ["CLIENT_KEY_PATH", "SERVER_PRIVATE_KEY_PATH"])
 @pytest.mark.usefixtures("reset_cache")
 def test_get_keypair_default(flask, mocker, open_spy, key_path_setting):
     assert key_path_setting in flask.config
@@ -28,7 +28,7 @@ def test_get_keypair_default(flask, mocker, open_spy, key_path_setting):
 
     if "CLIENT" in key_path_setting:
         key = get_client_public_key()
-    elif "SERVER" in key_path_setting:
+    elif "PRIVATE" in key_path_setting:
         key = get_server_private_key()
 
     # check that there was a call to open the default path
@@ -39,7 +39,7 @@ def test_get_keypair_default(flask, mocker, open_spy, key_path_setting):
 
 
 @pytest.mark.usefixtures("reset_cache")
-@pytest.mark.parametrize("key_path_setting", ["CLIENT_KEY_PATH", "SERVER_KEY_PATH"])
+@pytest.mark.parametrize("key_path_setting", ["CLIENT_KEY_PATH", "SERVER_PRIVATE_KEY_PATH"])
 def test_get_keypair_custom(flask, mocker, open_spy, key_path_setting):
     default_path = flask.config[key_path_setting]
 
@@ -57,7 +57,7 @@ def test_get_keypair_custom(flask, mocker, open_spy, key_path_setting):
 
         if "CLIENT" in key_path_setting:
             key = get_client_public_key()
-        elif "SERVER" in key_path_setting:
+        elif "PRIVATE" in key_path_setting:
             key = get_server_private_key()
 
         # check that there was a call to open the tempfile path
@@ -72,7 +72,7 @@ def test_get_keypair_custom(flask, mocker, open_spy, key_path_setting):
     "key_path_setting,key_path",
     [
         ("CLIENT_KEY_PATH", "https://raw.githubusercontent.com/cal-itp/eligibility-server/main/keys/client.pub"),
-        ("SERVER_KEY_PATH", "https://raw.githubusercontent.com/cal-itp/eligibility-server/main/keys/server.key"),
+        ("SERVER_PRIVATE_KEY_PATH", "https://raw.githubusercontent.com/cal-itp/eligibility-server/main/keys/server.key"),
     ],
 )
 def test_get_keypair_remote(mocker, open_spy, key_path_setting, key_path):
@@ -82,7 +82,7 @@ def test_get_keypair_remote(mocker, open_spy, key_path_setting, key_path):
 
     if "CLIENT" in key_path_setting:
         key = get_client_public_key()
-    elif "SERVER" in key_path_setting:
+    elif "PRIVATE" in key_path_setting:
         key = get_server_private_key()
 
     # check that there was no call to open
@@ -95,13 +95,13 @@ def test_get_keypair_remote(mocker, open_spy, key_path_setting, key_path):
 
 
 @pytest.mark.usefixtures("reset_cache")
-@pytest.mark.parametrize("key_path_setting", ["CLIENT_KEY_PATH", "SERVER_KEY_PATH"])
+@pytest.mark.parametrize("key_path_setting", ["CLIENT_KEY_PATH", "SERVER_PRIVATE_KEY_PATH"])
 def test_keypair_cache(key_path_setting):
     assert keypair._CACHE == {}
 
     if "CLIENT" in key_path_setting:
         key = get_client_public_key()
-    elif "SERVER" in key_path_setting:
+    elif "PRIVATE" in key_path_setting:
         key = get_server_private_key()
 
     assert key in keypair._CACHE.values()

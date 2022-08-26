@@ -35,6 +35,6 @@ def get_client_public_key():
 
 
 def get_server_private_key():
-    key_path = app.app.config["SERVER_KEY_PATH"]
-    logger.info(f"Reading server key file: {key_path}")
+    key_path = app.app.config["SERVER_PRIVATE_KEY_PATH"]
+    logger.info(f"Reading server private key file: {key_path}")
     return _read_key_file(key_path)

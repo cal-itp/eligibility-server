@@ -80,7 +80,7 @@ The value used for `alg` in the JOSE header of the [JWS](https://jwcrypto.readth
 
 See the Eligibility API's documentation on [Composing a message](https://docs.calitp.org/eligibility-api/specification/#composing-a-message).
 
-### `SERVER_KEY_PATH`
+### `SERVER_PRIVATE_KEY_PATH`
 
 The path to the server's private key, stored as a PEM text file. Used to decrypt the client's request and sign the server's response.
 

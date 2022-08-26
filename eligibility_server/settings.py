@@ -27,6 +27,7 @@ JWE_CEK_ENC = "A256CBC-HS512"
 JWE_ENCRYPTION_ALG = "RSA-OAEP"
 JWS_SIGNING_ALG = "RS256"
 SERVER_PRIVATE_KEY_PATH = "./keys/server.key"
+SERVER_PUBLIC_KEY_PATH = "./keys/server.pub"
 SUB_FORMAT_REGEX = ".*"
 
 # Data settings

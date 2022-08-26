@@ -8,8 +8,8 @@ MD007:
 # Remove line length limit - no one wants to hard wrap all their paragraphs
 MD013: false
 
-# Allow inline HTML
-MD033: false
-
 # Allow duplicate headers
 MD024: false
+
+# Allow inline HTML
+MD033: false

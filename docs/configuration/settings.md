@@ -86,6 +86,13 @@ The path to the server's private key, stored as a PEM text file. Used to decrypt
 
 Can be a path to a local file or a remote URL. For URLs, a simple anonymous GET request is made.
 
+### `SERVER_PUBLIC_KEY_PATH`
+
+The path to the public key corresponding to the [server's private key](#server_private_key_path), stored as a PEM text file. Used by clients to encrypt
+requests sent to this server.
+
+Can be a path to a local file or a remote URL. For URLs, a simple anonymous GET request is made.
+
 ### `SUB_FORMAT_REGEX`
 
 A regular expression that the request's `sub` field must match.

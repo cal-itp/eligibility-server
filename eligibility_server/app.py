@@ -9,6 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask.logging import default_handler
 
 from .verify import Verify
+from .keypair import get_server_public_key
 
 app = Flask(__name__)
 app.config.from_object("eligibility_server.settings")
@@ -29,6 +30,14 @@ def TextResponse(content):
 def healthcheck():
     app.logger.info("Request healthcheck")
     return TextResponse("Healthy")
+
+
+@app.route("/publickey")
+def publickey():
+    app.logger.info("Request public key")
+    key = get_server_public_key()
+    pem_data = key.export_to_pem(private_key=False)
+    return TextResponse(pem_data.decode("utf-8"))
 
 
 @app.errorhandler(401)

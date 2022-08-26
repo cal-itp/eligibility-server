@@ -3,7 +3,7 @@ Simple Test Eligibility Verification API Server.
 """
 import logging
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, make_response
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from flask.logging import default_handler
@@ -18,10 +18,17 @@ app.logger.setLevel(app.config["LOG_LEVEL"])
 default_handler.formatter = logging.Formatter("[%(asctime)s] %(levelname)s %(name)s:%(lineno)s %(message)s")
 
 
+def TextResponse(content):
+    # from https://stackoverflow.com/a/57302496/453168
+    response = make_response(content, 200)
+    response.mimetype = "text/plain"
+    return response
+
+
 @app.route("/healthcheck")
 def healthcheck():
-    app.logger.info("Healthcheck")
-    return "Healthy"
+    app.logger.info("Request healthcheck")
+    return TextResponse("Healthy")
 
 
 @app.errorhandler(401)

@@ -12,7 +12,8 @@ def test_appname(flask):
 def test_healthcheck(client):
     response = client.get("healthcheck")
     assert response.status_code == 200
-    assert response.data == b"Healthy"
+    assert response.mimetype == "text/plain"
+    assert response.text == "Healthy"
 
 
 def test_404(client):

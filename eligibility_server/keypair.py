@@ -9,13 +9,21 @@ from . import app
 logger = logging.getLogger(__name__)
 
 
+_CACHE = {}
+
+
 def _read_key_file(key_path):
+    if key_path in _CACHE:
+        return _CACHE[key_path]
+
     if key_path.startswith("http"):
         data = requests.get(key_path).text
         key = jwk.JWK.from_pem(data.encode("utf8"))
     else:
         with open(key_path, "rb") as pemfile:
             key = jwk.JWK.from_pem(pemfile.read())
+
+    _CACHE[key_path] = key
 
     return key
 

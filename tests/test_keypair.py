@@ -3,6 +3,7 @@ from os.path import exists
 from tempfile import NamedTemporaryFile
 
 import pytest
+import requests
 
 from eligibility_server.keypair import get_client_public_key, get_server_private_key
 
@@ -26,6 +27,8 @@ def test_get_keypair_default(flask, mocker, open_spy, key_path_setting):
     # check that there was a call to open the default path
     assert mocker.call(default_path, "rb") in open_spy.call_args_list
     assert key
+    assert key.key_id
+    assert key.key_type == "RSA"
 
 
 @pytest.mark.parametrize("key_path_setting", ["CLIENT_KEY_PATH", "SERVER_KEY_PATH"])
@@ -52,3 +55,31 @@ def test_get_keypair_custom(flask, mocker, open_spy, key_path_setting):
         # check that there was a call to open the tempfile path
         assert mocker.call(tf.name, "rb") in open_spy.call_args_list
         assert key
+        assert key.key_id
+        assert key.key_type == "RSA"
+
+
+@pytest.mark.parametrize(
+    "key_path_setting,key_path",
+    [
+        ("CLIENT_KEY_PATH", "https://raw.githubusercontent.com/cal-itp/eligibility-server/main/keys/client.pub"),
+        ("SERVER_KEY_PATH", "https://raw.githubusercontent.com/cal-itp/eligibility-server/main/keys/server.key"),
+    ],
+)
+def test_get_keypair_remote(mocker, open_spy, key_path_setting, key_path):
+    mocked_config = {key_path_setting: key_path}
+    mocker.patch.dict("eligibility_server.keypair.app.app.config", mocked_config)
+    requests_spy = mocker.spy(requests, "get")
+
+    if "CLIENT" in key_path_setting:
+        key = get_client_public_key()
+    elif "SERVER" in key_path_setting:
+        key = get_server_private_key()
+
+    # check that there was no call to open
+    assert open_spy.call_count == 0
+    # check that we made a get request
+    requests_spy.assert_called_with(key_path)
+    assert key
+    assert key.key_id
+    assert key.key_type == "RSA"

@@ -58,8 +58,9 @@ These settings configure how the server parses, composes, and validates requests
 
 ### `CLIENT_KEY_PATH`
 
-The path to the Eligibility Verification _client's_ public key, stored as a PEM text file. Used to verify the client's request
-signature, and to encrypt the server's response.
+The path to the Eligibility Verification _client's_ public key, stored as a PEM text file. Used to verify the client's request signature, and to encrypt the server's response.
+
+Can be a path to a local file or a remote URL. For URLs, a simple anonymous GET request is made.
 
 ### `JWE_CEK_ENC`
 
@@ -82,6 +83,8 @@ See the Eligibility API's documentation on [Composing a message](https://docs.ca
 ### `SERVER_KEY_PATH`
 
 The path to the server's private key, stored as a PEM text file. Used to decrypt the client's request and sign the server's response.
+
+Can be a path to a local file or a remote URL. For URLs, a simple anonymous GET request is made.
 
 ### `SUB_FORMAT_REGEX`
 

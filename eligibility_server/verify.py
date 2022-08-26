@@ -10,9 +10,9 @@ import time
 
 from flask import abort
 from flask_restful import Resource, reqparse
-from jwcrypto import jwe, jwk, jws, jwt
+from jwcrypto import jwe, jws, jwt
 
-from . import app
+from . import app, keypair
 from .database import Database
 from .hash import Hash
 
@@ -23,15 +23,8 @@ logger = logging.getLogger(__name__)
 class Verify(Resource):
     def __init__(self):
         """Initialize Verify class with a keypair and Database"""
-        client_key = app.app.config["CLIENT_KEY_PATH"]
-        logger.info(f"Reading client key file: {client_key}")
-        with open(client_key, "rb") as pemfile:
-            self.client_public_key = jwk.JWK.from_pem(pemfile.read())
-
-        server_key = app.app.config["SERVER_KEY_PATH"]
-        logger.info(f"Reading server key file: {server_key}")
-        with open(server_key, "rb") as pemfile:
-            self.server_private_key = jwk.JWK.from_pem(pemfile.read())
+        self.client_public_key = keypair.get_client_public_key()
+        self.server_private_key = keypair.get_server_private_key()
 
         if app.app.config["INPUT_HASH_ALGO"] != "":
             hash = Hash(app.app.config["INPUT_HASH_ALGO"])

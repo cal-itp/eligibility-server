@@ -89,7 +89,7 @@ python teardown.py
 To set up the database with a new import file or other configuration variables, after making any new environment variable changes, run:
 
 ```bash
-python setup.py
+flask init-db
 ```
 
 ## Run and develop the Documentation

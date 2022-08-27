@@ -1,22 +1,25 @@
-from flask_sqlalchemy import inspect
-from eligibility_server import app
 import logging
 
+from flask_sqlalchemy import inspect
+
+from eligibility_server.app import app
+from eligibility_server.database import db, User
 
 logger = logging.getLogger("teardown")
 
 if __name__ == "__main__":
-    inspector = inspect(app.db.engine)
+    with app.app_context():
+        inspector = inspect(db.engine)
 
-    if inspector.get_table_names():
-        try:
-            logger.info(f"Users to be deleted: {app.User.query.count()}")
-            app.User.query.delete()
-            app.db.session.commit()
-        except Exception as e:
-            logger.warning("Failed to query for Users", e)
+        if inspector.get_table_names():
+            try:
+                logger.info(f"Users to be deleted: {User.query.count()}")
+                User.query.delete()
+                db.session.commit()
+            except Exception as e:
+                logger.warning("Failed to query for Users", e)
 
-        app.db.drop_all()
-        logger.info("Database dropped.")
-    else:
-        logger.info("Database does not exist.")
+            db.drop_all()
+            logger.info("Database dropped.")
+        else:
+            logger.info("Database does not exist.")

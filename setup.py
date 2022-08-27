@@ -1,9 +1,11 @@
 import csv
 import json
+import logging
 
 from flask_sqlalchemy import inspect
-from eligibility_server import app
-import logging
+
+from eligibility_server.app import app
+from eligibility_server.database import db, User
 
 
 logger = logging.getLogger("setup")
@@ -18,7 +20,7 @@ def import_users():
     configurations: CSV_DELIMITER, CSV_NEWLINE, CSV_QUOTING, CSV_QUOTECHAR
     """
 
-    file_path = app.app.config["IMPORT_FILE_PATH"]
+    file_path = app.config["IMPORT_FILE_PATH"]
     logger.info(f"Importing users from {file_path}")
 
     file_format = file_path.split(".")[-1]
@@ -29,19 +31,19 @@ def import_users():
             for user in data:
                 save_users(user, data[user][0], str(data[user][1]))
     elif file_format == "csv":
-        with open(file_path, newline=app.app.config["CSV_NEWLINE"], encoding="utf-8") as file:
+        with open(file_path, newline=app.config["CSV_NEWLINE"], encoding="utf-8") as file:
             data = csv.reader(
                 file,
-                delimiter=app.app.config["CSV_DELIMITER"],
-                quoting=int(app.app.config["CSV_QUOTING"]),
-                quotechar=app.app.config["CSV_QUOTECHAR"],
+                delimiter=app.config["CSV_DELIMITER"],
+                quoting=int(app.config["CSV_QUOTING"]),
+                quotechar=app.config["CSV_QUOTECHAR"],
             )
             for user in data:
                 save_users(user[0], user[1], user[2])
     else:
         logger.warning(f"File format is not supported: {file_format}")
 
-    logger.info(f"Users added: {app.User.query.count()}")
+    logger.info(f"Users added: {User.query.count()}")
 
 
 def save_users(sub: str, name: str, types: str):
@@ -53,22 +55,23 @@ def save_users(sub: str, name: str, types: str):
     @param types - Types of eligibilities, in a stringified list
     """
 
-    item = app.User(sub=sub, name=name, types=types)
-    app.db.session.add(item)
-    app.db.session.commit()
+    item = User(sub=sub, name=name, types=types)
+    db.session.add(item)
+    db.session.commit()
 
 
 if __name__ == "__main__":
-    inspector = inspect(app.db.engine)
+    with app.app_context():
+        inspector = inspect(db.engine)
 
-    if inspector.get_table_names():
-        logger.info("Tables already exist.")
-        if app.User.query.count() == 0:
-            import_users()
+        if inspector.get_table_names():
+            logger.info("Tables already exist.")
+            if User.query.count() == 0:
+                import_users()
+            else:
+                logger.info("User table already has data.")
         else:
-            logger.info("User table already has data.")
-    else:
-        logger.info("Creating table...")
-        app.db.create_all()
-        logger.info("Table created.")
-        import_users()
+            logger.info("Creating table...")
+            db.create_all()
+            logger.info("Table created.")
+            import_users()

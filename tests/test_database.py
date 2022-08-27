@@ -28,6 +28,7 @@ def test_database_init_default():
     assert database._hash is False
 
 
+@pytest.mark.usefixtures("flask")
 @pytest.mark.parametrize("db, sub, name, types, expected", test_data)
 def test_database_check_user(db, sub, name, types, expected):
     assert db.check_user(sub, name, types) == expected

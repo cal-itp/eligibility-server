@@ -1,4 +1,5 @@
 import json
+import pytest
 import uuid
 
 from eligibility_server.verify import Verify
@@ -25,6 +26,7 @@ def test_Verify_client_get_bad_request(mocker, client):
     assert response.json["message"].startswith("Bad request")
 
 
+@pytest.mark.usefixtures("flask")
 def test_Verify_get_response_sub_format_match(mocker):
     mocked_config = {"SUB_FORMAT_REGEX": r"^[A-Z]\d{7}$", "INPUT_HASH_ALGO": ""}
     mocker.patch.dict("eligibility_server.verify.app.app.config", mocked_config)

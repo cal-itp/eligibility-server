@@ -5,7 +5,7 @@ import logging
 from flask_sqlalchemy import inspect
 
 from eligibility_server.app import app
-from eligibility_server.database import db, User
+from eligibility_server.db.models import db, User
 
 
 logger = logging.getLogger("setup")

@@ -1,7 +1,7 @@
 import ast
 import logging
 
-from ..database import User
+from .models import User
 
 logger = logging.getLogger(__name__)
 

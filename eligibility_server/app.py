@@ -9,7 +9,7 @@ from flask.logging import default_handler
 
 from .verify import Verify
 from .keypair import get_server_public_key
-from . import database
+from .db import models
 
 app = Flask(__name__)
 app.config.from_object("eligibility_server.settings")
@@ -67,7 +67,7 @@ def internal_server_error(error):
 api = Api(app)
 api.add_resource(Verify, "/verify")
 
-database.init_app(app)
+models.init_app(app)
 
 if __name__ == "__main__":
     app.run(host=app.config["HOST"], debug=app.config["DEBUG_MODE"], port="8000")  # nosec

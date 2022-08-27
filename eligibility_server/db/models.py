@@ -1,7 +1,3 @@
-"""
-Simple hard-coded server database.
-"""
-
 import logging
 
 from flask_sqlalchemy import SQLAlchemy

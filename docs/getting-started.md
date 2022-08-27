@@ -83,7 +83,7 @@ In testing the database, you may need to teardown the database and restart a dat
 The teardown script removes all users and drops the database. To tear down the database, run:
 
 ```bash
-python teardown.py
+flask drop-db
 ```
 
 To set up the database with a new import file or other configuration variables, after making any new environment variable changes, run:

@@ -106,12 +106,12 @@ class Verify(Resource):
                 code = 400
             # make a response token with appropriate response code
             return self._make_token(resp_payload), code
+        except (TypeError, ValueError) as ex:
+            logger.warning(f"Error: {ex}")
+            abort(400, description="Bad request")
         except Exception as ex:
             logger.warning(f"Error: {ex}")
-            if ex.__class__ == TypeError or ValueError:
-                abort(400, description="Bad request")
-            else:
-                abort(500, description="Internal server error")
+            abort(500, description="Internal server error")
 
     def get(self):
         """Respond to a verification request."""

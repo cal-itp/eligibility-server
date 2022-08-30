@@ -131,12 +131,12 @@ class Verify(Resource):
         try:
             token = self._get_token(headers)
             token_payload = self._get_token_payload(token)
-        except Exception as ex:
-            logger.error(f"Bad request: {ex}")
-            return str(ex), 400
+        except Exception:
+            logger.error("Bad request")
+            abort(400, description="Bad request")
 
         if token_payload:
             return self._get_response(token_payload)
         else:
             logger.error("Invalid token format")
-            return "Invalid token format", 400
+            abort(400, description="Invalid token format")

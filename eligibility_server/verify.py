@@ -107,10 +107,10 @@ class Verify(Resource):
             # make a response token with appropriate response code
             return self._make_token(resp_payload), code
         except (TypeError, ValueError) as ex:
-            logger.warning(f"Error: {ex}")
+            logger.error(f"Error: {ex}")
             abort(400, description="Bad request")
         except Exception as ex:
-            logger.warning(f"Error: {ex}")
+            logger.error(f"Error: {ex}")
             abort(500, description="Internal server error")
 
     def get(self):
@@ -124,19 +124,19 @@ class Verify(Resource):
         try:
             headers = self._check_headers()
         except Exception:
-            logger.warning("Unauthorized")
-            abort(403, description="Unauthorized")
+            logger.error("Forbidden")
+            abort(403, description="Forbidden")
 
         # parse inner payload from request token
         try:
             token = self._get_token(headers)
             token_payload = self._get_token_payload(token)
         except Exception as ex:
-            logger.warning(f"Bad request: {ex}")
+            logger.error(f"Bad request: {ex}")
             return str(ex), 400
 
         if token_payload:
             return self._get_response(token_payload)
         else:
-            logger.warning("Invalid token format")
+            logger.error("Invalid token format")
             return "Invalid token format", 400

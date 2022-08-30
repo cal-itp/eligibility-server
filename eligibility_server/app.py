@@ -3,7 +3,7 @@ Simple Test Eligibility Verification API Server.
 """
 import logging
 
-from flask import Flask
+from flask import Flask, jsonify
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from flask.logging import default_handler
@@ -22,6 +22,30 @@ default_handler.formatter = logging.Formatter("[%(asctime)s] %(levelname)s %(nam
 def healthcheck():
     app.logger.info("Healthcheck")
     return "Healthy"
+
+
+@app.errorhandler(401)
+def unauthorized(error):
+    app.logger.error(error)
+    return jsonify(error=f"{error.code} {error.name}: Unauthorized"), 401
+
+
+@app.errorhandler(403)
+def forbidden(error):
+    app.logger.error(error)
+    return jsonify(error=f"{error.code} {error.name}: Forbidden"), 403
+
+
+@app.errorhandler(404)
+def page_not_found(error):
+    app.logger.error(error)
+    return jsonify(error=f"{error.code} {error.name}: {error.description}"), 404
+
+
+@app.errorhandler(500)
+def internal_server_error(error):
+    app.logger.error(error)
+    return jsonify(error=f"{error.code} {error.name}: Internal server error"), 500
 
 
 api = Api(app)

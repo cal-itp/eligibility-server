@@ -15,6 +15,9 @@ def test_healthcheck(client):
     assert response.data == b"Healthy"
 
 
-def test_unauthorized_verify(client):
-    response = client.get("verify")
-    assert response.status_code == 403
+def test_404(client):
+    response = client.get("/random")
+
+    assert response.status_code == 404
+    assert response.content_type == "application/json"
+    assert response.json["error"].startswith("404 Not Found: The requested URL was not found on the server.")

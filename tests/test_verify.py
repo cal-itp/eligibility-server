@@ -9,7 +9,7 @@ def test_Verify_client_get_unauthorized_request(client):
 
     assert response.status_code == 403
     assert response.content_type == "application/json"
-    assert response.json["message"] == "Unauthorized"
+    assert response.json["message"] == "Forbidden"
 
 
 def test_Verify_client_get_bad_request(mocker, client):

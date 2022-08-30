@@ -42,7 +42,7 @@ def healthcheck():
 
 @app.errorhandler(404)
 def page_not_found(error):
-    print(error)
+    app.logger.info(error)
     return jsonify(error=f"{error.code} {error.name}: {error.description}"), 404
 
 

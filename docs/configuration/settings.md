@@ -22,9 +22,19 @@ Value passed as a keyword argument for `host` in `app.run`
 
 The log level used for the server's logging.
 
-## Server settings
+## Database settings
 
-These settings configure how the server parses, composes, and validates requests and responses according to the [Eligibility API specification](https://docs.calitp.org/eligibility-api/specification/).
+!!! note
+
+    See other configurable settings from [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/config/).
+
+### `SQLALCHEMY_DATABASE_URI`
+
+The URI that should be used for database connection.
+
+## API settings
+
+These settings configure access to the API endpoints on the server.
 
 ### `AUTH_HEADER`
 
@@ -40,7 +50,17 @@ See the Eligibility API's documentation on [Authentication/Authorization](https:
 
 ### `TOKEN_HEADER`
 
-The header name that the server expects to see for the header containing the token value.
+The header name that the server expects to see for the header containing the Eligibility Verification request token.
+
+## Eligibility Verification settings
+
+These settings configure how the server parses, composes, and validates requests and responses according to the [Eligibility API specification](https://docs.calitp.org/eligibility-api/specification/).
+
+### `CLIENT_KEY_PATH`
+
+The path to the Eligibility Verification _client's_ public key, stored as a PEM text file. Used to verify the client's request signature, and to encrypt the server's response.
+
+Can be a path to a local file or a remote URL. For URLs, a simple anonymous GET request is made.
 
 ### `JWE_CEK_ENC`
 
@@ -60,22 +80,26 @@ The value used for `alg` in the JOSE header of the [JWS](https://jwcrypto.readth
 
 See the Eligibility API's documentation on [Composing a message](https://docs.calitp.org/eligibility-api/specification/#composing-a-message).
 
+### `SERVER_PRIVATE_KEY_PATH`
+
+The path to the server's private key, stored as a PEM text file. Used to decrypt the client's request and sign the server's response.
+
+Can be a path to a local file or a remote URL. For URLs, a simple anonymous GET request is made.
+
+### `SERVER_PUBLIC_KEY_PATH`
+
+The path to the public key corresponding to the [server's private key](#server_private_key_path), stored as a PEM text file. Used by clients to encrypt
+requests sent to this server.
+
+Can be a path to a local file or a remote URL. For URLs, a simple anonymous GET request is made.
+
 ### `SUB_FORMAT_REGEX`
 
 A regular expression that the request's `sub` field must match.
 
-## Database settings
-
-### `SQLALCHEMY_DATABASE_URI`
-
-The URI that should be used for database connection.
-
-!!! note
-    See other configurable settings from [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/config/).
-
 ## Data settings
 
-### `IMPORT_FILE_PATH`*
+### `IMPORT_FILE_PATH`\*
 
 The path to file containing data to be imported into the server's database. Must be either CSV or JSON.
 

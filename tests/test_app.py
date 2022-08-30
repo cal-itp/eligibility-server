@@ -3,6 +3,7 @@ Test app
 """
 
 from eligibility_server.settings import APP_NAME
+from eligibility_server.keypair import get_server_public_key
 
 
 def test_appname(flask):
@@ -12,7 +13,8 @@ def test_appname(flask):
 def test_healthcheck(client):
     response = client.get("healthcheck")
     assert response.status_code == 200
-    assert response.data == b"Healthy"
+    assert response.mimetype == "text/plain"
+    assert response.text == "Healthy"
 
 
 def test_404(client):
@@ -21,3 +23,10 @@ def test_404(client):
     assert response.status_code == 404
     assert response.content_type == "application/json"
     assert response.json["error"].startswith("404 Not Found: The requested URL was not found on the server.")
+
+
+def test_publickey(client):
+    response = client.get("publickey")
+    assert response.status_code == 200
+    assert response.mimetype == "text/plain"
+    assert response.text == get_server_public_key().export_to_pem().decode("utf-8")

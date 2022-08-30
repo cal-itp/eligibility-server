@@ -3,12 +3,13 @@ Simple Test Eligibility Verification API Server.
 """
 import logging
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, make_response
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from flask.logging import default_handler
 
 from .verify import Verify
+from .keypair import get_server_public_key
 
 app = Flask(__name__)
 app.config.from_object("eligibility_server.settings")
@@ -18,10 +19,25 @@ app.logger.setLevel(app.config["LOG_LEVEL"])
 default_handler.formatter = logging.Formatter("[%(asctime)s] %(levelname)s %(name)s:%(lineno)s %(message)s")
 
 
+def TextResponse(content):
+    # from https://stackoverflow.com/a/57302496/453168
+    response = make_response(content, 200)
+    response.mimetype = "text/plain"
+    return response
+
+
 @app.route("/healthcheck")
 def healthcheck():
-    app.logger.info("Healthcheck")
-    return "Healthy"
+    app.logger.info("Request healthcheck")
+    return TextResponse("Healthy")
+
+
+@app.route("/publickey")
+def publickey():
+    app.logger.info("Request public key")
+    key = get_server_public_key()
+    pem_data = key.export_to_pem(private_key=False)
+    return TextResponse(pem_data.decode("utf-8"))
 
 
 @app.errorhandler(401)

@@ -5,3 +5,4 @@ __pycache__/
 .env
 config/*
 !config/sample.py
+eligibility_server.egg-info

@@ -16,6 +16,7 @@
             ],
             "env": {
                 "FLASK_DEBUG": "1",
+                "FLASK_RUN_PORT": "8000",
                 "ELIGIBILITY_SERVER_SETTINGS": "../config/sample.py"
             },
         },

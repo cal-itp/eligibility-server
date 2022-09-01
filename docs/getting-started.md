@@ -65,8 +65,7 @@ Once you clone the repository locally, open it within VS Code, which will prompt
  2. Start the `eligibility-server` Flask app and database with `F5`
  3. Now you can run tests from the container.
 
-Starting the Dev Container will run `bin/init.sh`, which runs `setup.py` and starts the Flask app. The `setup.py` script creates the database and imports and saves users
-based on the configured settings.
+Starting the Dev Container will run `bin/init.sh`, which runs a command to initialize the database. More specifically, it creates the database and imports and saves users based on the configured settings.
 
 ## Run tests
 
@@ -80,7 +79,7 @@ The test suite runs against every pull request via a GitHub Action.
 
 In testing the database, you may need to teardown the database and restart a database from scratch.
 
-The teardown script removes all users and drops the database. To tear down the database, run:
+The command below will remove all users and drop the database:
 
 ```bash
 flask drop-db

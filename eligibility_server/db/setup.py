@@ -5,7 +5,12 @@ import click
 from flask import current_app
 from flask_sqlalchemy import inspect
 
-from eligibility_server.db.models import db, User
+from eligibility_server.db import db
+from eligibility_server.db.models import User
+from eligibility_server.settings import Configuration
+
+
+config = Configuration()
 
 
 @click.command("init-db")
@@ -36,7 +41,7 @@ def import_users():
     CSV_DELIMITER, CSV_NEWLINE, CSV_QUOTING, CSV_QUOTECHAR
     """
 
-    file_path = current_app.config["IMPORT_FILE_PATH"]
+    file_path = config.import_file_path
     click.echo(f"Importing users from {file_path}")
 
     file_format = file_path.split(".")[-1]
@@ -47,12 +52,12 @@ def import_users():
             for user in data:
                 save_users(user, data[user][0], str(data[user][1]))
     elif file_format == "csv":
-        with open(file_path, newline=current_app.config["CSV_NEWLINE"], encoding="utf-8") as file:
+        with open(file_path, newline=config.csv_newline, encoding="utf-8") as file:
             data = csv.reader(
                 file,
-                delimiter=current_app.config["CSV_DELIMITER"],
-                quoting=int(current_app.config["CSV_QUOTING"]),
-                quotechar=current_app.config["CSV_QUOTECHAR"],
+                delimiter=config.csv_delimiter,
+                quoting=config.csv_quoting,
+                quotechar=config.csv_quotechar,
             )
             for user in data:
                 save_users(user[0], user[1], user[2])

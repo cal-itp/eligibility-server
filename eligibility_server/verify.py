@@ -13,7 +13,7 @@ from flask_restful import Resource, reqparse
 from jwcrypto import jwe, jws, jwt
 
 from . import keypair
-from .db import Database
+from .db.database import Database
 from .hash import Hash
 
 

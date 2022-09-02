@@ -4,7 +4,7 @@ Test database class and methods
 import pytest
 
 
-from eligibility_server.db import Database
+from eligibility_server.db.database import Database
 from eligibility_server.hash import Hash
 
 

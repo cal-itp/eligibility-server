@@ -45,7 +45,7 @@ def import_users():
         with open(file_path) as file:
             data = json.load(file)["users"]
             for user in data:
-                save_users(db, User, user, data[user][0], str(data[user][1]))
+                save_users(user, data[user][0], str(data[user][1]))
     elif file_format == "csv":
         with open(file_path, newline=current_app.config["CSV_NEWLINE"], encoding="utf-8") as file:
             data = csv.reader(
@@ -55,14 +55,14 @@ def import_users():
                 quotechar=current_app.config["CSV_QUOTECHAR"],
             )
             for user in data:
-                save_users(db, User, user[0], user[1], user[2])
+                save_users(user[0], user[1], user[2])
     else:
         click.echo(f"Warning: File format is not supported: {file_format}")
 
     click.echo(f"Users added: {User.query.count()}")
 
 
-def save_users(db, User, sub: str, name: str, types: str):
+def save_users(sub: str, name: str, types: str):
     """
     Add users to the database User table
 

@@ -32,12 +32,12 @@ SUB_FORMAT_REGEX = ".*"
 
 # Data settings
 
-IMPORT_FILE_PATH = ""
-INPUT_HASH_ALGO = ""
+IMPORT_FILE_PATH = "data/server.csv"
+INPUT_HASH_ALGO = "sha256"
 
 # CSV-specific settings
 
-CSV_DELIMITER = ","
+CSV_DELIMITER = ";"
 CSV_NEWLINE = ""
 CSV_QUOTING = 3
 CSV_QUOTECHAR = ""

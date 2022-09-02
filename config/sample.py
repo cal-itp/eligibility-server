@@ -1,6 +1,6 @@
-IMPORT_FILE_PATH = "data/server.csv"
-INPUT_HASH_ALGO = "sha256"
-CSV_DELIMITER = ";"
-CSV_NEWLINE = ""
-CSV_QUOTING = 3
-CSV_QUOTECHAR = ""
+# Override default settings by re-declaring the variables with new values
+# e.g. (uncomment)
+#
+# IMPORT_FILE_PATH = "another/source.csv"
+# INPUT_HASH_ALGO = ""
+# CSV_DELIMITER = ","

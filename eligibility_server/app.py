@@ -8,22 +8,26 @@ from flask_restful import Api
 from flask.logging import default_handler
 
 from eligibility_server import db
-from eligibility_server.verify import Verify
 from eligibility_server.keypair import get_server_public_key
+from eligibility_server.settings import Configuration
+from eligibility_server.verify import Verify
+
+
+config = Configuration()
 
 app = Flask(__name__)
 app.config.from_object("eligibility_server.settings")
 app.config.from_envvar("ELIGIBILITY_SERVER_SETTINGS", silent=True)
 
-log_level = app.config["LOG_LEVEL"]
 format_string = "[%(asctime)s] %(levelname)s %(name)s:%(lineno)s %(message)s"
 
-# configure root logger first, to prevent duplicate log entries from Flask's logger
-logging.basicConfig(level=log_level, format=format_string)
-
-# configure Flask's logger
-app.logger.setLevel(log_level)
-default_handler.formatter = logging.Formatter(format_string)
+# use an app context for access to config settings
+with app.app_context():
+    # configure root logger first, to prevent duplicate log entries from Flask's logger
+    logging.basicConfig(level=config.log_level, format=format_string)
+    # configure Flask's logger
+    app.logger.setLevel(config.log_level)
+    default_handler.formatter = logging.Formatter(format_string)
 
 
 def TextResponse(content):
@@ -77,4 +81,4 @@ api.add_resource(Verify, "/verify")
 db.init_app(app)
 
 if __name__ == "__main__":
-    app.run(host=app.config["HOST"], debug=app.config["DEBUG_MODE"], port="8000")  # nosec
+    app.run(host=config.host, debug=config.debug_mode, port="8000")  # nosec

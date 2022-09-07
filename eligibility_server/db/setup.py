@@ -1,4 +1,3 @@
-import ast  # needed while sample CSV contains Python-style list
 import csv
 import json
 
@@ -61,8 +60,8 @@ def import_users():
                 quotechar=config.csv_quotechar,
             )
             for user in data:
-                # todo: update sample CSV to use expected list format and change this parsing
-                types = ast.literal_eval(user[2])
+                # lists are expected to be a comma-separated value and quoted if the CSV delimiter is a comma
+                types = [type.replace(config.csv_quotechar, "") for type in user[2].split(",") if type]
                 save_users(user[0], user[1], types)
     else:
         click.echo(f"Warning: File format is not supported: {file_format}")

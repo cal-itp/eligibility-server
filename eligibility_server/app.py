@@ -15,8 +15,15 @@ app = Flask(__name__)
 app.config.from_object("eligibility_server.settings")
 app.config.from_envvar("ELIGIBILITY_SERVER_SETTINGS", silent=True)
 
-app.logger.setLevel(app.config["LOG_LEVEL"])
-default_handler.formatter = logging.Formatter("[%(asctime)s] %(levelname)s %(name)s:%(lineno)s %(message)s")
+log_level = app.config["LOG_LEVEL"]
+format_string = "[%(asctime)s] %(levelname)s %(name)s:%(lineno)s %(message)s"
+
+# configure Flask's logger
+app.logger.setLevel(log_level)
+default_handler.formatter = logging.Formatter(format_string)
+
+# configure root logger
+logging.basicConfig(level=log_level, format=format_string)
 
 
 def TextResponse(content):

@@ -13,9 +13,9 @@ from flask import abort, current_app
 from flask_restful import Resource, reqparse
 from jwcrypto import jwe, jws, jwt
 
-from . import keypair
-from .db.models import User
-from .hash import Hash
+from eligibility_server import keypair
+from eligibility_server.db.models import User
+from eligibility_server.hash import Hash
 
 
 logger = logging.getLogger(__name__)

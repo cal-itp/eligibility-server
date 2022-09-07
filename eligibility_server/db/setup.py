@@ -5,7 +5,7 @@ import click
 from flask import current_app
 from flask_sqlalchemy import inspect
 
-from .models import db, User
+from eligibility_server.db.models import db, User
 
 
 @click.command("init-db")

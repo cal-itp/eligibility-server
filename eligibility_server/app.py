@@ -7,9 +7,9 @@ from flask import Flask, jsonify, make_response
 from flask_restful import Api
 from flask.logging import default_handler
 
-from . import db
-from .verify import Verify
-from .keypair import get_server_public_key
+from eligibility_server import db
+from eligibility_server.verify import Verify
+from eligibility_server.keypair import get_server_public_key
 
 app = Flask(__name__)
 app.config.from_object("eligibility_server.settings")

@@ -5,11 +5,11 @@ import logging
 
 from flask import Flask, jsonify, make_response
 from flask_restful import Api
-from flask_sqlalchemy import SQLAlchemy
 from flask.logging import default_handler
 
-from .verify import Verify
-from .keypair import get_server_public_key
+from eligibility_server import db
+from eligibility_server.verify import Verify
+from eligibility_server.keypair import get_server_public_key
 
 app = Flask(__name__)
 app.config.from_object("eligibility_server.settings")
@@ -74,18 +74,7 @@ def internal_server_error(error):
 api = Api(app)
 api.add_resource(Verify, "/verify")
 
-db = SQLAlchemy(app)
-
-
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    sub = db.Column(db.String, unique=True, nullable=False)
-    name = db.Column(db.String, unique=True, nullable=False)
-    types = db.Column(db.String, unique=False, nullable=False)
-
-    def __repr__(self):
-        return "<User %r>" % self.sub
-
+db.init_app(app)
 
 if __name__ == "__main__":
     app.run(host=app.config["HOST"], debug=app.config["DEBUG_MODE"], port="8000")  # nosec

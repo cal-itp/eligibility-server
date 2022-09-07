@@ -5,6 +5,8 @@ from eligibility_server.app import app
 
 @pytest.fixture
 def flask():
+    app.app_context().push()
+
     yield app
 
 

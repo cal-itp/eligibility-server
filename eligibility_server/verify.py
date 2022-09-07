@@ -2,19 +2,20 @@
 Eligibility Verification route
 """
 
+import ast
 import datetime
 import json
 import logging
 import re
 import time
 
-from flask import abort
+from flask import abort, current_app
 from flask_restful import Resource, reqparse
 from jwcrypto import jwe, jws, jwt
 
-from . import app, keypair
-from .database import Database
-from .hash import Hash
+from eligibility_server import keypair
+from eligibility_server.db.models import User
+from eligibility_server.hash import Hash
 
 
 logger = logging.getLogger(__name__)
@@ -22,31 +23,35 @@ logger = logging.getLogger(__name__)
 
 class Verify(Resource):
     def __init__(self):
-        """Initialize Verify class with a keypair and Database"""
+        """Initialize Verify class with a keypair and hash"""
         self.client_public_key = keypair.get_client_public_key()
         self.server_private_key = keypair.get_server_private_key()
 
-        if app.app.config["INPUT_HASH_ALGO"] != "":
-            hash = Hash(app.app.config["INPUT_HASH_ALGO"])
-            self._db = Database(hash=hash)
+        if current_app.config["INPUT_HASH_ALGO"] != "":
+            hash = Hash(current_app.config["INPUT_HASH_ALGO"])
+            logger.debug(f"Verify initialized with hash: {hash}")
         else:
-            self._db = Database()
+            hash = None
+            logger.debug("Verify initialized without hashing")
+
+        self.hash = hash
 
     def _check_headers(self):
         """Ensure correct request headers."""
         req_parser = reqparse.RequestParser()
-        req_parser.add_argument(app.app.config["TOKEN_HEADER"], location="headers", required=True)
-        req_parser.add_argument(app.app.config["AUTH_HEADER"], location="headers", required=True)
+        req_parser.add_argument(current_app.config["TOKEN_HEADER"], location="headers", required=True)
+        req_parser.add_argument(current_app.config["AUTH_HEADER"], location="headers", required=True)
         headers = req_parser.parse_args()
+
         # verify auth_header's value
-        if headers.get(app.app.config["AUTH_HEADER"]) == app.app.config["AUTH_TOKEN"]:
+        if headers.get(current_app.config["AUTH_HEADER"]) == current_app.config["AUTH_TOKEN"]:
             return headers
         else:
             return False
 
     def _get_token(self, headers):
         """Get the token from request headers"""
-        token = headers.get(app.app.config["TOKEN_HEADER"], "").split(" ")
+        token = headers.get(current_app.config["TOKEN_HEADER"], "").split(" ")
         if len(token) == 2:
             return token[1]
         elif len(token) == 1:
@@ -59,12 +64,12 @@ class Verify(Resource):
         """Decode a token (JWE(JWS))."""
         try:
             # decrypt
-            decrypted_token = jwe.JWE(algs=[app.app.config["JWE_ENCRYPTION_ALG"], app.app.config["JWE_CEK_ENC"]])
+            decrypted_token = jwe.JWE(algs=[current_app.config["JWE_ENCRYPTION_ALG"], current_app.config["JWE_CEK_ENC"]])
             decrypted_token.deserialize(token, key=self.server_private_key)
             decrypted_payload = str(decrypted_token.payload, "utf-8")
             # verify signature
             signed_token = jws.JWS()
-            signed_token.deserialize(decrypted_payload, key=self.client_public_key, alg=app.app.config["JWS_SIGNING_ALG"])
+            signed_token.deserialize(decrypted_payload, key=self.client_public_key, alg=current_app.config["JWS_SIGNING_ALG"])
             # return final payload
             payload = str(signed_token.payload, "utf-8")
             return json.loads(payload)
@@ -75,12 +80,12 @@ class Verify(Resource):
     def _make_token(self, payload):
         """Wrap payload in a signed and encrypted JWT for response."""
         # sign the payload with server's private key
-        header = {"typ": "JWS", "alg": app.app.config["JWS_SIGNING_ALG"]}
+        header = {"typ": "JWS", "alg": current_app.config["JWS_SIGNING_ALG"]}
         signed_token = jwt.JWT(header=header, claims=payload)
         signed_token.make_signed_token(self.server_private_key)
         signed_payload = signed_token.serialize()
         # encrypt the signed payload with client's public key
-        header = {"typ": "JWE", "alg": app.app.config["JWE_ENCRYPTION_ALG"], "enc": app.app.config["JWE_CEK_ENC"]}
+        header = {"typ": "JWE", "alg": current_app.config["JWE_ENCRYPTION_ALG"], "enc": current_app.config["JWE_CEK_ENC"]}
         encrypted_token = jwt.JWT(header=header, claims=signed_payload)
         encrypted_token.make_encrypted_token(self.client_public_key)
         return encrypted_token.serialize()
@@ -91,13 +96,13 @@ class Verify(Resource):
             sub, name, eligibility = token_payload["sub"], token_payload["name"], list(token_payload["eligibility"])
             resp_payload = dict(
                 jti=token_payload["jti"],
-                iss=app.app.config["APP_NAME"],
+                iss=current_app.config["APP_NAME"],
                 iat=int(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).timestamp()),
             )
             # sub format check
-            if re.match(app.app.config["SUB_FORMAT_REGEX"], sub):
+            if re.match(current_app.config["SUB_FORMAT_REGEX"], sub):
                 # eligibility check against db
-                resp_payload["eligibility"] = self._db.check_user(sub, name, eligibility)
+                resp_payload["eligibility"] = self._check_user(sub, name, eligibility)
                 code = 200
             else:
                 resp_payload["error"] = {"sub": "invalid"}
@@ -110,6 +115,43 @@ class Verify(Resource):
         except Exception as ex:
             logger.error(f"Error: {ex}")
             abort(500, description="Internal server error")
+
+    def _check_user(self, sub, name, types):
+        """
+        Check if the data matches a record in the database
+
+        @param self: self
+        @param sub: sub to check for
+        @param name: name of user to check for
+        @param types: type of eligibility
+
+        @return list of strings of types user is eligible for, or empty list
+        """
+
+        if len(types) < 1:
+            logger.debug("List of types to check was empty.")
+            return []
+
+        if self.hash:
+            sub = self.hash.hash_input(sub)
+            name = self.hash.hash_input(name)
+
+        existing_user = User.query.filter_by(sub=sub, name=name).first()
+        if existing_user:
+            existing_user_types = ast.literal_eval(existing_user.types)
+        else:
+            existing_user_types = []
+
+        matching_types = set(existing_user_types) & set(types)
+
+        if existing_user is None:
+            logger.debug("Database does not contain requested user.")
+            return []
+        elif len(matching_types) < 1:
+            logger.debug(f"User's types do not contain any of the requested types: {types}")
+            return []
+        else:
+            return list(matching_types)
 
     def get(self):
         """Respond to a verification request."""

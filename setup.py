@@ -1,74 +1,33 @@
-import csv
-import json
-
-from flask_sqlalchemy import inspect
-from eligibility_server import app
-import logging
+from setuptools import find_packages, setup
 
 
-logger = logging.getLogger("setup")
+with open("requirements.txt") as f:
+    install_requires = f.read().strip().split("\n")
+
+with open("README.md") as f:
+    long_description = f.read()
 
 
-def import_users():
-    """
-    Imports user data to be added to database and saves user to database
+CLASSIFIERS = [
+    "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
 
-    Users can be imported from either a JSON file or CSV file, as configured
-    with settings from environment variables. CSV files take extra setting
-    configurations: CSV_DELIMITER, CSV_NEWLINE, CSV_QUOTING, CSV_QUOTECHAR
-    """
-
-    file_path = app.app.config["IMPORT_FILE_PATH"]
-    logger.info(f"Importing users from {file_path}")
-
-    file_format = file_path.split(".")[-1]
-
-    if file_format == "json":
-        with open(file_path) as file:
-            data = json.load(file)["users"]
-            for user in data:
-                save_users(user, data[user][0], str(data[user][1]))
-    elif file_format == "csv":
-        with open(file_path, newline=app.app.config["CSV_NEWLINE"], encoding="utf-8") as file:
-            data = csv.reader(
-                file,
-                delimiter=app.app.config["CSV_DELIMITER"],
-                quoting=int(app.app.config["CSV_QUOTING"]),
-                quotechar=app.app.config["CSV_QUOTECHAR"],
-            )
-            for user in data:
-                save_users(user[0], user[1], user[2])
-    else:
-        logger.warning(f"File format is not supported: {file_format}")
-
-    logger.info(f"Users added: {app.User.query.count()}")
-
-
-def save_users(sub: str, name: str, types: str):
-    """
-    Add users to the database User table
-
-    @param sub - User's ID, not to be confused with Database row ID
-    @param name - User's name
-    @param types - Types of eligibilities, in a stringified list
-    """
-
-    item = app.User(sub=sub, name=name, types=types)
-    app.db.session.add(item)
-    app.db.session.commit()
-
-
-if __name__ == "__main__":
-    inspector = inspect(app.db.engine)
-
-    if inspector.get_table_names():
-        logger.info("Tables already exist.")
-        if app.User.query.count() == 0:
-            import_users()
-        else:
-            logger.info("User table already has data.")
-    else:
-        logger.info("Creating table...")
-        app.db.create_all()
-        logger.info("Table created.")
-        import_users()
+setup(
+    name="eligibility-server",
+    description="Server implementation of the Eligibility Verification API",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    python_requires=">=3.7",
+    classifiers=CLASSIFIERS,
+    project_urls={
+        "Source": "https://github.com/cal-itp/eligibility-server",
+        "Tracker": "https://github.com/cal-itp/eligibility-server/issues",
+    },
+    packages=find_packages(),
+    include_package_data=True,
+    install_requires=install_requires,
+    license="AGPL-3.0",
+)

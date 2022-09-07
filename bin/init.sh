@@ -3,4 +3,4 @@ set -eux
 
 # run database migrations
 
-python setup.py
+flask init-db

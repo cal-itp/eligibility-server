@@ -3,7 +3,7 @@ import logging
 from jwcrypto import jwk
 import requests
 
-from . import app
+from eligibility_server import app
 
 
 logger = logging.getLogger(__name__)

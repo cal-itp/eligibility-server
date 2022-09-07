@@ -10,6 +10,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY bin/ bin/
 COPY eligibility_server/ eligibility_server/
 COPY *.py .
+COPY README.md .
+
+# install source as a package
+RUN pip install -e .
 
 # start app
 ENTRYPOINT ["/bin/bash"]

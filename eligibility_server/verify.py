@@ -2,6 +2,7 @@
 Eligibility Verification route
 """
 
+import ast
 import datetime
 import json
 import logging
@@ -13,7 +14,7 @@ from flask_restful import Resource, reqparse
 from jwcrypto import jwe, jws, jwt
 
 from . import keypair
-from .db.database import Database
+from .db.models import User
 from .hash import Hash
 
 
@@ -22,15 +23,18 @@ logger = logging.getLogger(__name__)
 
 class Verify(Resource):
     def __init__(self):
-        """Initialize Verify class with a keypair and Database"""
+        """Initialize Verify class with a keypair and hash"""
         self.client_public_key = keypair.get_client_public_key()
         self.server_private_key = keypair.get_server_private_key()
 
         if current_app.config["INPUT_HASH_ALGO"] != "":
             hash = Hash(current_app.config["INPUT_HASH_ALGO"])
-            self._db = Database(hash=hash)
+            logger.debug(f"Verify initialized with hash: {hash}")
         else:
-            self._db = Database()
+            hash = None
+            logger.debug("Verify initialized without hashing")
+
+        self.hash = hash
 
     def _check_headers(self):
         """Ensure correct request headers."""
@@ -98,7 +102,7 @@ class Verify(Resource):
             # sub format check
             if re.match(current_app.config["SUB_FORMAT_REGEX"], sub):
                 # eligibility check against db
-                resp_payload["eligibility"] = self._db.check_user(sub, name, eligibility)
+                resp_payload["eligibility"] = self._check_user(sub, name, eligibility)
                 code = 200
             else:
                 resp_payload["error"] = {"sub": "invalid"}
@@ -111,6 +115,43 @@ class Verify(Resource):
         except Exception as ex:
             logger.error(f"Error: {ex}")
             abort(500, description="Internal server error")
+
+    def _check_user(self, sub, name, types):
+        """
+        Check if the data matches a record in the database
+
+        @param self: self
+        @param sub: sub to check for
+        @param name: name of user to check for
+        @param types: type of eligibility
+
+        @return list of strings of types user is eligible for, or empty list
+        """
+
+        if len(types) < 1:
+            logger.debug("List of types to check was empty.")
+            return []
+
+        if self.hash:
+            sub = self.hash.hash_input(sub)
+            name = self.hash.hash_input(name)
+
+        existing_user = User.query.filter_by(sub=sub, name=name).first()
+        if existing_user:
+            existing_user_types = ast.literal_eval(existing_user.types)
+        else:
+            existing_user_types = []
+
+        matching_types = set(existing_user_types) & set(types)
+
+        if existing_user is None:
+            logger.debug("Database does not contain requested user.")
+            return []
+        elif len(matching_types) < 1:
+            logger.debug(f"User's types do not contain any of the requested types: {types}")
+            return []
+        else:
+            return list(matching_types)
 
     def get(self):
         """Respond to a verification request."""

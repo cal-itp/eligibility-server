@@ -32,8 +32,8 @@ def import_users():
     Imports user data to be added to database and saves user to database
 
     Users can be imported from either a JSON file or CSV file, as configured
-    with settings from environment variables. CSV files take extra setting
-    configurations: CSV_DELIMITER, CSV_NEWLINE, CSV_QUOTING, CSV_QUOTECHAR
+    with settings. CSV files take extra setting configurations:
+    CSV_DELIMITER, CSV_NEWLINE, CSV_QUOTING, CSV_QUOTECHAR
     """
 
     file_path = current_app.config["IMPORT_FILE_PATH"]
@@ -66,7 +66,7 @@ def save_users(sub: str, name: str, types: str):
     """
     Add users to the database User table
 
-    @param sub - User's ID, not to be confused with Database row ID
+    @param sub - User's sub
     @param name - User's name
     @param types - Types of eligibilities, in a stringified list
     """

@@ -18,12 +18,12 @@ app.config.from_envvar("ELIGIBILITY_SERVER_SETTINGS", silent=True)
 log_level = app.config["LOG_LEVEL"]
 format_string = "[%(asctime)s] %(levelname)s %(name)s:%(lineno)s %(message)s"
 
+# configure root logger
+logging.basicConfig(level=log_level, format=format_string)
+
 # configure Flask's logger
 app.logger.setLevel(log_level)
 default_handler.formatter = logging.Formatter(format_string)
-
-# configure root logger
-logging.basicConfig(level=log_level, format=format_string)
 
 
 def TextResponse(content):

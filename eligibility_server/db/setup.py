@@ -79,7 +79,7 @@ def save_users(sub: str, name: str, types):
     @param types - Types of eligibilities, in a stringified list
     """
 
-    user = User(sub=sub, name=name)
+    user = User.query.filter_by(sub=sub, name=name).first() or User(sub=sub, name=name)
     eligibility_types = [Eligibility.query.filter_by(name=type).first() or Eligibility(name=type) for type in types]
     user.types.extend(eligibility_types)
 

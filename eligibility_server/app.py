@@ -18,7 +18,7 @@ app.config.from_envvar("ELIGIBILITY_SERVER_SETTINGS", silent=True)
 log_level = app.config["LOG_LEVEL"]
 format_string = "[%(asctime)s] %(levelname)s %(name)s:%(lineno)s %(message)s"
 
-# configure root logger
+# configure root logger first, to prevent duplicate log entries from Flask's logger
 logging.basicConfig(level=log_level, format=format_string)
 
 # configure Flask's logger

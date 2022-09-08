@@ -102,9 +102,10 @@ def drop_db_command():
                 click.echo(f"Eligibility types to be deleted: {Eligibility.query.count()}")
                 Eligibility.query.delete()
 
-                db.session.commit()
             except Exception as e:
-                click.echo("Failed to query for Users", e)
+                click.echo(f"Failed to query models. Exception: {e}", err=True)
+
+            db.session.commit()
 
             db.drop_all()
             click.echo("Database dropped.")

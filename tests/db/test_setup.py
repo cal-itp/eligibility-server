@@ -1,5 +1,7 @@
 import pytest
 
+from flask_sqlalchemy import inspect
+from eligibility_server.db import db
 from eligibility_server.db.models import Eligibility, User
 
 
@@ -11,6 +13,7 @@ def test_init_db_command(runner):
     result = runner.invoke(args="init-db")
 
     assert result.exit_code == 0
+
     assert User.query.count() == 6
     assert Eligibility.query.count() == 2
 
@@ -24,3 +27,13 @@ def test_init_db_command(runner):
     user_with_multiple_eligibilities = User.query.filter_by(sub="D4567890", name="Jones").first()
     type2_eligibility = Eligibility.query.filter_by(name="type2").first()
     assert user_with_multiple_eligibilities.types == [type1_eligibility, type2_eligibility]
+
+
+@pytest.mark.usefixtures("flask")
+def test_drop_db_command(runner):
+    result = runner.invoke(args="drop-db")
+
+    assert result.exit_code == 0
+
+    inspector = inspect(db.engine)
+    assert inspector.get_table_names() == []

@@ -76,7 +76,7 @@ def save_users(sub: str, name: str, types):
 
     @param sub - User's sub
     @param name - User's name
-    @param types - Types of eligibilities, in a stringified list
+    @param types - Types of eligibilities, in the form of a list of strings
     """
 
     user = User.query.filter_by(sub=sub, name=name).first() or User(sub=sub, name=name)

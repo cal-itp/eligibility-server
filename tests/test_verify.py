@@ -29,7 +29,7 @@ def test_Verify_client_get_bad_request(mocker, client):
 @pytest.mark.usefixtures("flask")
 def test_Verify_get_response_sub_format_match(mocker):
     mocked_config = {"SUB_FORMAT_REGEX": r"^[A-Z]\d{7}$", "INPUT_HASH_ALGO": ""}
-    mocker.patch.dict("eligibility_server.verify.current_app.config", mocked_config)
+    mocker.patch.dict("eligibility_server.settings.current_app.config", mocked_config)
 
     token_payload = json.loads(json.dumps(dict(sub="A1234567", name="Garcia", eligibility=["type1"], jti=str(uuid.uuid4()))))
 
@@ -38,9 +38,10 @@ def test_Verify_get_response_sub_format_match(mocker):
     assert response_code == 200
 
 
+@pytest.mark.usefixtures("flask")
 def test_Verify_get_response_sub_format_no_match(mocker):
     mocked_config = {"SUB_FORMAT_REGEX": r"^[A-Z]\d{7}$", "INPUT_HASH_ALGO": ""}
-    mocker.patch.dict("eligibility_server.verify.current_app.config", mocked_config)
+    mocker.patch.dict("eligibility_server.settings.current_app.config", mocked_config)
 
     # "sub" value does not match the format regex
     token_payload = json.loads(json.dumps(dict(sub="nomatch", name="Garcia", eligibility=["type1"], jti=str(uuid.uuid4()))))
@@ -76,7 +77,7 @@ test_data = [
 @pytest.mark.parametrize("hash, sub, name, types, expected", test_data)
 def test_check_user(mocker, hash, sub, name, types, expected):
     mocked_config = {"INPUT_HASH_ALGO": hash}
-    mocker.patch.dict("eligibility_server.verify.current_app.config", mocked_config)
+    mocker.patch.dict("eligibility_server.settings.current_app.config", mocked_config)
 
     verify = Verify()
     assert verify._check_user(sub, name, types) == expected

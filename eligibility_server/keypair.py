@@ -3,9 +3,10 @@ import logging
 from jwcrypto import jwk
 import requests
 
-from eligibility_server import app
+from eligibility_server.settings import Configuration
 
 
+config = Configuration()
 logger = logging.getLogger(__name__)
 
 
@@ -29,18 +30,18 @@ def _read_key_file(key_path):
 
 
 def get_client_public_key():
-    key_path = app.app.config["CLIENT_KEY_PATH"]
+    key_path = config.client_key_path
     logger.info(f"Reading client key file: {key_path}")
     return _read_key_file(key_path)
 
 
 def get_server_private_key():
-    key_path = app.app.config["SERVER_PRIVATE_KEY_PATH"]
+    key_path = config.server_private_key_path
     logger.info(f"Reading server private key file: {key_path}")
     return _read_key_file(key_path)
 
 
 def get_server_public_key():
-    key_path = app.app.config["SERVER_PUBLIC_KEY_PATH"]
+    key_path = config.server_public_key_path
     logger.info(f"Reading server public key file: {key_path}")
     return _read_key_file(key_path)

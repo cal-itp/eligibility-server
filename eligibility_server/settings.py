@@ -1,6 +1,7 @@
 """
 Default settings for server.
 """
+from flask import current_app
 
 # App settings
 
@@ -32,12 +33,104 @@ SUB_FORMAT_REGEX = ".*"
 
 # Data settings
 
-IMPORT_FILE_PATH = ""
-INPUT_HASH_ALGO = ""
+IMPORT_FILE_PATH = "data/server.csv"
+INPUT_HASH_ALGO = "sha256"
 
 # CSV-specific settings
 
-CSV_DELIMITER = ","
+CSV_DELIMITER = ";"
 CSV_NEWLINE = ""
 CSV_QUOTING = 3
 CSV_QUOTECHAR = ""
+
+
+class Configuration:
+    # App settings
+
+    @property
+    def app_name(self):
+        return str(current_app.config["APP_NAME"])
+
+    @property
+    def debug_mode(self):
+        return bool(current_app.config["DEBUG_MODE"])
+
+    @property
+    def host(self):
+        return str(current_app.config["HOST"])
+
+    @property
+    def log_level(self):
+        return str(current_app.config["LOG_LEVEL"])
+
+    # API settings
+
+    @property
+    def auth_header(self):
+        return str(current_app.config["AUTH_HEADER"])
+
+    @property
+    def auth_token(self):
+        return str(current_app.config["AUTH_TOKEN"])
+
+    @property
+    def token_header(self):
+        return str(current_app.config["TOKEN_HEADER"])
+
+    # Eligibility Verification settings
+
+    @property
+    def client_key_path(self):
+        return str(current_app.config["CLIENT_KEY_PATH"])
+
+    @property
+    def jwe_cek_enc(self):
+        return str(current_app.config["JWE_CEK_ENC"])
+
+    @property
+    def jwe_encryption_alg(self):
+        return str(current_app.config["JWE_ENCRYPTION_ALG"])
+
+    @property
+    def jws_signing_alg(self):
+        return str(current_app.config["JWS_SIGNING_ALG"])
+
+    @property
+    def server_private_key_path(self):
+        return str(current_app.config["SERVER_PRIVATE_KEY_PATH"])
+
+    @property
+    def server_public_key_path(self):
+        return str(current_app.config["SERVER_PUBLIC_KEY_PATH"])
+
+    @property
+    def sub_format_regex(self):
+        return str(current_app.config["SUB_FORMAT_REGEX"])
+
+    # Data settings
+
+    @property
+    def import_file_path(self):
+        return str(current_app.config["IMPORT_FILE_PATH"])
+
+    @property
+    def input_hash_algo(self):
+        return str(current_app.config["INPUT_HASH_ALGO"])
+
+    # CSV-specific settings
+
+    @property
+    def csv_delimiter(self):
+        return str(current_app.config["CSV_DELIMITER"])
+
+    @property
+    def csv_newline(self):
+        return str(current_app.config["CSV_NEWLINE"])
+
+    @property
+    def csv_quoting(self):
+        return int(current_app.config["CSV_QUOTING"])
+
+    @property
+    def csv_quotechar(self):
+        return str(current_app.config["CSV_QUOTECHAR"])

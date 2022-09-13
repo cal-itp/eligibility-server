@@ -39,7 +39,7 @@ INPUT_HASH_ALGO = "sha256"
 # CSV-specific settings
 
 CSV_DELIMITER = ";"
-CSV_NEWLINE = ""
+CSV_NEWLINE = "\n"
 CSV_QUOTING = 3
 CSV_QUOTECHAR = '"'
 

@@ -88,7 +88,7 @@ def import_csv_users(csv_path, remote):
         csv_path = temp_csv.name
 
     # open the file and read it with a csv.reader
-    with open(csv_path, mode="r", encoding="utf-8") as file:
+    with open(csv_path, mode="r", encoding="utf-8", newline="") as file:
         data = csv.reader(
             file,
             delimiter=config.csv_delimiter,

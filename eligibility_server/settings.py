@@ -39,7 +39,6 @@ INPUT_HASH_ALGO = "sha256"
 # CSV-specific settings
 
 CSV_DELIMITER = ";"
-CSV_NEWLINE = "\n"
 CSV_QUOTING = 3
 CSV_QUOTECHAR = '"'
 
@@ -122,10 +121,6 @@ class Configuration:
     @property
     def csv_delimiter(self):
         return str(current_app.config["CSV_DELIMITER"])
-
-    @property
-    def csv_newline(self):
-        return str(current_app.config["CSV_NEWLINE"])
 
     @property
     def csv_quoting(self):

@@ -195,17 +195,6 @@ def test_configuration_csv_delimiter(mocker, configuration: Configuration):
 
 
 @pytest.mark.usefixtures("flask")
-def test_configuration_csv_newline(mocker, configuration: Configuration):
-    assert configuration.csv_newline == settings.CSV_NEWLINE
-
-    new_value = "-"
-    mocked_config = {"CSV_NEWLINE": new_value}
-    mocker.patch.dict("eligibility_server.settings.current_app.config", mocked_config)
-
-    assert configuration.csv_newline == new_value
-
-
-@pytest.mark.usefixtures("flask")
 def test_configuration_csv_quoting(mocker, configuration: Configuration):
     assert configuration.csv_quoting == settings.CSV_QUOTING
 

@@ -1,5 +1,6 @@
 import csv
 import json
+from tempfile import NamedTemporaryFile
 
 import click
 from flask import current_app
@@ -37,7 +38,7 @@ def import_users():
     """
     Imports user data to database, from either a local or remote JSON or CSV file,
     given the `IMPORT_FILE_PATH` setting.
-    CSV files take extra settings: `CSV_DELIMITER`, `CSV_NEWLINE`, `CSV_QUOTING`, `CSV_QUOTECHAR`
+    CSV files take extra settings: `CSV_DELIMITER`, `CSV_QUOTING`, `CSV_QUOTECHAR`
     """
 
     path = config.import_file_path
@@ -78,23 +79,31 @@ def import_json_users(json_path, remote):
 
 def import_csv_users(csv_path, remote):
     if remote:
-        # download the entire content as text, split on the lineterminator to a list of rows
-        content = requests.get(csv_path).text.strip().split(config.csv_newline)
-    else:
-        # open the file and read its lines into a list of rows
-        with open(csv_path, newline=config.csv_newline, encoding="utf-8") as file:
-            content = file.readlines()
-    # read rows with reader, saving each user
-    data = csv.reader(
-        content,
-        delimiter=config.csv_delimiter,
-        quoting=config.csv_quoting,
-        quotechar=config.csv_quotechar,
-    )
-    for user in data:
-        # lists are expected to be a comma-separated value and quoted if the CSV delimiter is a comma
-        types = [type.replace(config.csv_quotechar, "") for type in user[2].split(",") if type]
-        save_user(user[0], user[1], types)
+        # download the content as text and write to a temp file
+        content = requests.get(csv_path).text
+        temp_csv = NamedTemporaryFile(mode="w", encoding="utf-8")
+        temp_csv.write(content)
+        # reset the file pointer to the beginning for reading, and reset path
+        temp_csv.seek(0)
+        csv_path = temp_csv.name
+
+    # open the file and read it with a csv.reader
+    with open(csv_path, mode="r", encoding="utf-8") as file:
+        data = csv.reader(
+            file,
+            delimiter=config.csv_delimiter,
+            quoting=config.csv_quoting,
+            quotechar=config.csv_quotechar,
+        )
+        # unpack each record in data to the 3 columns
+        for (sub, name, types) in data:
+            # type lists are expected to be a comma-separated value and quoted if the CSV delimiter is a comma
+            types = [type.replace(config.csv_quotechar, "") for type in types.split(",") if type]
+            save_user(sub, name, types)
+
+    # close and remove the temp file if needed
+    if temp_csv:
+        temp_csv.close()
 
 
 def save_user(sub: str, name: str, types: str):

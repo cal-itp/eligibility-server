@@ -78,6 +78,8 @@ def import_json_users(json_path, remote):
 
 
 def import_csv_users(csv_path, remote):
+    # placeholder for a temp file that remote is downloaded to
+    temp_csv = None
     if remote:
         # download the content as text and write to a temp file
         content = requests.get(csv_path).text

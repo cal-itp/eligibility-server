@@ -6,7 +6,7 @@ from flask import current_app
 from flask_sqlalchemy import inspect
 
 from eligibility_server.db import db
-from eligibility_server.db.models import User
+from eligibility_server.db.models import User, Eligibility
 from eligibility_server.settings import Configuration
 
 
@@ -50,7 +50,7 @@ def import_users():
         with open(file_path) as file:
             data = json.load(file)["users"]
             for user in data:
-                save_users(user, data[user][0], str(data[user][1]))
+                save_users(user, data[user][0], data[user][1])
     elif file_format == "csv":
         with open(file_path, newline=config.csv_newline, encoding="utf-8") as file:
             data = csv.reader(
@@ -60,24 +60,32 @@ def import_users():
                 quotechar=config.csv_quotechar,
             )
             for user in data:
-                save_users(user[0], user[1], user[2])
+                # lists are expected to be a comma-separated value and quoted if the CSV delimiter is a comma
+                types = [type.replace(config.csv_quotechar, "") for type in user[2].split(",") if type]
+                save_users(user[0], user[1], types)
     else:
         click.echo(f"Warning: File format is not supported: {file_format}")
 
     click.echo(f"Users added: {User.query.count()}")
+    click.echo(f"Eligibility types added: {Eligibility.query.count()}")
 
 
-def save_users(sub: str, name: str, types: str):
+def save_users(sub: str, name: str, types):
     """
     Add users to the database User table
 
     @param sub - User's sub
     @param name - User's name
-    @param types - Types of eligibilities, in a stringified list
+    @param types - Types of eligibilities, in the form of a list of strings
     """
 
-    item = User(sub=sub, name=name, types=types)
-    db.session.add(item)
+    user = User.query.filter_by(sub=sub, name=name).first() or User(sub=sub, name=name)
+    eligibility_types = [Eligibility.query.filter_by(name=type).first() or Eligibility(name=type) for type in types]
+    user.types.extend(eligibility_types)
+
+    db.session.add(user)
+    db.session.add_all(eligibility_types)
+
     db.session.commit()
 
 
@@ -90,9 +98,14 @@ def drop_db_command():
             try:
                 click.echo(f"Users to be deleted: {User.query.count()}")
                 User.query.delete()
-                db.session.commit()
+
+                click.echo(f"Eligibility types to be deleted: {Eligibility.query.count()}")
+                Eligibility.query.delete()
+
             except Exception as e:
-                click.echo("Failed to query for Users", e)
+                click.echo(f"Failed to query models. Exception: {e}", err=True)
+
+            db.session.commit()
 
             db.drop_all()
             click.echo("Database dropped.")

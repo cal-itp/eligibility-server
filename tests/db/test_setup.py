@@ -38,4 +38,5 @@ def test_drop_db_command(runner):
     inspector = inspect(db.engine)
     assert inspector.get_table_names() == []
 
+    # temp fix to ensure database tests are idempotent - later tests need the database to exist
     runner.invoke(args="init-db")

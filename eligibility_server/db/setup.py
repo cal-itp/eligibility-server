@@ -83,6 +83,7 @@ def import_csv_users(csv_path, remote):
     if remote:
         # download the content as text and write to a temp file
         content = requests.get(csv_path).text
+        # note we leave the temp file open so it exists later for reading
         temp_csv = NamedTemporaryFile(mode="w", encoding="utf-8")
         temp_csv.write(content)
         # reset the file pointer to the beginning for reading, and reset path
@@ -90,6 +91,8 @@ def import_csv_users(csv_path, remote):
         csv_path = temp_csv.name
 
     # open the file and read it with a csv.reader
+    # open in read mode explicitly since the file may still be open if we downloaded from remote
+    # newline="" is important here, see https://docs.python.org/3/library/csv.html#id3
     with open(csv_path, mode="r", encoding="utf-8", newline="") as file:
         data = csv.reader(
             file,

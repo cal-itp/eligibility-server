@@ -37,3 +37,5 @@ def test_drop_db_command(runner):
 
     inspector = inspect(db.engine)
     assert inspector.get_table_names() == []
+
+    runner.invoke(args="init-db")

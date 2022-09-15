@@ -41,7 +41,7 @@ INPUT_HASH_ALGO = "sha256"
 CSV_DELIMITER = ";"
 CSV_NEWLINE = ""
 CSV_QUOTING = 3
-CSV_QUOTECHAR = "\""
+CSV_QUOTECHAR = '"'
 
 
 class Configuration:

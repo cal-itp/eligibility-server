@@ -60,16 +60,14 @@ def test_Verify_init_keypair():
 
 # todo: this should really be driven by a test database instead
 test_data = [
-    ("", "A1234567", "Garcia", ["type1"], ["type1"]),  # This sub/name pair is in the database
-    ("", "A1234567", "Garcia", ["type2"], []),  # This sub/name pair does not have "type2" in its associated array
-    ("", "A1234567", "Aaron", ["type1"], []),  # This sub/name pair does not exist
-    ("", "G7778889", "Thomas", ["type1"], []),  # User not in Hash
-    ("sha256", "A1234568", "Garcia", ["type1"], ["type1"]),  # Correct sub/name pair and correct hash algo type
-    ("sha256", "A1234568", "Garcia", ["type2"], []),  # This sub/name pair does not have "type2" in its array
-    ("sha256", "A1234568", "Aaron", ["type1"], []),  # This sub/name pair does not exist
-    ("sha256", "G7778889", "Thomas", ["type1"], []),  # name does not exist
-    ("sha512", "D4567891", "James", ["type1"], ["type1"]),  # Specific hash algo type
-    ("sha256", "D4567891", "James", ["type1"], []),  # Wrong hash algo type
+    ("", "12345", "Garcia", ["another_type"], ["another_type"]),  # This sub/name pair is in the database
+    ("", "12345", "Garcia", ["courtesy_card"], []),  # This sub/name pair does not have the type
+    ("", "12345", "Aaron", ["another_type"], []),  # This sub/name pair does not exist
+    ("sha256", "12345", "Garcia", ["another_type"], ["another_type"]),  # Correct sub/name pair and correct hash algo type
+    ("sha256", "12345", "Garcia", ["courtesy_card"], []),  # This sub/name pair does not have the type
+    ("sha256", "12345", "Aaron", ["another_type"], []),  # This sub/name pair does not exist
+    ("sha512", "45678", "James", ["courtesy_card"], ["courtesy_card"]),  # Specific hash algo type
+    ("sha256", "45678", "James", ["courtesy_card"], []),  # Wrong hash algo type
 ]
 
 

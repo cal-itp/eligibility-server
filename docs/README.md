@@ -6,7 +6,7 @@ Documentation for the `main` (default) branch is available [online](https://docs
 
 ## Overview
 
-`eligibility-server` is a [Flask web application](https://flask.palletsprojects.com/) that implements an [Eligibility Verification API](specification).
+`eligibility-server` is a [Flask web application](https://flask.palletsprojects.com/) that implements an [Eligibility Verification API](https://docs.calitp.org/eligibility-api/specification/).
 
 The API is designed for privacy and security of user information:
 

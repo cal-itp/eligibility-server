@@ -25,7 +25,7 @@ resource "azurerm_storage_account" "main" {
 }
 
 resource "azurerm_storage_container" "config" {
-  name                  = "benefits-config-${local.env_name}"
+  name                  = "eligibility-server-config"
   storage_account_name  = azurerm_storage_account.main.name
   container_access_type = "private"
 

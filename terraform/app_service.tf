@@ -23,8 +23,8 @@ resource "azurerm_linux_web_app" "main" {
     ftps_state             = "Disabled"
     vnet_route_all_enabled = true
     application_stack {
-      docker_image     = "ghcr.io/cal-itp/benefits"
-      docker_image_tag = local.env_name
+      docker_image     = "ghcr.io/cal-itp/eligibility-server"
+      docker_image_tag = "main"
     }
   }
 
@@ -48,7 +48,7 @@ resource "azurerm_linux_web_app" "main" {
   storage_account {
     access_key   = azurerm_storage_account.main.primary_access_key
     account_name = azurerm_storage_account.main.name
-    name         = "benefits-config"
+    name         = "eligibility-server-config"
     type         = "AzureBlob"
     share_name   = azurerm_storage_container.config.name
     mount_path   = "/home/calitp/app/config"

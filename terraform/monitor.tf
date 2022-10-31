@@ -1,5 +1,5 @@
 resource "azurerm_log_analytics_workspace" "main" {
-  name                = "CDT-OET-PUB-CALITP-${local.env_letter}-001"
+  name                = "eligibility-server"
   location            = data.azurerm_resource_group.main.location
   resource_group_name = data.azurerm_resource_group.main.name
 
@@ -10,7 +10,7 @@ resource "azurerm_log_analytics_workspace" "main" {
 
 
 resource "azurerm_application_insights" "main" {
-  name                = "AI-CDT-PUB-VIP-CALITP-${local.env_letter}-001"
+  name                = "eligibility-server"
   application_type    = "web"
   location            = data.azurerm_resource_group.main.location
   resource_group_name = data.azurerm_resource_group.main.name

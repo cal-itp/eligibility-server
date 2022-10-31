@@ -1,5 +1,5 @@
 resource "azurerm_service_plan" "main" {
-  name                = "ASP-CDT-PUB-VIP-CALITP-${local.env_letter}-001"
+  name                = "eligibility-server"
   location            = data.azurerm_resource_group.main.location
   resource_group_name = data.azurerm_resource_group.main.name
   os_type             = "Linux"
@@ -13,7 +13,7 @@ resource "azurerm_service_plan" "main" {
 # app_settings are managed manually through the portal since they contain secrets
 
 resource "azurerm_linux_web_app" "main" {
-  name                = "AS-CDT-PUB-VIP-CALITP-${local.env_letter}-001"
+  name                = "eligibility-server"
   location            = data.azurerm_resource_group.main.location
   resource_group_name = data.azurerm_resource_group.main.name
   service_plan_id     = azurerm_service_plan.main.id
@@ -58,10 +58,4 @@ resource "azurerm_linux_web_app" "main" {
     prevent_destroy = true
     ignore_changes  = [app_settings, sticky_settings, tags]
   }
-}
-
-resource "azurerm_app_service_custom_hostname_binding" "main" {
-  hostname            = local.hostname
-  app_service_name    = azurerm_linux_web_app.main.name
-  resource_group_name = data.azurerm_resource_group.main.name
 }

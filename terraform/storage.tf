@@ -1,5 +1,5 @@
 resource "azurerm_storage_account" "main" {
-  name                     = "sacdtcalitp${lower(local.env_letter)}001"
+  name                     = "eligibilityserver"
   location                 = data.azurerm_resource_group.main.location
   resource_group_name      = data.azurerm_resource_group.main.name
   account_tier             = "Standard"

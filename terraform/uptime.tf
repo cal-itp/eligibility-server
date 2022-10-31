@@ -5,7 +5,7 @@ module "healthcheck" {
   application_insights = azurerm_application_insights.main
   # not strictly necessary to include the environment name, but helps to make the alerts more clear
   name = "${local.env_name}-healthcheck"
-  url  = "https://${local.hostname}/healthcheck"
+  url  = "https://${azurerm_linux_web_app.main.default_hostname}/healthcheck"
 }
 
 # migrations

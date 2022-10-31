@@ -6,7 +6,7 @@ set -e
 ENV=$1
 
 echo "Setting the subscription for the Azure CLI..."
-az account set --subscription="Azure subscription 1"
+az account set --subscription="MST IT"
 
 printf "Intializing Terraform...\n\n"
 terraform init

@@ -9,5 +9,5 @@ locals {
 }
 
 data "azurerm_resource_group" "main" {
-  name = "RG-CDT-PUB-VIP-CALITP-${local.env_letter}-001"
+  name = "courtesy-cards-eligibility-${local.env_name}"
 }

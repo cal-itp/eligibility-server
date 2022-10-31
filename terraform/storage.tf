@@ -33,10 +33,3 @@ resource "azurerm_storage_container" "config" {
     prevent_destroy = true
   }
 }
-
-# migrations
-
-moved {
-  from = azurerm_storage_container.config_prod
-  to   = azurerm_storage_container.config
-}

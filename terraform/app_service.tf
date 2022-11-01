@@ -10,7 +10,9 @@ resource "azurerm_service_plan" "main" {
   }
 }
 
-# app_settings are managed manually through the portal since they contain secrets
+locals {
+  mount_path = "/home/calitp/app/config"
+}
 
 resource "azurerm_linux_web_app" "main" {
   name                = "eligibility-server"
@@ -26,6 +28,10 @@ resource "azurerm_linux_web_app" "main" {
       docker_image     = "ghcr.io/cal-itp/eligibility-server"
       docker_image_tag = "main"
     }
+  }
+
+  app_settings = {
+    "ELIGIBILITY_SERVER_SETTINGS" = "${local.mount_path}/settings.py"
   }
 
   identity {
@@ -51,11 +57,11 @@ resource "azurerm_linux_web_app" "main" {
     name         = "eligibility-server-config"
     type         = "AzureBlob"
     share_name   = azurerm_storage_container.config.name
-    mount_path   = "/home/calitp/app/config"
+    mount_path   = local.mount_path
   }
 
   lifecycle {
     prevent_destroy = true
-    ignore_changes  = [app_settings, sticky_settings, tags]
+    ignore_changes  = [tags]
   }
 }

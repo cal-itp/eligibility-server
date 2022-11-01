@@ -14,19 +14,12 @@ def test_init_db_command(runner):
 
     assert result.exit_code == 0
 
-    assert User.query.count() == 6
-    assert Eligibility.query.count() == 2
+    assert User.query.count() == 24
+    assert Eligibility.query.count() == 1
 
-    user_with_one_eligibility = User.query.filter_by(sub="23456", name="Hernandez").first()
+    user_with_one_eligibility = User.query.filter_by(sub="32587", name="Gonzales").first()
     courtesy_card_type = Eligibility.query.filter_by(name="courtesy_card").first()
     assert user_with_one_eligibility.types == [courtesy_card_type]
-
-    user_with_no_eligibility = User.query.filter_by(sub="34567", name="Smith").first()
-    assert user_with_no_eligibility.types == []
-
-    user_with_multiple_eligibilities = User.query.filter_by(sub="45678", name="Jones").first()
-    sample_type2 = Eligibility.query.filter_by(name="another_type").first()
-    assert user_with_multiple_eligibilities.types == [sample_type2, courtesy_card_type]
 
 
 @pytest.mark.usefixtures("flask")

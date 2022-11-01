@@ -34,11 +34,11 @@ SUB_FORMAT_REGEX = ".*"
 # Data settings
 
 IMPORT_FILE_PATH = "data/server.csv"
-INPUT_HASH_ALGO = "sha256"
+INPUT_HASH_ALGO = "sha512"
 
 # CSV-specific settings
 
-CSV_DELIMITER = ";"
+CSV_DELIMITER = ","
 CSV_QUOTING = 3
 CSV_QUOTECHAR = '"'
 

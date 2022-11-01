@@ -5,6 +5,11 @@ set -e
 
 ENV=$1
 
+if [ $# -ne 1 ]; then
+  echo "Usage: $0 <env>"
+  exit 1
+fi
+
 echo "Setting the subscription for the Azure CLI..."
 az account set --subscription="MST IT"
 

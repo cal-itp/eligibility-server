@@ -63,7 +63,7 @@ See [`Failures`](https://docs.microsoft.com/en-us/azure/azure-monitor/app/asp-ne
 After [setting up the Azure CLI](#making-changes), you can use the following command to [stream live logs](https://docs.microsoft.com/en-us/azure/app-service/troubleshoot-diagnostic-logs#in-local-terminal):
 
 ```sh
-az webapp log tail --resource-group <resource group> --name eligibility-server 2>&1 | grep -v /healthcheck
+az webapp log tail --resource-group courtesy-cards-eligibility-prod --name eligibility-server 2>&1 | grep -v /healthcheck
 ```
 
 ### SCM

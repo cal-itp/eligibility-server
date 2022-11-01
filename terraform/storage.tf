@@ -1,5 +1,6 @@
 resource "azurerm_storage_account" "main" {
-  name                     = "eligibilityserver"
+  # name needs to be unique per subscription
+  name                     = "mstcceligibility${local.env_name}"
   location                 = data.azurerm_resource_group.main.location
   resource_group_name      = data.azurerm_resource_group.main.name
   account_tier             = "Standard"

@@ -32,7 +32,11 @@ resource "azurerm_linux_web_app" "main" {
   }
 
   app_settings = {
+    "DOCKER_REGISTRY_SERVER_URL"  = "https://ghcr.io/"
     "ELIGIBILITY_SERVER_SETTINGS" = "${local.mount_path}/settings.py"
+    # this prevents the filesystem from being obscured by a mount
+    "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
+    "WEBSITES_PORT"                       = "8000"
   }
 
   identity {

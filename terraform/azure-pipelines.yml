@@ -3,7 +3,7 @@ trigger:
   # https://docs.microsoft.com/en-us/azure/devops/pipelines/repos/github?view=azure-devops&tabs=yaml#pr-triggers
   branches:
     include:
-      - dev
+      - main
   # only run for changes to Terraform files
   paths:
     include:
@@ -17,12 +17,7 @@ stages:
         # https://learn.microsoft.com/en-us/azure/devops/pipelines/process/expressions?view=azure-devops#conditional-insertion
         variables:
           # on pull requests, base on target branch; otherwise base on the source branch
-          ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), in(variables['System.PullRequest.TargetBranch'], 'test', 'prod')) }}:
-            workspace: "${{variables['System.PullRequest.TargetBranch']}}"
-          ${{ elseif in(variables['Build.SourceBranchName'], 'test', 'prod') }}:
-            workspace: "${{variables['Build.SourceBranchName']}}"
-          ${{ else }}:
-            workspace: dev
+          workspace: dev
         steps:
           # https://github.com/microsoft/azure-pipelines-terraform/tree/main/Tasks/TerraformInstaller#readme
           - task: TerraformInstaller@0
@@ -37,10 +32,10 @@ stages:
               command: init
               workingDirectory: "$(System.DefaultWorkingDirectory)/terraform"
               # service connection
-              backendServiceArm: Production
+              backendServiceArm: deployer
               # needs to match main.tf
-              backendAzureRmResourceGroupName: RG-CDT-PUB-VIP-CALITP-P-001
-              backendAzureRmStorageAccountName: sacdtcalitpp001
+              backendAzureRmResourceGroupName: courtesy-cards-eligibility-terraform
+              backendAzureRmStorageAccountName: courtesycardsterraform
               backendAzureRmContainerName: tfstate
               backendAzureRmKey: terraform.tfstate
           - task: TerraformTaskV3@3
@@ -52,7 +47,7 @@ stages:
               commandOptions: select ${{variables.workspace}}
               workingDirectory: "$(System.DefaultWorkingDirectory)/terraform"
               # service connection
-              environmentServiceNameAzureRM: Production
+              environmentServiceNameAzureRM: deployer
           - task: TerraformTaskV3@3
             displayName: Terraform plan
             inputs:
@@ -63,7 +58,7 @@ stages:
               commandOptions: -lock-timeout=2m
               workingDirectory: "$(System.DefaultWorkingDirectory)/terraform"
               # service connection
-              environmentServiceNameAzureRM: Production
+              environmentServiceNameAzureRM: deployer
           - task: TerraformTaskV3@3
             displayName: Terraform apply
             inputs:
@@ -73,6 +68,6 @@ stages:
               commandOptions: -lock-timeout=2m
               workingDirectory: "$(System.DefaultWorkingDirectory)/terraform"
               # service connection
-              environmentServiceNameAzureRM: Production
-            # only run on dev
-            condition: eq(variables['Build.SourceBranchName'], 'dev')
+              environmentServiceNameAzureRM: deployer
+            # only run on main
+            condition: eq(variables['Build.SourceBranchName'], 'main')

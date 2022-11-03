@@ -4,7 +4,7 @@ resource "azurerm_role_assignment" "velocity_etl" {
   description          = "This role assignment gives write access only for the path of the hashed data file."
   scope                = azurerm_storage_container.config.resource_manager_id
   role_definition_name = "Storage Blob Data Contributor"
-  principal_id         = var.velocity_etl_service_principal_id
+  principal_id         = var.VELOCITY_ETL_SERVICE_PRINCIPAL_ID
   condition            = <<EOF
 (
  (

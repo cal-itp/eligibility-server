@@ -97,7 +97,7 @@ Terraform is [`plan`](https://www.terraform.io/cli/commands/plan)'d when code is
 1. Create a `terraform.tfvars` file and specify the [variables](variables.tf):
 
    ```hcl
-   velocity_etl_service_principal_id = "..."
+   VELOCITY_ETL_SERVICE_PRINCIPAL_ID = "..."
    ```
 
 1. [Initialize Terraform.](https://www.terraform.io/cli/commands/init) You can also use this script later to switch between [environments](#environments).

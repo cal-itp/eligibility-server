@@ -117,9 +117,6 @@ Terraform is [`plan`](https://www.terraform.io/cli/commands/plan)'d when code is
 
 ## Azure environment setup
 
-The following steps are required to set up the environment, with linked issues to automate them:
-
-- `terraform apply`
-- Set required App Service configuration
+The steps we took to set up MST's environment are documented in [a separate Google Doc](https://docs.google.com/document/d/12uzuKyvyabHAOaeQc6k2jQIG5pQprdEyBpfST_dY2ME/edit#heading=h.1vs880ltbo58).
 
 This is not a complete step-by-step guide; more a list of things to remember. This may be useful as part of incident response.

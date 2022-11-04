@@ -2,7 +2,7 @@
 
 This website provides technical documentation for the `eligibility-server` application, a part of the [`benefits`](https://docs.calitp.org/benefits) application, from the [California Integrated Travel Project (Cal-ITP)](https://www.calitp.org).
 
-Documentation for the `main` (default) branch is available [online](https://docs.calitp.org/eligibility-server).
+Documentation for the `dev` (default) branch is available [online](https://docs.calitp.org/eligibility-server).
 
 ## Overview
 
@@ -30,5 +30,5 @@ docker compose build server
 ### Use the Docker container locally
 
 ```bash
-docker pull ghcr.io/cal-itp/eligibility-server:main
+docker pull ghcr.io/cal-itp/eligibility-server:dev
 ```

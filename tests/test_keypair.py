@@ -14,7 +14,7 @@ def sample_key_path_local():
 
 @pytest.fixture
 def sample_key_path_remote():
-    return "https://raw.githubusercontent.com/cal-itp/eligibility-server/main/keys/server.pub"
+    return "https://raw.githubusercontent.com/cal-itp/eligibility-server/dev/keys/server.pub"
 
 
 @pytest.fixture

@@ -1,0 +1,73 @@
+trigger:
+  # automatically runs on pull requests; this runs the pipeline after merge
+  # https://docs.microsoft.com/en-us/azure/devops/pipelines/repos/github?view=azure-devops&tabs=yaml#pr-triggers
+  branches:
+    include:
+      - dev
+  # only run for changes to Terraform files
+  paths:
+    include:
+      - terraform/*
+stages:
+  - stage: plan
+    pool:
+      vmImage: ubuntu-latest
+    jobs:
+      - job: plan
+        # https://learn.microsoft.com/en-us/azure/devops/pipelines/process/expressions?view=azure-devops#conditional-insertion
+        variables:
+          # on pull requests, base on target branch; otherwise base on the source branch
+          workspace: dev
+        steps:
+          # https://github.com/microsoft/azure-pipelines-terraform/tree/main/Tasks/TerraformInstaller#readme
+          - task: TerraformInstaller@0
+            displayName: Install Terraform
+            inputs:
+              terraformVersion: 1.3.1
+          # https://github.com/microsoft/azure-pipelines-terraform/tree/main/Tasks/TerraformTask/TerraformTaskV3#readme
+          - task: TerraformTaskV3@3
+            displayName: Terraform init
+            inputs:
+              provider: azurerm
+              command: init
+              workingDirectory: "$(System.DefaultWorkingDirectory)/terraform"
+              # service connection
+              backendServiceArm: deployer
+              # needs to match main.tf
+              backendAzureRmResourceGroupName: courtesy-cards-eligibility-terraform
+              backendAzureRmStorageAccountName: courtesycardsterraform
+              backendAzureRmContainerName: tfstate
+              backendAzureRmKey: terraform.tfstate
+          - task: TerraformTaskV3@3
+            displayName: Select environment
+            inputs:
+              provider: azurerm
+              command: custom
+              customCommand: workspace
+              commandOptions: select ${{variables.workspace}}
+              workingDirectory: "$(System.DefaultWorkingDirectory)/terraform"
+              # service connection
+              environmentServiceNameAzureRM: deployer
+          - task: TerraformTaskV3@3
+            displayName: Terraform plan
+            inputs:
+              provider: azurerm
+              command: plan
+              # wait for lock to be released, in case being used by another pipeline run
+              # https://discuss.hashicorp.com/t/terraform-plan-wait-for-lock-to-be-released/6870/2
+              commandOptions: -lock-timeout=2m
+              workingDirectory: "$(System.DefaultWorkingDirectory)/terraform"
+              # service connection
+              environmentServiceNameAzureRM: deployer
+          - task: TerraformTaskV3@3
+            displayName: Terraform apply
+            inputs:
+              provider: azurerm
+              command: apply
+              # (ditto the lock comment above)
+              commandOptions: -lock-timeout=2m
+              workingDirectory: "$(System.DefaultWorkingDirectory)/terraform"
+              # service connection
+              environmentServiceNameAzureRM: deployer
+            # only run on dev
+            condition: eq(variables['Build.SourceBranchName'], 'dev')

@@ -61,9 +61,9 @@ This repository comes with a [VS Code Remote Containers](https://code.visualstud
 
 Once you clone the repository locally, open it within VS Code, which will prompt you to re-open the repository within the Remote Container.
 
- 1. Build and Open the Dev Container
- 2. Start the `eligibility-server` Flask app and database with `F5`
- 3. Now you can run tests from the container.
+1. Build and Open the Dev Container
+2. Start the `eligibility-server` Flask app and database with `F5`
+3. Now you can run tests from the container.
 
 Starting the Dev Container will run `bin/init.sh`, which runs a command to initialize the database. More specifically, it creates the database and imports and saves users based on the configured settings.
 
@@ -71,7 +71,7 @@ Starting the Dev Container will run `bin/init.sh`, which runs a command to initi
 
 ### Run unit tests
 
-Unit tests are implemented with [`pytest`](https://docs.pytest.org/en/6.2.x/) and can be found in the [`tests/`](https://github.com/cal-itp/eligibility-server/tree/main/tests) directory in the repository. `pytest` is installed and available to run directly in the devcontainer.
+Unit tests are implemented with [`pytest`](https://docs.pytest.org/en/6.2.x/) and can be found in the [`tests/`](https://github.com/cal-itp/eligibility-server/tree/dev/tests) directory in the repository. `pytest` is installed and available to run directly in the devcontainer.
 
 The test suite runs against every pull request via a GitHub Action.
 

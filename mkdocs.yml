@@ -1,7 +1,7 @@
 site_name: "cal-itp/eligibility-server: documentation"
 site_url: https://docs.calitp.org/eligibility-server
 repo_url: https://github.com/cal-itp/eligibility-server
-edit_uri: edit/main/docs
+edit_uri: edit/dev/docs
 
 theme:
   name: material

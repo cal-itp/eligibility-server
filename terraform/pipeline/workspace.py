@@ -1,18 +1,25 @@
 import os
+import sys
 
 REASON = os.environ["REASON"]
-SOURCE = os.environ["SOURCE"]
+# the name of the variable that Azure Pipelines uses for the source branch depends on the type of run, so need to check both
+SOURCE = os.environ.get("OTHER_SOURCE") or os.environ["INDIVIDUAL_SOURCE"]
 TARGET = os.environ["TARGET"]
 
 # the branches that correspond to environments
 ENV_BRANCHES = ["dev", "test", "prod"]
 
 if REASON == "PullRequest" and TARGET in ENV_BRANCHES:
-    # it's a pull requests against one of the environment branches, so use the target branch
-    print(TARGET)
-elif SOURCE in ENV_BRANCHES:
+    # it's a pull request against one of the environment branches, so use the target branch
+    workspace = TARGET
+elif REASON == "IndividualCI" and SOURCE in ENV_BRANCHES:
     # it's being run on one of the environment branches, so use that
-    print(SOURCE)
+    workspace = SOURCE
 else:
     # default to running against dev
-    print("dev")
+    workspace = "dev"
+
+# just for troubleshooting
+print(f"Deploying from {SOURCE} to {TARGET} as a result of {REASON} using workspace {workspace}", file=sys.stderr)
+
+print(workspace)

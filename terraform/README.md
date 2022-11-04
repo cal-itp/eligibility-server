@@ -9,8 +9,9 @@ The infrastructure is configured as code via [Terraform](https://www.terraform.i
 The following things in Azure are managed outside of Terraform:
 
 - Subcriptions
-- IAM
+- Active Directory (users, groups, service principals, etc.)
 - Service connections
+- Configuration files, stored as blobs
 
 ## Environments
 

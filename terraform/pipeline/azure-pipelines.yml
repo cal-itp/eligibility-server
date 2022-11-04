@@ -23,7 +23,7 @@ stages:
               # just for troubleshooting
               echo "Deploying from $SOURCE to $TARGET as a result of $REASON"
 
-              WORKSPACE=$(python terraform/workspace.py)
+              WORKSPACE=$(python terraform/pipeline/workspace.py)
               echo "##vso[task.setvariable variable=workspace]$WORKSPACE"
             displayName: Determine deployment environment
             env:

@@ -68,11 +68,11 @@ az webapp log tail --resource-group courtesy-cards-eligibility-prod --name mst-c
 
 ### SCM
 
-todo
+https://mst-courtesy-cards-eligibility-server-dev.scm.azurewebsites.net/api/logs/docker
 
 ## Making changes
 
-todo: badge
+[![Build Status](https://dev.azure.com/mstransit/courtesy-cards/_apis/build/status/cal-itp.eligibility-server?branchName=dev)](https://dev.azure.com/mstransit/courtesy-cards/_build/latest?definitionId=1&branchName=dev)
 
 Terraform is [`plan`](https://www.terraform.io/cli/commands/plan)'d when code is pushed to any branch on GitHub, then [`apply`](https://www.terraform.io/cli/commands/apply)'d when merged to `dev`. While other automation for this project is done through GitHub Actions, we use an Azure Pipeline (above) for a couple of reasons:
 

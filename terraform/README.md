@@ -68,7 +68,7 @@ az webapp log tail --resource-group courtesy-cards-eligibility-prod --name mst-c
 
 ### SCM
 
-https://mst-courtesy-cards-eligibility-server-dev.scm.azurewebsites.net/api/logs/docker
+[Docker logs](https://mst-courtesy-cards-eligibility-server-dev.scm.azurewebsites.net/api/logs/docker)
 
 ## Making changes
 
@@ -114,14 +114,6 @@ Terraform is [`plan`](https://www.terraform.io/cli/commands/plan)'d when code is
    ```
 
 1. Submit the changes via pull request.
-
-For Azure resources, you need to [ignore changes](https://www.terraform.io/language/meta-arguments/lifecycle#ignore_changes) to tags, since they are [automatically created by Azure Policy](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/tag-policies).
-
-```hcl
-lifecycle {
-  ignore_changes = [tags]
-}
-```
 
 ## Azure environment setup
 

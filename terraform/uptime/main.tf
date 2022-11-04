@@ -17,10 +17,6 @@ resource "azurerm_application_insights_web_test" "healthcheck" {
   ]
 
   configuration = templatefile("${path.module}/webtest.xml", { url = var.url })
-
-  lifecycle {
-    ignore_changes = [tags]
-  }
 }
 
 resource "azurerm_monitor_metric_alert" "uptime" {
@@ -42,9 +38,5 @@ resource "azurerm_monitor_metric_alert" "uptime" {
 
   action {
     action_group_id = var.action_group_id
-  }
-
-  lifecycle {
-    ignore_changes = [tags]
   }
 }

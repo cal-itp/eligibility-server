@@ -20,6 +20,5 @@ resource "azurerm_key_vault" "main" {
 
   lifecycle {
     prevent_destroy = true
-    ignore_changes  = [tags]
   }
 }

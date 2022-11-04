@@ -4,10 +4,6 @@ resource "azurerm_service_plan" "main" {
   resource_group_name = data.azurerm_resource_group.main.name
   os_type             = "Linux"
   sku_name            = "P2v2"
-
-  lifecycle {
-    ignore_changes = [tags]
-  }
 }
 
 locals {
@@ -67,6 +63,5 @@ resource "azurerm_linux_web_app" "main" {
 
   lifecycle {
     prevent_destroy = true
-    ignore_changes  = [tags]
   }
 }

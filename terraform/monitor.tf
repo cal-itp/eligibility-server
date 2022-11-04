@@ -2,10 +2,6 @@ resource "azurerm_log_analytics_workspace" "main" {
   name                = "eligibility-server"
   location            = data.azurerm_resource_group.main.location
   resource_group_name = data.azurerm_resource_group.main.name
-
-  lifecycle {
-    ignore_changes = [tags]
-  }
 }
 
 
@@ -16,10 +12,6 @@ resource "azurerm_application_insights" "main" {
   resource_group_name = data.azurerm_resource_group.main.name
   sampling_percentage = 0
   workspace_id        = azurerm_log_analytics_workspace.main.id
-
-  lifecycle {
-    ignore_changes = [tags]
-  }
 }
 
 # created manually
@@ -37,9 +29,5 @@ resource "azurerm_monitor_action_group" "eng_email" {
   email_receiver {
     name          = "Benefits engineering team"
     email_address = data.azurerm_key_vault_secret.slack_benefits_notify_email.value
-  }
-
-  lifecycle {
-    ignore_changes = [tags]
   }
 }

@@ -18,11 +18,6 @@ resource "azurerm_storage_account" "main" {
       days = 7
     }
   }
-
-
-  lifecycle {
-    ignore_changes = [tags]
-  }
 }
 
 resource "azurerm_storage_container" "config" {

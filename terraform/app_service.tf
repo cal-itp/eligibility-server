@@ -60,8 +60,4 @@ resource "azurerm_linux_web_app" "main" {
     share_name   = azurerm_storage_container.config.name
     mount_path   = local.mount_path
   }
-
-  lifecycle {
-    prevent_destroy = true
-  }
 }

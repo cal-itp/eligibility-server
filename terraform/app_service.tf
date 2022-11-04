@@ -60,4 +60,12 @@ resource "azurerm_linux_web_app" "main" {
     share_name   = azurerm_storage_container.config.name
     mount_path   = local.mount_path
   }
+
+  lifecycle {
+    ignore_changes = [
+      # tags get created for Application Insights
+      # https://github.com/hashicorp/terraform-provider-azurerm/issues/16569
+      tags
+    ]
+  }
 }

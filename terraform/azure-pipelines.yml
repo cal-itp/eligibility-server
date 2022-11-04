@@ -3,7 +3,7 @@ trigger:
   # https://docs.microsoft.com/en-us/azure/devops/pipelines/repos/github?view=azure-devops&tabs=yaml#pr-triggers
   branches:
     include:
-      - main
+      - dev
   # only run for changes to Terraform files
   paths:
     include:
@@ -69,5 +69,5 @@ stages:
               workingDirectory: "$(System.DefaultWorkingDirectory)/terraform"
               # service connection
               environmentServiceNameAzureRM: deployer
-            # only run on main
-            condition: eq(variables['Build.SourceBranchName'], 'main')
+            # only run on dev
+            condition: eq(variables['Build.SourceBranchName'], 'dev')

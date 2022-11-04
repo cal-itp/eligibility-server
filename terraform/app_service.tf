@@ -27,7 +27,7 @@ resource "azurerm_linux_web_app" "main" {
     vnet_route_all_enabled = true
     application_stack {
       docker_image     = "ghcr.io/cal-itp/eligibility-server"
-      docker_image_tag = "main"
+      docker_image_tag = local.env_name
     }
   }
 

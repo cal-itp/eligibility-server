@@ -17,6 +17,14 @@ resource "azurerm_application_insights_web_test" "healthcheck" {
   ]
 
   configuration = templatefile("${path.module}/webtest.xml", { url = var.url })
+
+  lifecycle {
+    ignore_changes = [
+      # tags get automatically created
+      # https://github.com/hashicorp/terraform-provider-azurerm/issues/16569
+      tags
+    ]
+  }
 }
 
 resource "azurerm_monitor_metric_alert" "uptime" {

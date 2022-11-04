@@ -1,4 +1,11 @@
 trigger:
+  # automatically runs on pull requests
+  # https://docs.microsoft.com/en-us/azure/devops/pipelines/repos/github?view=azure-devops&tabs=yaml#pr-triggers
+  branches:
+    include:
+      - dev
+      - test
+      - prod
   # only run for changes to Terraform files
   paths:
     include:
@@ -9,16 +16,20 @@ stages:
       vmImage: ubuntu-latest
     jobs:
       - job: plan
-        # https://learn.microsoft.com/en-us/azure/devops/pipelines/process/expressions?view=azure-devops#conditional-insertion
-        variables:
-          # on pull requests, base on target branch; otherwise base on the source branch
-          ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), in(variables['System.PullRequest.TargetBranch'], 'test', 'prod')) }}:
-            workspace: "${{variables['System.PullRequest.TargetBranch']}}"
-          ${{ elseif in(variables['Build.SourceBranchName'], 'test', 'prod') }}:
-            workspace: "${{variables['Build.SourceBranchName']}}"
-          ${{ else }}:
-            workspace: dev
         steps:
+          # set the workspace variable at runtime (rather than build time) so that all the necessary variables are available, and we can use Python
+          # https://learn.microsoft.com/en-us/azure/devops/pipelines/process/set-variables-scripts?view=azure-devops&tabs=bash#about-tasksetvariable
+          - bash: |
+              # just for troubleshooting
+              echo "Deploying from $SOURCE to $TARGET as a result of $REASON"
+
+              WORKSPACE=$(python terraform/pipeline/workspace.py)
+              echo "##vso[task.setvariable variable=workspace]$WORKSPACE"
+            displayName: Determine deployment environment
+            env:
+              REASON: $(Build.Reason)
+              SOURCE: $(System.PullRequest.SourceBranch)
+              TARGET: $(System.PullRequest.TargetBranch)
           # https://github.com/microsoft/azure-pipelines-terraform/tree/main/Tasks/TerraformInstaller#readme
           - task: TerraformInstaller@0
             displayName: Install Terraform
@@ -44,7 +55,7 @@ stages:
               provider: azurerm
               command: custom
               customCommand: workspace
-              commandOptions: select ${{variables.workspace}}
+              commandOptions: select $(workspace)
               workingDirectory: "$(System.DefaultWorkingDirectory)/terraform"
               # service connection
               environmentServiceNameAzureRM: deployer

@@ -86,7 +86,7 @@ Terraform is [`plan`](https://www.terraform.io/cli/commands/plan)'d when code is
 1. Install dependencies:
 
    - [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
-   - [Terraform](https://www.terraform.io/downloads) - see exact version in [`azure-pipelines.yml`](azure-pipelines.yml)
+   - [Terraform](https://www.terraform.io/downloads) - see exact version in [`pipeline/azure-pipelines.yml`](pipeline/azure-pipelines.yml)
 
 1. [Authenticate using the Azure CLI](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/guides/azure_cli).
 

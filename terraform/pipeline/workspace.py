@@ -20,6 +20,10 @@ else:
     workspace = "dev"
 
 # just for troubleshooting
-print(f"Deploying from {SOURCE} to {TARGET} as a result of {REASON} using workspace {workspace}", file=sys.stderr)
+if TARGET is not None:
+    deployment_description = f"from {SOURCE} to {TARGET}"
+else:
+    deployment_description = f"for {SOURCE}"
+print(f"Deploying {deployment_description} as a result of {REASON} using workspace {workspace}", file=sys.stderr)
 
 print(workspace)

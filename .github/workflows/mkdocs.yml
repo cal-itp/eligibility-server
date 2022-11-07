@@ -3,11 +3,11 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - main
+      - dev
     paths:
-      - 'docs/**'
-      - '.github/workflows/mkdocs.yml'
-      - 'mkdocs.yml'
+      - "docs/**"
+      - ".github/workflows/mkdocs.yml"
+      - "mkdocs.yml"
 jobs:
   mkdocs:
     name: Publish docs

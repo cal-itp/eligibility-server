@@ -5,5 +5,5 @@ variable "VELOCITY_ETL_SERVICE_PRINCIPAL_ID" {
 }
 variable "IP_ADDRESS_WHITELIST" {
   description = "List of IP addresses allowed to connect to the app service."
-  type        = list(any)
+  type        = list(string)
 }

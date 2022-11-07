@@ -1,5 +1,12 @@
 FROM eligibility_server:latest
 
+# install Terraform
+USER root
+COPY .devcontainer/install_terraform.sh .devcontainer/install_terraform.sh
+RUN ./.devcontainer/install_terraform.sh
+# switch to non-root $USER
+USER $USER
+
 # install python tooling
 COPY .devcontainer/requirements.txt .devcontainer/requirements.txt
 RUN pip install --no-cache-dir -r .devcontainer/requirements.txt

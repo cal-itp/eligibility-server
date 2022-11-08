@@ -19,5 +19,8 @@
   "python.testing.pytestEnabled": true,
   "[terraform]": {
     "editor.defaultFormatter": "hashicorp.terraform"
+  },
+  "[terraform-vars]": {
+    "editor.defaultFormatter": "hashicorp.terraform"
   }
 }

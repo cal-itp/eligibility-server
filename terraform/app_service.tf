@@ -26,6 +26,10 @@ resource "azurerm_linux_web_app" "main" {
         ip_address = ip_restriction.value
       }
     }
+
+    ip_restriction {
+      service_tag = "ApplicationInsightsAvailability"
+    }
     vnet_route_all_enabled = true
     application_stack {
       docker_image     = "ghcr.io/cal-itp/eligibility-server"

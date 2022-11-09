@@ -6,7 +6,6 @@ import datetime
 import json
 import logging
 import re
-import time
 
 from flask import abort
 from flask_restful import Resource, reqparse
@@ -156,9 +155,6 @@ class Verify(Resource):
 
     def get(self):
         """Respond to a verification request."""
-        # introduce small fake delay
-        time.sleep(2)
-
         headers = {}
 
         # verify required headers and API key check

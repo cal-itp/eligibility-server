@@ -44,6 +44,8 @@ stages:
               provider: azurerm
               command: init
               workingDirectory: "$(System.DefaultWorkingDirectory)/terraform"
+              # https://developer.hashicorp.com/terraform/tutorials/automation/automate-terraform#automated-terraform-cli-workflow
+              commandOptions: -input=false
               # service connection
               backendServiceArm: deployer
               # needs to match main.tf
@@ -68,7 +70,7 @@ stages:
               command: plan
               # wait for lock to be released, in case being used by another pipeline run
               # https://discuss.hashicorp.com/t/terraform-plan-wait-for-lock-to-be-released/6870/2
-              commandOptions: -lock-timeout=2m
+              commandOptions: -input=false -lock-timeout=2m
               workingDirectory: "$(System.DefaultWorkingDirectory)/terraform"
               # service connection
               environmentServiceNameAzureRM: deployer
@@ -78,7 +80,7 @@ stages:
               provider: azurerm
               command: apply
               # (ditto the lock comment above)
-              commandOptions: -lock-timeout=2m
+              commandOptions: -input=false -lock-timeout=2m
               workingDirectory: "$(System.DefaultWorkingDirectory)/terraform"
               # service connection
               environmentServiceNameAzureRM: deployer

@@ -11,11 +11,11 @@ trigger:
     include:
       - terraform/*
 stages:
-  - stage: plan
+  - stage: terraform
     pool:
       vmImage: ubuntu-latest
     jobs:
-      - job: plan
+      - job: terraform
         variables:
           - name: OTHER_SOURCE
             value: $[variables['System.PullRequest.SourceBranch']]

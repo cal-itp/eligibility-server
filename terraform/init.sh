@@ -17,6 +17,7 @@ printf "Intializing Terraform...\n\n"
 terraform init
 
 printf "\n\nSelecting the Terraform workspace...\n"
+# matching logic in pipeline/workspace.py
 if [ "$ENV" = "prod" ]; then
   terraform workspace select default
 else

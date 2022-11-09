@@ -19,6 +19,8 @@ resource "azurerm_linux_web_app" "main" {
   https_only          = true
 
   site_config {
+    # required to remove the restrictions
+    ip_restriction         = []
     ftps_state             = "Disabled"
     vnet_route_all_enabled = true
     application_stack {

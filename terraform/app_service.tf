@@ -49,8 +49,8 @@ resource "azurerm_linux_web_app" "main" {
   }
 
   logs {
-    detailed_error_messages = false
-    failed_request_tracing  = false
+    detailed_error_messages = true
+    failed_request_tracing  = true
 
     http_logs {
       file_system {

@@ -19,7 +19,9 @@ resource "azurerm_linux_web_app" "main" {
   https_only          = true
 
   site_config {
-    ftps_state = "Disabled"
+    ftps_state    = "Disabled"
+    http2_enabled = true
+
     dynamic "ip_restriction" {
       for_each = var.IP_ADDRESS_WHITELIST
       content {

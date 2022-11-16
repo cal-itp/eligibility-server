@@ -30,7 +30,7 @@ See [Configuration](../configuration) for more details on supported settings.
 ### Build image using Docker Compose
 
 ```bash
-docker compose build --no-cache server
+./bin/build.sh
 ```
 
 ### Start the server

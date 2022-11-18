@@ -74,6 +74,8 @@ stages:
               workingDirectory: "$(System.DefaultWorkingDirectory)/terraform"
               # service connection
               environmentServiceNameAzureRM: deployer
+            # the plan is done as part of the apply (below), so don't bother doing it twice
+            condition: notIn(variables['Build.SourceBranchName'], 'dev', 'test', 'prod')
           - task: TerraformTaskV3@3
             displayName: Terraform apply
             inputs:

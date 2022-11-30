@@ -1,22 +1,21 @@
 locals {
-  front_door_origin_group_name = azurerm_linux_web_app.main.name
-  front_door_origin_name       = azurerm_linux_web_app.main.name
-  front_door_route_name        = azurerm_linux_web_app.main.name
+  front_door_name = "eligibility-server-${local.env_name}"
 }
 
 resource "azurerm_cdn_frontdoor_profile" "main" {
-  name                = "mst-courtesy-cards-${local.env_name}"
+  name                = local.front_door_name
   resource_group_name = data.azurerm_resource_group.main.name
   sku_name            = "Standard_AzureFrontDoor"
 }
 
 resource "azurerm_cdn_frontdoor_endpoint" "main" {
-  name                     = "frontdoor-endpoint-${local.env_name}"
+  # used in the front door URL
+  name                     = "mst-courtesy-cards-eligibility-server-${local.env_name}"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.main.id
 }
 
 resource "azurerm_cdn_frontdoor_origin_group" "main" {
-  name                     = local.front_door_origin_group_name
+  name                     = local.front_door_name
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.main.id
   session_affinity_enabled = true
 
@@ -24,7 +23,7 @@ resource "azurerm_cdn_frontdoor_origin_group" "main" {
 }
 
 resource "azurerm_cdn_frontdoor_origin" "main" {
-  name                          = local.front_door_origin_name
+  name                          = local.front_door_name
   cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.main.id
 
   enabled                        = true
@@ -38,7 +37,7 @@ resource "azurerm_cdn_frontdoor_origin" "main" {
 }
 
 resource "azurerm_cdn_frontdoor_route" "main" {
-  name                          = local.front_door_route_name
+  name                          = local.front_door_name
   cdn_frontdoor_endpoint_id     = azurerm_cdn_frontdoor_endpoint.main.id
   cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.main.id
   cdn_frontdoor_origin_ids      = [azurerm_cdn_frontdoor_origin.main.id]

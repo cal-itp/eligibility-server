@@ -22,12 +22,6 @@ resource "azurerm_linux_web_app" "main" {
     ftps_state    = "Disabled"
     http2_enabled = true
 
-    dynamic "ip_restriction" {
-      for_each = var.IP_ADDRESS_WHITELIST
-      content {
-        ip_address = ip_restriction.value
-      }
-    }
     vnet_route_all_enabled = true
     application_stack {
       docker_image     = "ghcr.io/cal-itp/eligibility-server"

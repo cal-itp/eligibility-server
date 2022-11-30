@@ -48,3 +48,45 @@ resource "azurerm_cdn_frontdoor_route" "main" {
   forwarding_protocol    = "HttpsOnly"
   link_to_default_domain = true
 }
+
+resource "azurerm_cdn_frontdoor_security_policy" "main" {
+  name                     = local.front_door_name
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.main.id
+
+  security_policies {
+    firewall {
+      cdn_frontdoor_firewall_policy_id = azurerm_cdn_frontdoor_firewall_policy.main.id
+      association {
+        patterns_to_match = ["/*"]
+        domain {
+          cdn_frontdoor_domain_id = azurerm_cdn_frontdoor_endpoint.main.host_name
+        }
+      }
+    }
+  }
+}
+
+resource "azurerm_cdn_frontdoor_firewall_policy" "main" {
+  name                              = "${local.env_name}waf"
+  resource_group_name               = data.azurerm_resource_group.main.name
+  sku_name                          = azurerm_cdn_frontdoor_profile.main.sku_name
+  enabled                           = true
+  mode                              = "Prevention"
+  custom_block_response_status_code = 403
+  custom_block_response_body        = base64encode("Blocked")
+
+  custom_rule {
+    name     = "iprestriction${local.env_name}"
+    enabled  = true
+    type     = "MatchRule"
+    priority = 1
+    action   = "Block"
+
+    match_condition {
+      match_variable     = "SocketAddr"
+      operator           = "Contains"
+      negation_condition = true
+      match_values       = var.IP_ADDRESS_WHITELIST
+    }
+  }
+}

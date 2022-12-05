@@ -17,7 +17,6 @@ resource "azurerm_cdn_frontdoor_endpoint" "main" {
 resource "azurerm_cdn_frontdoor_origin_group" "main" {
   name                     = local.front_door_name
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.main.id
-  session_affinity_enabled = true
 
   load_balancing {}
 }

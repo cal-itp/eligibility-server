@@ -72,10 +72,24 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "main" {
   custom_block_response_body        = base64encode("Blocked")
 
   custom_rule {
-    name     = "iprestriction${local.env_name}"
+    name     = "healthcheck"
     enabled  = true
     type     = "MatchRule"
     priority = 1
+    action   = "Allow"
+
+    match_condition {
+      match_variable = "RequestUri"
+      operator       = "EndsWith"
+      match_values   = ["/healthcheck"]
+    }
+  }
+
+  custom_rule {
+    name     = "iprestriction${local.env_name}"
+    enabled  = true
+    type     = "MatchRule"
+    priority = 2
     action   = "Block"
 
     match_condition {

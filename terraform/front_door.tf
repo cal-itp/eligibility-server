@@ -69,7 +69,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "main" {
   enabled                           = true
   mode                              = "Prevention"
   custom_block_response_status_code = 403
-  custom_block_response_body        = base64encode("Blocked")
+  custom_block_response_body        = base64encode("Forbidden")
 
   custom_rule {
     name     = "healthcheck"

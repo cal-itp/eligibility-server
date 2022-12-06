@@ -18,6 +18,8 @@ resource "azurerm_cdn_frontdoor_origin_group" "main" {
   name                     = local.front_door_name
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.main.id
 
+  # this block is required, and it's empty because we are fine with using the default values
+  # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cdn_frontdoor_origin_group#load_balancing
   load_balancing {}
 }
 

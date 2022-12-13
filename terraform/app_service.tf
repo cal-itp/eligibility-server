@@ -22,13 +22,25 @@ resource "azurerm_linux_web_app" "main" {
     ftps_state    = "Disabled"
     http2_enabled = true
 
-    dynamic "ip_restriction" {
-      for_each = var.IP_ADDRESS_WHITELIST
-      content {
-        ip_address = ip_restriction.value
+    vnet_route_all_enabled = true
+
+    ip_restriction {
+      name        = "Front Door"
+      priority    = 100
+      action      = "Allow"
+      service_tag = "AzureFrontDoor.Backend"
+      headers {
+        x_azure_fdid = [azurerm_cdn_frontdoor_profile.main.resource_guid]
       }
     }
-    vnet_route_all_enabled = true
+
+    ip_restriction {
+      name        = "Availability Test"
+      priority    = 200
+      action      = "Allow"
+      service_tag = "ApplicationInsightsAvailability"
+    }
+
     application_stack {
       docker_image     = "ghcr.io/cal-itp/eligibility-server"
       docker_image_tag = local.env_name

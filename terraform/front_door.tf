@@ -82,7 +82,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "main" {
 
     match_condition {
       match_variable = "RequestUri"
-      operator       = "Equals"
+      operator       = "Equal"
       match_values   = ["https://${azurerm_cdn_frontdoor_endpoint.main.host_name}:443/healthcheck"]
     }
   }

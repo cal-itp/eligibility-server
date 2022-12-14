@@ -30,4 +30,4 @@ def test_publickey(client):
     response = client.get("publickey")
     assert response.status_code == 200
     assert response.mimetype == "text/plain"
-    assert response.text == get_server_public_key().export_to_pem().decode("utf-8")
+    assert response.text == get_server_public_key().decode("utf-8")

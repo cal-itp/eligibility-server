@@ -9,7 +9,7 @@ import re
 
 from flask import abort
 from flask_restful import Resource, reqparse
-from jwcrypto import jwe, jws, jwt
+from jwcrypto import jwe, jwk, jws, jwt
 
 from eligibility_server import keypair
 from eligibility_server.db.models import User
@@ -24,8 +24,8 @@ logger = logging.getLogger(__name__)
 class Verify(Resource):
     def __init__(self):
         """Initialize Verify class with a keypair and hash"""
-        self.client_public_key = keypair.get_client_public_key()
-        self.server_private_key = keypair.get_server_private_key()
+        self.client_public_key = jwk.JWK.from_pem(keypair.get_client_public_key())
+        self.server_private_key = jwk.JWK.from_pem(keypair.get_server_private_key())
 
         if config.input_hash_algo != "":
             hash = Hash(config.input_hash_algo)

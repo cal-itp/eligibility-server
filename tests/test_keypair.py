@@ -2,6 +2,7 @@ import builtins
 
 import pytest
 import requests
+from jwcrypto import jwk
 
 from eligibility_server import keypair
 from eligibility_server.keypair import _read_key_file
@@ -34,7 +35,7 @@ def spy_requests_get(mocker):
 
 @pytest.mark.usefixtures("reset_cache")
 def test_read_key_file_local(mocker, sample_key_path_local, spy_open):
-    key = _read_key_file(sample_key_path_local)
+    key = jwk.JWK.from_pem(_read_key_file(sample_key_path_local))
 
     # check that there was a call to open the default path
     assert mocker.call(sample_key_path_local, "rb") in spy_open.call_args_list
@@ -45,7 +46,7 @@ def test_read_key_file_local(mocker, sample_key_path_local, spy_open):
 
 @pytest.mark.usefixtures("reset_cache")
 def test_read_key_file_remote(sample_key_path_remote, spy_open, spy_requests_get):
-    key = _read_key_file(sample_key_path_remote)
+    key = jwk.JWK.from_pem(_read_key_file(sample_key_path_remote))
 
     # check that there was no call to open
     assert spy_open.call_count == 0

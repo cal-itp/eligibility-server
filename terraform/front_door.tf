@@ -96,7 +96,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "main" {
 
     match_condition {
       match_variable     = "SocketAddr"
-      operator           = "Contains"
+      operator           = "IPMatch"
       negation_condition = true
       match_values       = local.is_prod ? var.IP_ADDRESS_WHITELIST_PROD : local.is_test ? var.IP_ADDRESS_WHITELIST_TEST : var.IP_ADDRESS_WHITELIST_DEV
     }

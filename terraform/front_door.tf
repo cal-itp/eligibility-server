@@ -57,7 +57,7 @@ resource "azurerm_cdn_frontdoor_security_policy" "main" {
       association {
         patterns_to_match = ["/*"]
         domain {
-          cdn_frontdoor_domain_id = azurerm_cdn_frontdoor_endpoint.main.host_name
+          cdn_frontdoor_domain_id = azurerm_cdn_frontdoor_endpoint.main.id
         }
       }
     }
@@ -96,7 +96,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "main" {
 
     match_condition {
       match_variable     = "SocketAddr"
-      operator           = "Contains"
+      operator           = "IPMatch"
       negation_condition = true
       match_values       = local.is_prod ? var.IP_ADDRESS_WHITELIST_PROD : local.is_test ? var.IP_ADDRESS_WHITELIST_TEST : var.IP_ADDRESS_WHITELIST_DEV
     }

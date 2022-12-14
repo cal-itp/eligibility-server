@@ -18,7 +18,7 @@ def test_Verify_client_get_bad_request(mocker, client):
     mocked_headers = {"TOKEN_HEADER": "blah"}
     mocker.patch("eligibility_server.verify.Verify._check_headers", return_value=mocked_headers)
     mocker.patch("eligibility_server.verify.Verify._get_token", return_value="token")
-    mocker.patch("eligibility_server.verify.Verify._get_token_payload", return_value="bad token")
+    mocker.patch("eligibility_server.verify.get_token_payload", return_value="bad token")
     response = client.get("/verify", json=token_payload)
 
     assert response.status_code == 400

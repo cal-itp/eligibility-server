@@ -2,11 +2,10 @@
 Eligibility Verification route
 """
 
-import datetime
 import logging
 import re
 
-from eligibility_api.server import get_token_payload, make_token
+from eligibility_api.server import get_token_payload, make_token, create_response_payload
 from flask import abort
 from flask_restful import Resource, reqparse
 
@@ -63,11 +62,7 @@ class Verify(Resource):
         try:
             # craft the response payload using parsed request token
             sub, name, eligibility = token_payload["sub"], token_payload["name"], list(token_payload["eligibility"])
-            resp_payload = dict(
-                jti=token_payload["jti"],
-                iss=config.app_name,
-                iat=int(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).timestamp()),
-            )
+            resp_payload = create_response_payload(token_payload=token_payload, issuer=config.app_name)
             # sub format check
             if re.match(config.sub_format_regex, sub):
                 # eligibility check against db

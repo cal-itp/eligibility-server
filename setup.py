@@ -2,7 +2,9 @@ from setuptools import find_packages, setup
 
 
 with open("requirements.txt") as f:
-    install_requires = f.read().strip().split("\n")
+    requirements = f.read().strip().split("\n")
+    install_requires = [r for r in requirements if not r.startswith("git+")]
+    dependency_links = list(set(requirements) - set(install_requires))
 
 with open("README.md") as f:
     long_description = f.read()
@@ -30,5 +32,6 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=install_requires,
+    dependency_links=dependency_links,
     license="AGPL-3.0",
 )

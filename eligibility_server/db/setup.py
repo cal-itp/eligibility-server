@@ -4,7 +4,7 @@ from tempfile import NamedTemporaryFile
 
 import click
 from flask import current_app
-from flask_sqlalchemy import inspect
+from sqlalchemy import inspect
 import requests
 
 from eligibility_server.db import db

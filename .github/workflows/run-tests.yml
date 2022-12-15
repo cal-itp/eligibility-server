@@ -21,7 +21,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Load environment variables
-        uses: cardinalby/export-env-action@v1
+        uses: cardinalby/export-env-action@v2
         with:
           envFile: .env.sample
 

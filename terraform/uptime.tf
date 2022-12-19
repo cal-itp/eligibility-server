@@ -1,3 +1,4 @@
+# when setting up access restrictions, make sure to allow the ApplicationInsightsAvailability service tag
 module "healthcheck" {
   source = "./uptime"
 

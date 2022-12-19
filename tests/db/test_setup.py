@@ -1,6 +1,6 @@
 import pytest
 
-from flask_sqlalchemy import inspect
+from sqlalchemy import inspect
 from eligibility_server.db import db
 from eligibility_server.db.models import Eligibility, User
 

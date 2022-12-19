@@ -16,7 +16,19 @@ variable "VELOCITY_ETL_APP_OBJECT_ID" {
   type        = string
 }
 
-variable "IP_ADDRESS_WHITELIST" {
+variable "IP_ADDRESS_WHITELIST_DEV" {
+  description = "List of IP addresses allowed to connect to the app service, in CIDR notation: https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_web_app#ip_address. By default, all IP addresses are allowed."
+  type        = list(string)
+  default     = []
+}
+
+variable "IP_ADDRESS_WHITELIST_TEST" {
+  description = "List of IP addresses allowed to connect to the app service, in CIDR notation: https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_web_app#ip_address. By default, all IP addresses are allowed."
+  type        = list(string)
+  default     = []
+}
+
+variable "IP_ADDRESS_WHITELIST_PROD" {
   description = "List of IP addresses allowed to connect to the app service, in CIDR notation: https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_web_app#ip_address. By default, all IP addresses are allowed."
   type        = list(string)
   default     = []

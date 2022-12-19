@@ -15,6 +15,7 @@ def test_healthcheck(client):
     assert response.status_code == 200
     assert response.mimetype == "text/plain"
     assert response.text == "Healthy"
+    assert "Strict-Transport-Security" in response.headers
 
 
 def test_404(client):

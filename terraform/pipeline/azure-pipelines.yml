@@ -11,11 +11,11 @@ trigger:
     include:
       - terraform/*
 stages:
-  - stage: plan
+  - stage: terraform
     pool:
       vmImage: ubuntu-latest
     jobs:
-      - job: plan
+      - job: terraform
         variables:
           - name: OTHER_SOURCE
             value: $[variables['System.PullRequest.SourceBranch']]
@@ -70,17 +70,19 @@ stages:
               command: plan
               # wait for lock to be released, in case being used by another pipeline run
               # https://discuss.hashicorp.com/t/terraform-plan-wait-for-lock-to-be-released/6870/2
-              commandOptions: -input=false -lock-timeout=2m
+              commandOptions: -input=false -lock-timeout=5m
               workingDirectory: "$(System.DefaultWorkingDirectory)/terraform"
               # service connection
               environmentServiceNameAzureRM: deployer
+            # the plan is done as part of the apply (below), so don't bother doing it twice
+            condition: notIn(variables['Build.SourceBranchName'], 'dev', 'test', 'prod')
           - task: TerraformTaskV3@3
             displayName: Terraform apply
             inputs:
               provider: azurerm
               command: apply
               # (ditto the lock comment above)
-              commandOptions: -input=false -lock-timeout=2m
+              commandOptions: -input=false -lock-timeout=5m
               workingDirectory: "$(System.DefaultWorkingDirectory)/terraform"
               # service connection
               environmentServiceNameAzureRM: deployer

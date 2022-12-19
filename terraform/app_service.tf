@@ -3,7 +3,7 @@ resource "azurerm_service_plan" "main" {
   location            = data.azurerm_resource_group.main.location
   resource_group_name = data.azurerm_resource_group.main.name
   os_type             = "Linux"
-  sku_name            = "P2v2"
+  sku_name            = "B1"
 }
 
 locals {
@@ -19,14 +19,28 @@ resource "azurerm_linux_web_app" "main" {
   https_only          = true
 
   site_config {
-    ftps_state = "Disabled"
-    dynamic "ip_restriction" {
-      for_each = var.IP_ADDRESS_WHITELIST
-      content {
-        ip_address = ip_restriction.value
+    ftps_state    = "Disabled"
+    http2_enabled = true
+
+    vnet_route_all_enabled = true
+
+    ip_restriction {
+      name        = "Front Door"
+      priority    = 100
+      action      = "Allow"
+      service_tag = "AzureFrontDoor.Backend"
+      headers {
+        x_azure_fdid = [azurerm_cdn_frontdoor_profile.main.resource_guid]
       }
     }
-    vnet_route_all_enabled = true
+
+    ip_restriction {
+      name        = "Availability Test"
+      priority    = 200
+      action      = "Allow"
+      service_tag = "ApplicationInsightsAvailability"
+    }
+
     application_stack {
       docker_image     = "ghcr.io/cal-itp/eligibility-server"
       docker_image_tag = local.env_name
@@ -47,8 +61,8 @@ resource "azurerm_linux_web_app" "main" {
   }
 
   logs {
-    detailed_error_messages = false
-    failed_request_tracing  = false
+    detailed_error_messages = true
+    failed_request_tracing  = true
 
     http_logs {
       file_system {

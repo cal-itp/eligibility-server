@@ -5,6 +5,7 @@ resource "azurerm_storage_account" "main" {
   resource_group_name      = data.azurerm_resource_group.main.name
   account_tier             = "Standard"
   account_replication_type = "RAGRS"
+  min_tls_version          = "TLS1_2"
 
   blob_properties {
     last_access_time_enabled = true

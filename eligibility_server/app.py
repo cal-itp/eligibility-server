@@ -75,6 +75,12 @@ def internal_server_error(error):
     return jsonify(error=f"{error.code} {error.name}: Internal server error"), 500
 
 
+@app.after_request
+def enforce_strict_transport_security(response):
+    response.headers["Strict-Transport-Security"] = "max-age=31536000"
+    return response
+
+
 api = Api(app)
 api.add_resource(Verify, "/verify")
 

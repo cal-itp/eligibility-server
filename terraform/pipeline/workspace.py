@@ -12,7 +12,7 @@ ENV_BRANCHES = ["dev", "test", "prod"]
 if REASON == "PullRequest" and TARGET in ENV_BRANCHES:
     # it's a pull request against one of the environment branches, so use the target branch
     environment = TARGET
-elif REASON == "IndividualCI" and SOURCE in ENV_BRANCHES:
+elif REASON in ["IndividualCI", "Manual"] and SOURCE in ENV_BRANCHES:
     # it's being run on one of the environment branches, so use that
     environment = SOURCE
 else:

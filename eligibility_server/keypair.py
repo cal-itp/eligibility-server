@@ -1,6 +1,5 @@
 import logging
 
-from jwcrypto import jwk
 import requests
 
 from eligibility_server.settings import Configuration
@@ -19,10 +18,10 @@ def _read_key_file(key_path):
 
     if key_path.startswith("http"):
         data = requests.get(key_path).text
-        key = jwk.JWK.from_pem(data.encode("utf8"))
+        key = data.encode("utf8")
     else:
         with open(key_path, "rb") as pemfile:
-            key = jwk.JWK.from_pem(pemfile.read())
+            key = pemfile.read()
 
     _CACHE[key_path] = key
 

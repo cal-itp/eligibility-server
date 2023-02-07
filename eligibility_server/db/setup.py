@@ -101,7 +101,7 @@ def import_csv_users(csv_path, remote):
             quotechar=config.csv_quotechar,
         )
         # unpack each record in data to the 3 columns
-        for (sub, name, types) in data:
+        for sub, name, types in data:
             # type lists are expected to be a comma-separated value and quoted if the CSV delimiter is a comma
             types = [type.replace(config.csv_quotechar, "") for type in types.split(",") if type]
             save_user(sub, name, types)

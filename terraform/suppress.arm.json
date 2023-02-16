@@ -1,0 +1,37 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "metricAlertID": {
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.AlertsManagement/actionRules",
+      "apiVersion": "2021-08-08",
+      "name": "suppress-nightly-downtime",
+      "location": "Global",
+      "properties": {
+        "description": "Suppresses alerts during the scheduled nightly downtime",
+        "scopes": ["[parameters('metricAlertID')]"],
+        "actions": [
+          {
+            "actionType": "RemoveAllActionGroups"
+          }
+        ],
+        "schedule": {
+          "timeZone": "Eastern Standard Time",
+          "recurrences": [
+            {
+              "recurrenceType": "Daily",
+              "startTime": "06:00:00",
+              "endTime": "06:10:00"
+            }
+          ]
+        },
+        "enabled": true
+      }
+    }
+  ]
+}

@@ -8,3 +8,20 @@ module "healthcheck" {
   name = "mst-courtesy-cards-eligibility-server-${local.env_name}-healthcheck"
   url  = "https://${azurerm_linux_web_app.main.default_hostname}/healthcheck"
 }
+
+# ignore when app restarts as data is being reloaded
+# https://learn.microsoft.com/en-us/azure/azure-monitor/alerts/alerts-processing-rules
+# the Terraform resource doesn't support time windows, so need to drop down to an ARM template instead
+# https://github.com/hashicorp/terraform-provider-azurerm/issues/16726
+resource "azurerm_resource_group_template_deployment" "suppress_nightly_downtime" {
+  name                = "suppress-nightly-downtime"
+  resource_group_name = data.azurerm_resource_group.main.name
+  deployment_mode     = "Incremental"
+  parameters_content = jsonencode({
+    "metricAlertID" = {
+      value = module.healthcheck.metric_alert_id
+    }
+  })
+  # https://learn.microsoft.com/en-us/azure/templates/microsoft.alertsmanagement/actionrules?tabs=json&pivots=deployment-language-arm-template
+  template_content = file("${path.module}/suppress.arm.json")
+}

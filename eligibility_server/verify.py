@@ -2,14 +2,12 @@
 Eligibility Verification route
 """
 
-import datetime
-import json
 import logging
 import re
 
+from eligibility_api.server import get_token_payload, make_token, create_response_payload
 from flask import abort
 from flask_restful import Resource, reqparse
-from jwcrypto import jwe, jws, jwt
 
 from eligibility_server import keypair
 from eligibility_server.db.models import User
@@ -60,45 +58,11 @@ class Verify(Resource):
             logger.warning("Invalid token format")
             raise ValueError("Invalid token format")
 
-    def _get_token_payload(self, token):
-        """Decode a token (JWE(JWS))."""
-        try:
-            # decrypt
-            decrypted_token = jwe.JWE(algs=[config.jwe_encryption_alg, config.jwe_cek_enc])
-            decrypted_token.deserialize(token, key=self.server_private_key)
-            decrypted_payload = str(decrypted_token.payload, "utf-8")
-            # verify signature
-            signed_token = jws.JWS()
-            signed_token.deserialize(decrypted_payload, key=self.client_public_key, alg=config.jws_signing_alg)
-            # return final payload
-            payload = str(signed_token.payload, "utf-8")
-            return json.loads(payload)
-        except Exception:
-            logger.warning("Get token payload failed")
-            return False
-
-    def _make_token(self, payload):
-        """Wrap payload in a signed and encrypted JWT for response."""
-        # sign the payload with server's private key
-        header = {"typ": "JWS", "alg": config.jws_signing_alg}
-        signed_token = jwt.JWT(header=header, claims=payload)
-        signed_token.make_signed_token(self.server_private_key)
-        signed_payload = signed_token.serialize()
-        # encrypt the signed payload with client's public key
-        header = {"typ": "JWE", "alg": config.jwe_encryption_alg, "enc": config.jwe_cek_enc}
-        encrypted_token = jwt.JWT(header=header, claims=signed_payload)
-        encrypted_token.make_encrypted_token(self.client_public_key)
-        return encrypted_token.serialize()
-
     def _get_response(self, token_payload):
         try:
             # craft the response payload using parsed request token
             sub, name, eligibility = token_payload["sub"], token_payload["name"], list(token_payload["eligibility"])
-            resp_payload = dict(
-                jti=token_payload["jti"],
-                iss=config.app_name,
-                iat=int(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).timestamp()),
-            )
+            resp_payload = create_response_payload(token_payload=token_payload, issuer=config.app_name)
             # sub format check
             if re.match(config.sub_format_regex, sub):
                 # eligibility check against db
@@ -107,8 +71,16 @@ class Verify(Resource):
             else:
                 resp_payload["error"] = {"sub": "invalid"}
                 code = 400
-            # make a response token with appropriate response code
-            return self._make_token(resp_payload), code
+            # make a response token, and return with appropriate response code
+            response_token = make_token(
+                payload=resp_payload,
+                jws_signing_alg=config.jws_signing_alg,
+                server_private_key=self.server_private_key,
+                jwe_encryption_alg=config.jwe_encryption_alg,
+                jwe_cek_enc=config.jwe_cek_enc,
+                client_public_key=self.client_public_key,
+            )
+            return response_token, code
         except (TypeError, ValueError) as ex:
             logger.error(f"Error: {ex}")
             abort(400, description="Bad request")
@@ -167,7 +139,14 @@ class Verify(Resource):
         # parse inner payload from request token
         try:
             token = self._get_token(headers)
-            token_payload = self._get_token_payload(token)
+            token_payload = get_token_payload(
+                token=token,
+                jwe_encryption_alg=config.jwe_encryption_alg,
+                jwe_cek_enc=config.jwe_cek_enc,
+                server_private_key=self.server_private_key,
+                jws_signing_alg=config.jws_signing_alg,
+                client_public_key=self.client_public_key,
+            )
         except Exception:
             logger.error("Bad request")
             abort(400, description="Bad request")

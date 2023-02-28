@@ -47,8 +47,7 @@ def healthcheck():
 def publickey():
     app.logger.info("Request public key")
     key = get_server_public_key()
-    pem_data = key.export_to_pem(private_key=False)
-    return TextResponse(pem_data.decode("utf-8"))
+    return TextResponse(key.decode("utf-8"))
 
 
 @app.errorhandler(401)

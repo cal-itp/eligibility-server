@@ -45,6 +45,7 @@ def configure(config: Configuration):
             traces_sample_rate=1.0,
             environment=SENTRY_ENVIRONMENT,
             release=release,
+            in_app_include=["eligibility_server"],
         )
     else:
         print("SENTRY_DSN not set, so won't send events")

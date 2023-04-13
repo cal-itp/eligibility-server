@@ -7,13 +7,15 @@ from flask import Flask, jsonify, make_response
 from flask_restful import Api
 from flask.logging import default_handler
 
-from eligibility_server import db
+from eligibility_server import db, sentry
 from eligibility_server.keypair import get_server_public_key
 from eligibility_server.settings import Configuration
 from eligibility_server.verify import Verify
 
 
 config = Configuration()
+
+sentry.configure()
 
 app = Flask(__name__)
 app.config.from_object("eligibility_server.settings")

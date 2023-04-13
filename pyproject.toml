@@ -11,7 +11,8 @@ dependencies = [
     "Flask==2.3.3",
     "Flask-RESTful==0.3.10",
     "Flask-SQLAlchemy==3.1.1",
-    "requests==2.31.0"
+    "requests==2.31.0",
+    "sentry-sdk[flask]==1.19.1"
 ]
 
 [project.optional-dependencies]

@@ -43,6 +43,10 @@ CSV_DELIMITER = ","
 CSV_QUOTING = 3
 CSV_QUOTECHAR = '"'
 
+# Sentry
+
+SENTRY_DSN = None
+
 
 class Configuration:
     # App settings
@@ -134,3 +138,10 @@ class Configuration:
     @property
     def csv_quotechar(self):
         return str(current_app.config["CSV_QUOTECHAR"])
+
+    # Sentry
+
+    @property
+    def sentry_dsn(self):
+        sentry_dsn = current_app.config["SENTRY_DSN"]
+        return str(sentry_dsn) if sentry_dsn else None

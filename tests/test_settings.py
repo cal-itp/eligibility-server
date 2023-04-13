@@ -225,3 +225,14 @@ def test_configuration_csv_quotechar(mocker, configuration: Configuration):
     mocker.patch.dict("eligibility_server.settings.current_app.config", mocked_config)
 
     assert configuration.csv_quotechar == new_value
+
+
+@pytest.mark.usefixtures("flask")
+def test_configuration_sentry_dsn(mocker, configuration: Configuration):
+    assert configuration.sentry_dsn is None
+
+    new_value = "https://sentry.example.com"
+    mocked_config = {"SENTRY_DSN": new_value}
+    mocker.patch.dict("eligibility_server.settings.current_app.config", mocked_config)
+
+    assert configuration.sentry_dsn == new_value

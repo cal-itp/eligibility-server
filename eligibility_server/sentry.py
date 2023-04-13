@@ -4,6 +4,7 @@ import subprocess
 
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
+from sentry_sdk.scrubber import EventScrubber, DEFAULT_DENYLIST
 
 from eligibility_server.settings import Configuration
 
@@ -31,6 +32,12 @@ def get_release() -> str:
     return get_git_revision_hash()
 
 
+def get_denylist():
+    # custom denylist
+    denylist = DEFAULT_DENYLIST + ["sub", "name"]
+    return denylist
+
+
 def configure(config: Configuration):
     SENTRY_DSN = config.sentry_dsn
     if SENTRY_DSN:
@@ -46,6 +53,10 @@ def configure(config: Configuration):
             environment=SENTRY_ENVIRONMENT,
             release=release,
             in_app_include=["eligibility_server"],
+            # send_default_pii must be False (the default) for a custom EventScrubber/denylist
+            # https://docs.sentry.io/platforms/python/data-management/sensitive-data/#event_scrubber
+            send_default_pii=False,
+            event_scrubber=EventScrubber(denylist=get_denylist()),
         )
     else:
         print("SENTRY_DSN not set, so won't send events")

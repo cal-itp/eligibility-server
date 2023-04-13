@@ -56,6 +56,9 @@ resource "azurerm_linux_web_app" "main" {
     "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
     "WEBSITES_PORT"                       = "8000"
     "WEBSITES_CONTAINER_START_TIME_LIMIT" = "1800"
+
+    # Sentry
+    "SENTRY_ENVIRONMENT" = "${local.env_name}"
   }
 
   identity {

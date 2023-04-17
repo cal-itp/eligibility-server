@@ -41,7 +41,7 @@ def TextResponse(content):
 with app.app_context():
     if config.debug_mode:
 
-        @app.route("/sentry-debug")
+        @app.route("/error")
         def trigger_error():
             raise ValueError("testing Sentry for eligibility-server")
 

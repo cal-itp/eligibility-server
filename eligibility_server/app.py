@@ -38,6 +38,14 @@ def TextResponse(content):
     return response
 
 
+with app.app_context():
+    if config.debug_mode:
+
+        @app.route("/sentry-debug")
+        def trigger_error():
+            raise ValueError("testing Sentry for eligibility-server")
+
+
 @app.route("/healthcheck")
 def healthcheck():
     app.logger.info("Request healthcheck")

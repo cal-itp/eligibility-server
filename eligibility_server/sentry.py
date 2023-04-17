@@ -1,5 +1,4 @@
 import os
-import shutil
 import subprocess
 
 import sentry_sdk
@@ -12,23 +11,12 @@ from eligibility_server.settings import Configuration
 SENTRY_ENVIRONMENT = os.environ.get("SENTRY_ENVIRONMENT", "local")
 
 
-def git_available():
-    return bool(shutil.which("git"))
-
-
-# https://stackoverflow.com/a/24584384/358804
-def is_git_directory(path="."):
-    dev_null = open(os.devnull, "w")
-    return subprocess.call(["git", "-C", path, "status"], stderr=dev_null, stdout=dev_null) == 0
-
-
 # https://stackoverflow.com/a/21901260/358804
 def get_git_revision_hash():
     return subprocess.check_output(["git", "rev-parse", "HEAD"]).decode("ascii").strip()
 
 
 def get_release() -> str:
-    """Returns the first available: the SHA from Git, the value from sha.txt, or the VERSION."""
     return get_git_revision_hash()
 
 

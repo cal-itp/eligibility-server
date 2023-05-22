@@ -2,4 +2,4 @@ eligibility-api==2023.01.1
 Flask==2.2.3
 Flask-RESTful==0.3.9
 Flask-SQLAlchemy==3.0.3
-requests==2.28.2
+requests==2.31.0

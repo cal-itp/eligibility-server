@@ -1,5 +1,5 @@
 eligibility-api==2023.6.1
 Flask==2.3.2
 Flask-RESTful==0.3.10
-Flask-SQLAlchemy==3.0.3
+Flask-SQLAlchemy==3.0.4
 requests==2.31.0

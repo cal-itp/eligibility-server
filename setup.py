@@ -19,7 +19,7 @@ CLASSIFIERS = [
 
 setup(
     name="eligibility-server",
-    version="2023.02.1",
+    version="2023.06.1",
     description="Server implementation of the Eligibility Verification API",
     long_description=long_description,
     long_description_content_type="text/markdown",

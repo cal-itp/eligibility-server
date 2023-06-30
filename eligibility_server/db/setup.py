@@ -94,17 +94,18 @@ def import_csv_users(csv_path, remote):
     # open in read mode explicitly since the file may still be open if we downloaded from remote
     # newline="" is important here, see https://docs.python.org/3/library/csv.html#id3
     with open(csv_path, mode="r", encoding="utf-8", newline="") as file:
-        data = csv.reader(
+        data = csv.DictReader(
             file,
             delimiter=config.csv_delimiter,
             quoting=config.csv_quoting,
             quotechar=config.csv_quotechar,
         )
-        # unpack each record in data to the 3 columns
-        for sub, name, types in data:
+
+        for row in data:
             # type lists are expected to be a comma-separated value and quoted if the CSV delimiter is a comma
-            types = [type.replace(config.csv_quotechar, "") for type in types.split(",") if type]
-            save_user(sub, name, types)
+            types = row["type"]
+            types = [types.replace(config.csv_quotechar, "") for type in types.split(",") if type]
+            save_user(row["sub"], row["name"], types)
 
     # close and remove the temp file if needed
     if temp_csv:

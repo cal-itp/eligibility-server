@@ -6,6 +6,7 @@ trigger:
       - dev
       - test
       - prod
+      - refs/tags/20??.??.?
   # only run for changes to Terraform files
   paths:
     include:

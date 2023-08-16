@@ -8,24 +8,27 @@
   "postStartCommand": ["/bin/bash", "bin/init.sh"],
   "postAttachCommand": ["/bin/bash", ".devcontainer/postAttach.sh"],
 
-  // Set *default* container specific settings.json values on container create.
-  "settings": {
-    "terminal.integrated.defaultProfile.linux": "bash",
-    "terminal.integrated.profiles.linux": {
-      "bash": {
-        "path": "/bin/bash"
-      }
+  "customizations": {
+    // Set *default* container specific settings.json values on container create.
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "terminal.integrated.profiles.linux": {
+          "bash": {
+            "path": "/bin/bash"
+          }
+        }
+      },
+      // Add the IDs of extensions you want installed when the container is created.
+      "extensions": [
+        "bpruitt-goddard.mermaid-markdown-syntax-highlighting",
+        "eamodio.gitlens",
+        "esbenp.prettier-vscode",
+        "hashicorp.terraform",
+        "mhutchie.git-graph",
+        "ms-python.python",
+        "ms-python.vscode-pylance"
+      ]
     }
-  },
-
-  // Add the IDs of extensions you want installed when the container is created.
-  "extensions": [
-    "bpruitt-goddard.mermaid-markdown-syntax-highlighting",
-    "eamodio.gitlens",
-    "esbenp.prettier-vscode",
-    "hashicorp.terraform",
-    "mhutchie.git-graph",
-    "ms-python.python",
-    "ms-python.vscode-pylance"
-  ]
+  }
 }

@@ -112,7 +112,7 @@ def import_csv_users(csv_path, remote):
         temp_csv.close()
 
 
-def save_user(sub: str, name: str, types: str):
+def save_user(sub: str, name: str, types: list):
     """
     Add a user to the database User table
 
@@ -122,12 +122,14 @@ def save_user(sub: str, name: str, types: str):
     """
 
     user = User.query.filter_by(sub=sub, name=name).first() or User(sub=sub, name=name)
-    eligibility_types = [Eligibility.query.filter_by(name=type).first() or Eligibility(name=type) for type in types]
-    user.types.extend(eligibility_types)
+    eligibility_types = [Eligibility.query.filter_by(name=t).first() or Eligibility(name=t) for t in types]
+    new_types = [t for t in eligibility_types if t not in user.types]
+
+    if any(new_types):
+        user.types.extend(new_types)
+        db.session.add_all(new_types)
 
     db.session.add(user)
-    db.session.add_all(eligibility_types)
-
     db.session.commit()
 
 

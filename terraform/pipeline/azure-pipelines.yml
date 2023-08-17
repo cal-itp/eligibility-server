@@ -24,9 +24,13 @@ stages:
             value: $[variables['System.PullRequest.SourceBranch']]
           - name: INDIVIDUAL_SOURCE
             value: $[variables['Build.SourceBranchName']]
+          - name: IS_TAG
+            value: $[startsWith(variables['Build.SourceBranch'], 'refs/tags/')]
           - name: TARGET
             value: $[variables['System.PullRequest.TargetBranch']]
         steps:
+          - bash: |
+              echo $(IS_TAG)
           # set the workspace variable at runtime (rather than build time) so that all the necessary variables are available, and we can use Python
           # https://learn.microsoft.com/en-us/azure/devops/pipelines/process/set-variables-scripts?view=azure-devops&tabs=bash#about-tasksetvariable
           - bash: |

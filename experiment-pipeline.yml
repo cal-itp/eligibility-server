@@ -54,7 +54,7 @@ stages:
               # https://developer.hashicorp.com/terraform/tutorials/automation/automate-terraform#automated-terraform-cli-workflow
               commandOptions: -input=false
               # service connection
-              backendServiceArm: deployer
+              # backendServiceArm: deployer
               # needs to match main.tf
               backendAzureRmResourceGroupName: courtesy-cards-eligibility-terraform
               backendAzureRmStorageAccountName: courtesycardsterraform
@@ -69,7 +69,7 @@ stages:
               commandOptions: select $(workspace)
               workingDirectory: "$(System.DefaultWorkingDirectory)/terraform"
               # service connection
-              environmentServiceNameAzureRM: deployer
+              # environmentServiceNameAzureRM: deployer
           - task: TerraformTaskV3@3
             displayName: Terraform plan
             inputs:
@@ -80,7 +80,7 @@ stages:
               commandOptions: -input=false -lock-timeout=5m
               workingDirectory: "$(System.DefaultWorkingDirectory)/terraform"
               # service connection
-              environmentServiceNameAzureRM: deployer
+              # environmentServiceNameAzureRM: deployer
             # the plan is done as part of the apply (below), so don't bother doing it twice
             condition: notIn(variables['Build.SourceBranchName'], 'dev', 'test', 'prod')
           - task: TerraformTaskV3@3
@@ -92,6 +92,6 @@ stages:
               commandOptions: -input=false -lock-timeout=5m
               workingDirectory: "$(System.DefaultWorkingDirectory)/terraform"
               # service connection
-              environmentServiceNameAzureRM: deployer
+              # environmentServiceNameAzureRM: deployer
             # only run on certain branches
             condition: in(variables['Build.SourceBranchName'], 'dev', 'test', 'prod')

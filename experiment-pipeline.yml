@@ -8,7 +8,8 @@ trigger:
       - prod
   tags:
     include:
-      - 20??.??.?
+      - 20??.??.?*-rc?*
+      - 20??.??.?*
   # only run for changes to Terraform files
   paths:
     include:

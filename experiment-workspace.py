@@ -17,8 +17,10 @@ if REASON == "PullRequest" and TARGET in ENV_BRANCHES:
 elif REASON in ["IndividualCI", "Manual"] and SOURCE in ENV_BRANCHES:
     # it's being run on one of the environment branches, so use that
     environment = SOURCE
-elif REASON in ["IndividualCI"] and IS_TAG and re.fullmatch(r"20\d\d.\d\d.\d*", SOURCE):
+elif REASON in ["IndividualCI"] and IS_TAG and re.fullmatch(r"20\d\d.\d\d.\d+-rc\d+", SOURCE):
     environment = "test"
+elif REASON in ["IndividualCI"] and IS_TAG and re.fullmatch(r"20\d\d.\d\d.\d+", SOURCE):
+    environment = "prod"
 else:
     # default to running against dev
     environment = "dev"

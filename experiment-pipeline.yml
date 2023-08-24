@@ -19,7 +19,7 @@ stages:
     pool:
       vmImage: ubuntu-latest
     jobs:
-      - job: "Plan"
+      - job: Plan
         variables:
           - name: OTHER_SOURCE
             value: $[variables['System.PullRequest.SourceBranch']]
@@ -91,30 +91,25 @@ stages:
               script: echo "terraform plan"
             # the plan is done as part of the apply (below), so don't bother doing it twice
             condition: notIn(variables['Build.SourceBranchName'], 'dev', 'test', 'prod')
-      - job: "ManualApproval"
-        pool: server
-        steps:
-          # - task: TerraformTaskV3@
-          - task: ManualValidation@0
-            timeoutInMinutes: "1440" # task times out in 1 day
-            inputs:
-              notifyUsers: |
-                angela@compiler.la
-              instructions: "Please review the output of Terraform plan before approving."
-              onTimeout: "reject"
-      - job: "Apply"
-        steps:
-          - task: Bash@3
-            displayName: Terraform apply
-            inputs:
-              # provider: azurerm
-              # command: apply
-              # # (ditto the lock comment above)
-              # commandOptions: -input=false -lock-timeout=5m
-              # workingDirectory: "$(System.DefaultWorkingDirectory)/terraform"
-              # # service connection
-              # environmentServiceNameAzureRM: deployer
-              targetType: inline
-              script: echo "terraform apply"
-            # only run on certain branches
-            condition: in(variables['Build.SourceBranchName'], 'dev', 'test', 'prod')
+      - deployment: Apply
+        dependsOn: Plan
+        condition: succeeded()
+        environment: Approval
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+              - task: Bash@3
+                displayName: Terraform apply
+                inputs:
+                  # provider: azurerm
+                  # command: apply
+                  # # (ditto the lock comment above)
+                  # commandOptions: -input=false -lock-timeout=5m
+                  # workingDirectory: "$(System.DefaultWorkingDirectory)/terraform"
+                  # # service connection
+                  # environmentServiceNameAzureRM: deployer
+                  targetType: inline
+                  script: echo "terraform apply"
+                # only run on certain branches
+                condition: in(variables['Build.SourceBranchName'], 'dev', 'test', 'prod')

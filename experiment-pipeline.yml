@@ -98,7 +98,7 @@ stages:
     jobs:
       - deployment: Apply
         condition: succeeded()
-        environment: Approval
+        environment: stageDependencies.TerraformPlan.Plan.outputs['WORKSPACE']
         strategy:
           runOnce:
             deploy:

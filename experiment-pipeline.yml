@@ -14,10 +14,12 @@ trigger:
   paths:
     include:
       - experiment-*
+
+pool:
+  vmImage: ubuntu-latest
+
 stages:
-  - stage: terraform
-    pool:
-      vmImage: ubuntu-latest
+  - stage: TerraformPlan
     jobs:
       - job: Plan
         variables:
@@ -91,8 +93,10 @@ stages:
               script: echo "terraform plan"
             # the plan is done as part of the apply (below), so don't bother doing it twice
             condition: notIn(variables['Build.SourceBranchName'], 'dev', 'test', 'prod')
+  - stage: TerraformApply
+    dependsOn: TerraformPlan
+    jobs:
       - deployment: Apply
-        dependsOn: Plan
         condition: succeeded()
         environment: Approval
         strategy:

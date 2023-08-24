@@ -93,7 +93,14 @@ stages:
               script: echo "terraform plan"
             # the plan is done as part of the apply (below), so don't bother doing it twice
             condition: notIn(variables['Build.SourceBranchName'], 'dev', 'test', 'prod')
-          # - task: TerraformTaskV3@3
+          # - task: TerraformTaskV3@
+          - task: ManualValidation@0
+            timeoutInMinutes: "1440" # task times out in 1 day
+            inputs:
+              notifyUsers: |
+                angela@compiler.la
+              instructions: "Please review the output of Terraform plan before approving."
+              onTimeout: "reject"
           - task: Bash@3
             displayName: Terraform apply
             inputs:

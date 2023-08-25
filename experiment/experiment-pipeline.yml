@@ -10,10 +10,10 @@ trigger:
     include:
       - 20??.??.?*-rc?*
       - 20??.??.?*
-  # only run for changes to Terraform files
+  # only run for changes to experiment files
   paths:
     include:
-      - experiment-*
+      - experiment/**
 
 pool:
   vmImage: ubuntu-latest

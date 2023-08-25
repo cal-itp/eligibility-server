@@ -104,19 +104,16 @@ stages:
                 displayName: Determine tag type (either test or prod)
                 env:
                   REASON: $(Build.Reason)
-              # - task: TerraformTaskV3@3
-              - task: Bash@3
+              - task: TerraformTaskV3@3
                 displayName: Terraform apply
                 inputs:
-                  # provider: azurerm
-                  # command: apply
-                  # # (ditto the lock comment above)
-                  # commandOptions: -input=false -lock-timeout=5m
-                  # workingDirectory: "$(System.DefaultWorkingDirectory)/experiment"
-                  # # service connection
-                  # environmentServiceNameAzureRM: compiler-deployer
-                  targetType: inline
-                  script: echo "terraform apply"
+                  provider: azurerm
+                  command: apply
+                  # (ditto the lock comment above)
+                  commandOptions: -input=false -lock-timeout=5m
+                  workingDirectory: "$(System.DefaultWorkingDirectory)/experiment"
+                  # service connection
+                  environmentServiceNameAzureRM: compiler-deployer
                 # only run on dev branch OR if it's a tag for test or prod
                 condition: |
                   or(

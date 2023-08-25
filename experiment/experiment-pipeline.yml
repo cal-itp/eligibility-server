@@ -1,6 +1,4 @@
 trigger:
-  # automatically runs on pull requests
-  # https://docs.microsoft.com/en-us/azure/devops/pipelines/repos/github?view=azure-devops&tabs=yaml#pr-triggers
   branches:
     include:
       - dev
@@ -12,6 +10,8 @@ trigger:
   paths:
     include:
       - experiment/*
+
+pr: none
 
 pool:
   vmImage: ubuntu-latest

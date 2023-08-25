@@ -89,21 +89,54 @@ stages:
         condition: succeeded()
         environment: Approval
         variables:
+          - name: OTHER_SOURCE
+            value: $[variables['System.PullRequest.SourceBranch']]
           - name: INDIVIDUAL_SOURCE
             value: $[variables['Build.SourceBranchName']]
           - name: IS_TAG
             value: $[startsWith(variables['Build.SourceBranch'], 'refs/tags/')]
+          - name: TARGET
+            value: $[variables['System.PullRequest.TargetBranch']]
         strategy:
           runOnce:
             deploy:
               steps:
               - checkout: self
               - bash: |
+                  WORKSPACE=$(python experiment/experiment-workspace.py)
+                  echo "##vso[task.setvariable variable=workspace]$WORKSPACE"
+
                   TAG_TYPE=$(python experiment/tag.py)
                   echo "##vso[task.setvariable variable=tag_type]$TAG_TYPE"
                 displayName: Determine tag type (either test or prod)
                 env:
                   REASON: $(Build.Reason)
+              # https://github.com/microsoft/azure-pipelines-terraform/tree/main/Tasks/TerraformTask/TerraformTaskV3#readme
+              - task: TerraformTaskV3@3
+                displayName: Terraform init
+                inputs:
+                  provider: azurerm
+                  command: init
+                  workingDirectory: "$(System.DefaultWorkingDirectory)/experiment"
+                  # https://developer.hashicorp.com/terraform/tutorials/automation/automate-terraform#automated-terraform-cli-workflow
+                  commandOptions: -input=false
+                  # service connection
+                  backendServiceArm: compiler-deployer
+                  # needs to match main.tf
+                  backendAzureRmResourceGroupName: experiment-terraform
+                  backendAzureRmStorageAccountName: experimentterraform
+                  backendAzureRmContainerName: tfstate
+                  backendAzureRmKey: terraform.tfstate
+              - task: TerraformTaskV3@3
+                displayName: Select environment
+                inputs:
+                  provider: azurerm
+                  command: custom
+                  customCommand: workspace
+                  commandOptions: select $(workspace)
+                  workingDirectory: "$(System.DefaultWorkingDirectory)/experiment"
+                  # service connection
+                  environmentServiceNameAzureRM: compiler-deployer
               - task: TerraformTaskV3@3
                 displayName: Terraform apply
                 inputs:

@@ -35,6 +35,9 @@ stages:
           - bash: |
               WORKSPACE=$(python experiment/experiment-workspace.py)
               echo "##vso[task.setvariable variable=workspace]$WORKSPACE"
+
+              TAG_TYPE=$(python experiment/tag.py)
+              echo "##vso[task.setvariable variable=tag_type]$TAG_TYPE"
             displayName: Determine deployment environment
             env:
               REASON: $(Build.Reason)
@@ -76,12 +79,24 @@ stages:
               command: plan
               # wait for lock to be released, in case being used by another pipeline run
               # https://discuss.hashicorp.com/t/terraform-plan-wait-for-lock-to-be-released/6870/2
-              commandOptions: -input=false -lock-timeout=5m
+              commandOptions: -input=false -lock-timeout=5m -out=$(Build.ArtifactStagingDirectory)/tfplan
               workingDirectory: "$(System.DefaultWorkingDirectory)/experiment"
               # service connection
               environmentServiceNameAzureRM: compiler-deployer
             # the plan is done as part of the apply (below), so don't bother doing it twice
             condition: notIn(variables['Build.SourceBranchName'], 'dev')
+          # need to publish the tfplan to used by next stage if it's going to run
+          - publish: '$(Build.ArtifactStagingDirectory)'
+            displayName: 'Publish tfplan for use in TerraformApply'
+            artifact: savedPlan
+            condition:  |
+                  or(
+                    in(variables['Build.SourceBranchName'], 'dev'),
+                    or(
+                      eq(variables['tag_type'], 'test'),
+                      eq(variables['tag_type'], 'prod')
+                    )
+                  )
   - stage: TerraformApply
     dependsOn: TerraformPlan
     jobs:
@@ -112,6 +127,16 @@ stages:
                 env:
                   REASON: $(Build.Reason)
               # https://github.com/microsoft/azure-pipelines-terraform/tree/main/Tasks/TerraformTask/TerraformTaskV3#readme
+              - download: current
+                artifact: savedPlan
+                condition: |
+                  or(
+                    in(variables['Build.SourceBranchName'], 'dev'),
+                    or(
+                      eq(variables['tag_type'], 'test'),
+                      eq(variables['tag_type'], 'prod')
+                    )
+                  )
               - task: TerraformTaskV3@3
                 displayName: Terraform init
                 inputs:
@@ -143,7 +168,7 @@ stages:
                   provider: azurerm
                   command: apply
                   # (ditto the lock comment above)
-                  commandOptions: -input=false -lock-timeout=5m
+                  commandOptions: -input=false -lock-timeout=5m $(System.ArtifactsDirectory)/tfplan
                   workingDirectory: "$(System.DefaultWorkingDirectory)/experiment"
                   # service connection
                   environmentServiceNameAzureRM: compiler-deployer

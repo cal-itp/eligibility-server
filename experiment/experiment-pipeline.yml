@@ -88,19 +88,41 @@ stages:
       - deployment: Apply
         condition: succeeded()
         environment: Approval
+        variables:
+          - name: INDIVIDUAL_SOURCE
+            value: $[variables['Build.SourceBranchName']]
+          - name: IS_TAG
+            value: $[startsWith(variables['Build.SourceBranch'], 'refs/tags/')]
         strategy:
           runOnce:
             deploy:
               steps:
-              - task: TerraformTaskV3@3
+              - checkout: self
+              - bash: |
+                  TAG_TYPE=$(python experiment/tag.py)
+                  echo "##vso[task.setvariable variable=tag_type]$TAG_TYPE"
+                displayName: Determine tag type (either test or prod)
+                env:
+                  REASON: $(Build.Reason)
+              # - task: TerraformTaskV3@3
+              - task: Bash@3
                 displayName: Terraform apply
                 inputs:
-                  provider: azurerm
-                  command: apply
-                  # (ditto the lock comment above)
-                  commandOptions: -input=false -lock-timeout=5m
-                  workingDirectory: "$(System.DefaultWorkingDirectory)/experiment"
-                  # service connection
-                  environmentServiceNameAzureRM: compiler-deployer
-                # only run on certain branches
-                condition: in(variables['Build.SourceBranchName'], 'dev')
+                  # provider: azurerm
+                  # command: apply
+                  # # (ditto the lock comment above)
+                  # commandOptions: -input=false -lock-timeout=5m
+                  # workingDirectory: "$(System.DefaultWorkingDirectory)/experiment"
+                  # # service connection
+                  # environmentServiceNameAzureRM: compiler-deployer
+                  targetType: inline
+                  script: echo "terraform apply"
+                # only run on dev branch OR if it's a tag for test or prod
+                condition: |
+                  or(
+                    in(variables['Build.SourceBranchName'], 'dev'),
+                    or(
+                      eq(variables['tag_type'], 'test'),
+                      eq(variables['tag_type'], 'prod')
+                    )
+                  )

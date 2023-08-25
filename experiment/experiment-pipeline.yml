@@ -71,20 +71,17 @@ stages:
               workingDirectory: "$(System.DefaultWorkingDirectory)/experiment"
               # service connection
               environmentServiceNameAzureRM: compiler-deployer
-          # - task: TerraformTaskV3@3
-          - task: Bash@3
+          - task: TerraformTaskV3@3
             displayName: Terraform plan
             inputs:
-              # provider: azurerm
-              # command: plan
-              # # wait for lock to be released, in case being used by another pipeline run
-              # # https://discuss.hashicorp.com/t/terraform-plan-wait-for-lock-to-be-released/6870/2
-              # commandOptions: -input=false -lock-timeout=5m
-              # workingDirectory: "$(System.DefaultWorkingDirectory)/terraform"
-              # # service connection
-              # environmentServiceNameAzureRM: compiler-deployer
-              targetType: inline
-              script: echo "terraform plan"
+              provider: azurerm
+              command: plan
+              # wait for lock to be released, in case being used by another pipeline run
+              # https://discuss.hashicorp.com/t/terraform-plan-wait-for-lock-to-be-released/6870/2
+              commandOptions: -input=false -lock-timeout=5m
+              workingDirectory: "$(System.DefaultWorkingDirectory)/experiment"
+              # service connection
+              environmentServiceNameAzureRM: compiler-deployer
             # the plan is done as part of the apply (below), so don't bother doing it twice
             condition: notIn(variables['Build.SourceBranchName'], 'dev', 'test', 'prod')
   - stage: TerraformApply
@@ -97,17 +94,15 @@ stages:
           runOnce:
             deploy:
               steps:
-              - task: Bash@3
+              - task: TerraformTaskV3@3
                 displayName: Terraform apply
                 inputs:
-                  # provider: azurerm
-                  # command: apply
-                  # # (ditto the lock comment above)
-                  # commandOptions: -input=false -lock-timeout=5m
-                  # workingDirectory: "$(System.DefaultWorkingDirectory)/terraform"
-                  # # service connection
-                  # environmentServiceNameAzureRM: compiler-deployer
-                  targetType: inline
-                  script: echo "terraform apply"
+                  provider: azurerm
+                  command: apply
+                  # (ditto the lock comment above)
+                  commandOptions: -input=false -lock-timeout=5m
+                  workingDirectory: "$(System.DefaultWorkingDirectory)/experiment"
+                  # service connection
+                  environmentServiceNameAzureRM: compiler-deployer
                 # only run on certain branches
                 condition: in(variables['Build.SourceBranchName'], 'dev', 'test', 'prod')

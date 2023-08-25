@@ -6,7 +6,7 @@ REASON = os.environ["REASON"]
 # the name of the variable that Azure Pipelines uses for the source branch depends on the type of run, so need to check both
 SOURCE = os.environ.get("OTHER_SOURCE") or os.environ["INDIVIDUAL_SOURCE"]
 TARGET = os.environ["TARGET"]
-IS_TAG = os.environ["IS_TAG"]
+IS_TAG = os.environ["IS_TAG"].lower() == "true"
 
 # the branches that correspond to environments
 ENV_BRANCHES = ["dev", "test", "prod"]

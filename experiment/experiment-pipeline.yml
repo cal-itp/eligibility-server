@@ -168,7 +168,7 @@ stages:
                   provider: azurerm
                   command: apply
                   # (ditto the lock comment above)
-                  commandOptions: -input=false -lock-timeout=5m $(System.ArtifactsDirectory)/tfplan
+                  commandOptions: -input=false -lock-timeout=5m $(Pipeline.Workspace)/savedPlan/tfplan
                   workingDirectory: "$(System.DefaultWorkingDirectory)/experiment"
                   # service connection
                   environmentServiceNameAzureRM: compiler-deployer

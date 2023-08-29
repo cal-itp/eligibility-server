@@ -100,13 +100,26 @@ stages:
                   )
   - stage: TerraformApply
     dependsOn: TerraformPlan
+    variables:
+      - name: workspace
+        value: $[ dependencies.TerraformPlan.outputs['Plan.setvars.workspace'] ]
+      - name: tag_type
+        value: $[ dependencies.TerraformPlan.outputs['Plan.setvars.tag_type'] ]
+    # only run on dev branch OR if it's a tag for test or prod
+    condition: |
+      or(
+        in(variables['Build.SourceBranchName'], 'dev'),
+        or(
+          eq(variables['tag_type'], 'test'),
+          eq(variables['tag_type'], 'prod')
+        )
+      )
     jobs:
       - deployment: Apply
         condition: succeeded()
         environment: Approval
         variables:
-        - name: workspace
-          value: $[ stageDependencies.TerraformPlan.Plan.outputs['setvars.workspace'] ]
+
         - name: tag_type
           value: $[ stageDependencies.TerraformPlan.Plan.outputs['setvars.tag_type'] ]
         strategy:
@@ -118,14 +131,6 @@ stages:
               - download: current
                 displayName: 'Download plan file published from TerraformPlan'
                 artifact: savedPlan
-                condition: |
-                  or(
-                    in(variables['Build.SourceBranchName'], 'dev'),
-                    or(
-                      eq(variables['tag_type'], 'test'),
-                      eq(variables['tag_type'], 'prod')
-                    )
-                  )
               - task: TerraformInstaller@0
                 displayName: Install Terraform
                 inputs:
@@ -165,12 +170,3 @@ stages:
                   workingDirectory: "$(System.DefaultWorkingDirectory)/experiment"
                   # service connection
                   environmentServiceNameAzureRM: compiler-deployer
-                # only run on dev branch OR if it's a tag for test or prod
-                condition: |
-                  or(
-                    in(variables['Build.SourceBranchName'], 'dev'),
-                    or(
-                      eq(variables['tag_type'], 'test'),
-                      eq(variables['tag_type'], 'prod')
-                    )
-                  )

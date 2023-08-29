@@ -34,10 +34,11 @@ stages:
           # https://learn.microsoft.com/en-us/azure/devops/pipelines/process/set-variables-scripts?view=azure-devops&tabs=bash#about-tasksetvariable
           - bash: |
               WORKSPACE=$(python experiment/experiment-workspace.py)
-              echo "##vso[task.setvariable variable=workspace]$WORKSPACE"
+              echo "##vso[task.setvariable variable=workspace;isOutput=true]$WORKSPACE"
 
               TAG_TYPE=$(python experiment/tag.py)
-              echo "##vso[task.setvariable variable=tag_type]$TAG_TYPE"
+              echo "##vso[task.setvariable variable=tag_type;isOutput=true]$TAG_TYPE"
+            name: setvars
             displayName: Determine deployment environment
             env:
               REASON: $(Build.Reason)
@@ -68,7 +69,7 @@ stages:
               provider: azurerm
               command: custom
               customCommand: workspace
-              commandOptions: select $(workspace)
+              commandOptions: select $(setvars.workspace)
               workingDirectory: "$(System.DefaultWorkingDirectory)/experiment"
               # service connection
               environmentServiceNameAzureRM: compiler-deployer
@@ -104,28 +105,15 @@ stages:
         condition: succeeded()
         environment: Approval
         variables:
-          - name: OTHER_SOURCE
-            value: $[variables['System.PullRequest.SourceBranch']]
-          - name: INDIVIDUAL_SOURCE
-            value: $[variables['Build.SourceBranchName']]
-          - name: IS_TAG
-            value: $[startsWith(variables['Build.SourceBranch'], 'refs/tags/')]
-          - name: TARGET
-            value: $[variables['System.PullRequest.TargetBranch']]
+        - name: workspace
+          value: $[ stageDependencies.TerraformPlan.Plan.outputs['setvars.workspace'] ]
+        - name: tag_type
+          value: $[ stageDependencies.TerraformPlan.Plan.outputs['setvars.tag_type'] ]
         strategy:
           runOnce:
             deploy:
               steps:
               - checkout: self
-              - bash: |
-                  WORKSPACE=$(python experiment/experiment-workspace.py)
-                  echo "##vso[task.setvariable variable=workspace]$WORKSPACE"
-
-                  TAG_TYPE=$(python experiment/tag.py)
-                  echo "##vso[task.setvariable variable=tag_type]$TAG_TYPE"
-                displayName: Determine tag type (either test or prod)
-                env:
-                  REASON: $(Build.Reason)
               # https://github.com/microsoft/azure-pipelines-terraform/tree/main/Tasks/TerraformTask/TerraformTaskV3#readme
               - download: current
                 artifact: savedPlan

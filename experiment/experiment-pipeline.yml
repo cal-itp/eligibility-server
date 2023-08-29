@@ -116,6 +116,7 @@ stages:
               - checkout: self
               # https://github.com/microsoft/azure-pipelines-terraform/tree/main/Tasks/TerraformTask/TerraformTaskV3#readme
               - download: current
+                displayName: 'Download plan file published from TerraformPlan'
                 artifact: savedPlan
                 condition: |
                   or(

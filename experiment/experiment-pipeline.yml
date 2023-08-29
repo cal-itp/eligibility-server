@@ -11,7 +11,13 @@ trigger:
     include:
       - experiment/*
 
-pr: none
+pr:
+  branches:
+    include:
+      - "*"
+  paths:
+    include:
+      - experiment/*
 
 pool:
   vmImage: ubuntu-latest

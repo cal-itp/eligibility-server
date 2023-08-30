@@ -23,7 +23,13 @@ provider "azurerm" {
   features {}
 }
 
+locals {
+  is_prod  = terraform.workspace == "default"
+  is_test  = terraform.workspace == "test"
+  env_name = local.is_prod ? "prod" : terraform.workspace
+}
+
 resource "azurerm_resource_group" "rg" {
-  name     = "myTFResourceGroup"
+  name     = "myTFResourceGroup-${local.env_name}"
   location = "westus2"
 }

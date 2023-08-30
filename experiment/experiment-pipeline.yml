@@ -2,6 +2,8 @@ trigger:
   branches:
     include:
       - dev
+      - test
+      - prod
   tags:
     include:
       - 20??.??.?*-rc?*
@@ -91,14 +93,14 @@ stages:
               # service connection
               environmentServiceNameAzureRM: compiler-deployer
             # the plan is done as part of the apply (below), so don't bother doing it twice
-            condition: notIn(variables['Build.SourceBranchName'], 'dev')
+            condition: notIn(variables['Build.SourceBranchName'], 'dev', 'test', 'prod')
           # need to publish the tfplan to used by next stage if it's going to run
           - publish: '$(Build.ArtifactStagingDirectory)'
             displayName: 'Publish tfplan for use in TerraformApply'
             artifact: savedPlan
             condition:  |
                   or(
-                    in(variables['Build.SourceBranchName'], 'dev'),
+                    in(variables['Build.SourceBranchName'], 'dev', 'test', 'prod'),
                     or(
                       eq(variables['setvars.tag_type'], 'test'),
                       eq(variables['setvars.tag_type'], 'prod')
@@ -114,7 +116,7 @@ stages:
     # only run on dev branch OR if it's a tag for test or prod
     condition: |
       or(
-        in(variables['Build.SourceBranchName'], 'dev'),
+        in(variables['Build.SourceBranchName'], 'dev', 'test', 'prod'),
         or(
           eq(variables['tag_type'], 'test'),
           eq(variables['tag_type'], 'prod')

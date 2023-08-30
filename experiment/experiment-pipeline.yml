@@ -41,7 +41,7 @@ stages:
           # set the workspace variable at runtime (rather than build time) so that all the necessary variables are available, and we can use Python
           # https://learn.microsoft.com/en-us/azure/devops/pipelines/process/set-variables-scripts?view=azure-devops&tabs=bash#about-tasksetvariable
           - bash: |
-              WORKSPACE=$(python experiment/experiment-workspace.py)
+              WORKSPACE=$(python experiment/workspace.py)
               echo "##vso[task.setvariable variable=workspace;isOutput=true]$WORKSPACE"
 
               TAG_TYPE=$(python experiment/tag.py)
@@ -95,17 +95,17 @@ stages:
             # the plan is done as part of the apply (below), so don't bother doing it twice
             condition: notIn(variables['Build.SourceBranchName'], 'dev', 'test', 'prod')
           # need to publish the tfplan to used by next stage if it's going to run
-          - publish: '$(Build.ArtifactStagingDirectory)'
-            displayName: 'Publish tfplan for use in TerraformApply'
+          - publish: "$(Build.ArtifactStagingDirectory)"
+            displayName: "Publish tfplan for use in TerraformApply"
             artifact: savedPlan
-            condition:  |
-                  or(
-                    in(variables['Build.SourceBranchName'], 'dev', 'test', 'prod'),
-                    or(
-                      eq(variables['setvars.tag_type'], 'test'),
-                      eq(variables['setvars.tag_type'], 'prod')
-                    )
-                  )
+            condition: |
+              or(
+                in(variables['Build.SourceBranchName'], 'dev', 'test', 'prod'),
+                or(
+                  eq(variables['setvars.tag_type'], 'test'),
+                  eq(variables['setvars.tag_type'], 'prod')
+                )
+              )
   - stage: TerraformApply
     dependsOn: TerraformPlan
     variables:
@@ -127,55 +127,55 @@ stages:
         condition: succeeded()
         environment: Approval
         variables:
-        - name: workspace
-          value: $[ stageDependencies.TerraformPlan.Plan.outputs['setvars.workspace'] ]
-        - name: tag_type
-          value: $[ stageDependencies.TerraformPlan.Plan.outputs['setvars.tag_type'] ]
+          - name: workspace
+            value: $[ stageDependencies.TerraformPlan.Plan.outputs['setvars.workspace'] ]
+          - name: tag_type
+            value: $[ stageDependencies.TerraformPlan.Plan.outputs['setvars.tag_type'] ]
         strategy:
           runOnce:
             deploy:
               steps:
-              - checkout: self
-              # https://github.com/microsoft/azure-pipelines-terraform/tree/main/Tasks/TerraformTask/TerraformTaskV3#readme
-              - download: current
-                displayName: 'Download plan file published from TerraformPlan'
-                artifact: savedPlan
-              - task: TerraformInstaller@0
-                displayName: Install Terraform
-                inputs:
-                  terraformVersion: 1.3.1
-              - task: TerraformTaskV3@3
-                displayName: Terraform init
-                inputs:
-                  provider: azurerm
-                  command: init
-                  workingDirectory: "$(System.DefaultWorkingDirectory)/experiment"
-                  # https://developer.hashicorp.com/terraform/tutorials/automation/automate-terraform#automated-terraform-cli-workflow
-                  commandOptions: -input=false
-                  # service connection
-                  backendServiceArm: compiler-deployer
-                  # needs to match main.tf
-                  backendAzureRmResourceGroupName: experiment-terraform
-                  backendAzureRmStorageAccountName: experimentterraform
-                  backendAzureRmContainerName: tfstate
-                  backendAzureRmKey: terraform.tfstate
-              - task: TerraformTaskV3@3
-                displayName: Select environment
-                inputs:
-                  provider: azurerm
-                  command: custom
-                  customCommand: workspace
-                  commandOptions: select $(workspace)
-                  workingDirectory: "$(System.DefaultWorkingDirectory)/experiment"
-                  # service connection
-                  environmentServiceNameAzureRM: compiler-deployer
-              - task: TerraformTaskV3@3
-                displayName: Terraform apply
-                inputs:
-                  provider: azurerm
-                  command: apply
-                  # (ditto the lock comment above)
-                  commandOptions: -input=false -lock-timeout=5m $(Pipeline.Workspace)/savedPlan/tfplan
-                  workingDirectory: "$(System.DefaultWorkingDirectory)/experiment"
-                  # service connection
-                  environmentServiceNameAzureRM: compiler-deployer
+                - checkout: self
+                # https://github.com/microsoft/azure-pipelines-terraform/tree/main/Tasks/TerraformTask/TerraformTaskV3#readme
+                - download: current
+                  displayName: "Download plan file published from TerraformPlan"
+                  artifact: savedPlan
+                - task: TerraformInstaller@0
+                  displayName: Install Terraform
+                  inputs:
+                    terraformVersion: 1.3.1
+                - task: TerraformTaskV3@3
+                  displayName: Terraform init
+                  inputs:
+                    provider: azurerm
+                    command: init
+                    workingDirectory: "$(System.DefaultWorkingDirectory)/experiment"
+                    # https://developer.hashicorp.com/terraform/tutorials/automation/automate-terraform#automated-terraform-cli-workflow
+                    commandOptions: -input=false
+                    # service connection
+                    backendServiceArm: compiler-deployer
+                    # needs to match main.tf
+                    backendAzureRmResourceGroupName: experiment-terraform
+                    backendAzureRmStorageAccountName: experimentterraform
+                    backendAzureRmContainerName: tfstate
+                    backendAzureRmKey: terraform.tfstate
+                - task: TerraformTaskV3@3
+                  displayName: Select environment
+                  inputs:
+                    provider: azurerm
+                    command: custom
+                    customCommand: workspace
+                    commandOptions: select $(workspace)
+                    workingDirectory: "$(System.DefaultWorkingDirectory)/experiment"
+                    # service connection
+                    environmentServiceNameAzureRM: compiler-deployer
+                - task: TerraformTaskV3@3
+                  displayName: Terraform apply
+                  inputs:
+                    provider: azurerm
+                    command: apply
+                    # (ditto the lock comment above)
+                    commandOptions: -input=false -lock-timeout=5m $(Pipeline.Workspace)/savedPlan/tfplan
+                    workingDirectory: "$(System.DefaultWorkingDirectory)/experiment"
+                    # service connection
+                    environmentServiceNameAzureRM: compiler-deployer

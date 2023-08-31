@@ -6,10 +6,15 @@ trigger:
       - dev
       - test
       - prod
+  tags:
+    include:
+      - 20??.??.?*-rc?*
+      - 20??.??.?*
   # only run for changes to Terraform files
   paths:
     include:
       - terraform/*
+
 pool:
   vmImage: ubuntu-latest
 
@@ -22,6 +27,8 @@ stages:
             value: $[variables['System.PullRequest.SourceBranch']]
           - name: INDIVIDUAL_SOURCE
             value: $[variables['Build.SourceBranchName']]
+          - name: IS_TAG
+            value: $[startsWith(variables['Build.SourceBranch'], 'refs/tags/')]
           - name: TARGET
             value: $[variables['System.PullRequest.TargetBranch']]
         steps:
@@ -30,6 +37,9 @@ stages:
           - bash: |
               WORKSPACE=$(python terraform/pipeline/workspace.py)
               echo "##vso[task.setvariable variable=workspace;isOutput=true]$WORKSPACE"
+
+              TAG_TYPE=$(python terraform/pipeline/tag.py)
+              echo "##vso[task.setvariable variable=tag_type;isOutput=true]$TAG_TYPE"
             name: setvars
             displayName: Determine deployment environment
             env:
@@ -80,14 +90,30 @@ stages:
           - publish: "$(Build.ArtifactStagingDirectory)"
             displayName: "Publish tfplan for use in TerraformApply"
             artifact: savedPlan
-            condition: in(variables['Build.SourceBranchName'], 'dev', 'test', 'prod')
+            condition: |
+                or(
+                  in(variables['Build.SourceBranchName'], 'dev', 'test', 'prod'),
+                  or(
+                    eq(variables['setvars.tag_type'], 'test'),
+                    eq(variables['setvars.tag_type'], 'prod')
+                  )
+                )
   - stage: TerraformApply
     dependsOn: TerraformPlan
     variables:
       - name: workspace
         value: $[ dependencies.TerraformPlan.outputs['Plan.setvars.workspace'] ]
-    # only run on dev, test, or prod branches
-    condition: in(variables['Build.SourceBranchName'], 'dev', 'test', 'prod')
+      - name: tag_type
+        value: $[ dependencies.TerraformPlan.outputs['Plan.setvars.tag_type'] ]
+    # only run on dev, test, or prod branches OR if it's a tag for test or prod
+    condition: |
+      or(
+        in(variables['Build.SourceBranchName'], 'dev', 'test', 'prod'),
+        or(
+          eq(variables['tag_type'], 'test'),
+          eq(variables['tag_type'], 'prod')
+        )
+      )
     jobs:
       - deployment: Apply
         condition: succeeded()
@@ -95,6 +121,8 @@ stages:
         variables:
           - name: workspace
             value: $[ stageDependencies.TerraformPlan.Plan.outputs['setvars.workspace'] ]
+          - name: tag_type
+            value: $[ stageDependencies.TerraformPlan.Plan.outputs['setvars.tag_type'] ]
         strategy:
           runOnce:
             deploy:

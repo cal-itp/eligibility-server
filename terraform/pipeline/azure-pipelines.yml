@@ -99,10 +99,8 @@ stages:
             condition: |
                 or(
                   in(variables['Build.SourceBranchName'], 'dev', 'test', 'prod'),
-                  or(
-                    eq(variables['setvars.tag_type'], 'test'),
-                    eq(variables['setvars.tag_type'], 'prod')
-                  )
+                  eq(variables['setvars.tag_type'], 'test'),
+                  eq(variables['setvars.tag_type'], 'prod')
                 )
   - stage: TerraformApply
     dependsOn: TerraformPlan
@@ -115,10 +113,8 @@ stages:
     condition: |
       or(
         in(variables['Build.SourceBranchName'], 'dev', 'test', 'prod'),
-        or(
-          eq(variables['tag_type'], 'test'),
-          eq(variables['tag_type'], 'prod')
-        )
+        eq(variables['tag_type'], 'test'),
+        eq(variables['tag_type'], 'prod')
       )
     jobs:
       - deployment: Apply

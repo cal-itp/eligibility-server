@@ -1,6 +1,4 @@
 trigger:
-  # automatically runs on pull requests
-  # https://docs.microsoft.com/en-us/azure/devops/pipelines/repos/github?view=azure-devops&tabs=yaml#pr-triggers
   branches:
     include:
       - dev
@@ -11,6 +9,14 @@ trigger:
       - 20??.??.?*-rc?*
       - 20??.??.?*
   # only run for changes to Terraform files
+  paths:
+    include:
+      - terraform/*
+
+pr:
+  branches:
+    include:
+      - "*"
   paths:
     include:
       - terraform/*

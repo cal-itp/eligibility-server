@@ -9,7 +9,7 @@ dependencies = [
     "eligibility-api==2023.6.1",
     "Flask==2.3.3",
     "Flask-RESTful==0.3.10",
-    "Flask-SQLAlchemy==3.1.0",
+    "Flask-SQLAlchemy==3.1.1",
     "requests==2.31.0"
 ]
 dynamic = ["version"]

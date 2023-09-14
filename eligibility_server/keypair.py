@@ -17,7 +17,7 @@ def _read_key_file(key_path):
         return _CACHE[key_path]
 
     if key_path.startswith("http"):
-        data = requests.get(key_path).text
+        data = requests.get(key_path, timeout=config.request_timeout).text
         key = data.encode("utf8")
     else:
         with open(key_path, "rb") as pemfile:

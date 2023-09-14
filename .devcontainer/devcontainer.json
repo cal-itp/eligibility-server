@@ -27,7 +27,9 @@
         "hashicorp.terraform",
         "mhutchie.git-graph",
         "ms-python.python",
-        "ms-python.vscode-pylance"
+        "ms-python.black-formatter",
+        "ms-python.flake8",
+        "tamasfe.even-better-toml"
       ]
     }
   }

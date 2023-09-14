@@ -43,16 +43,16 @@ def test_read_key_file_local(mocker, sample_key_path_local, spy_open):
         assert key == file.read()
 
 
-@pytest.mark.usefixtures("reset_cache")
+@pytest.mark.usefixtures("reset_cache", "flask")
 def test_read_key_file_remote(sample_key_path_remote, spy_open, spy_requests_get):
     key = _read_key_file(sample_key_path_remote)
 
     # check that there was no call to open
     assert spy_open.call_count == 0
     # check that we made a get request
-    spy_requests_get.assert_called_with(sample_key_path_remote)
+    spy_requests_get.assert_called_once_with(sample_key_path_remote, timeout=5)
     assert key
-    assert key == requests.get(sample_key_path_remote).text.encode("utf8")
+    assert key == requests.get(sample_key_path_remote, timeout=5).text.encode("utf8")
 
 
 @pytest.mark.usefixtures("reset_cache")

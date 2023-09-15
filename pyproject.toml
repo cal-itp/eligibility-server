@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=64", "wheel"]
+requires = ["setuptools>=65", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -41,6 +41,9 @@ Issues = "https://github.com/cal-itp/eligibility-server/issues"
 line-length = 127
 target-version = ['py310']
 include = '\.pyi?$'
+
+[tool.pyright]
+include = ["eligibility_server", "tests"]
 
 [tool.setuptools]
 packages = ["eligibility_server"]

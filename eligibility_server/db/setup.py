@@ -64,7 +64,7 @@ def import_json_users(json_path, remote):
     data = {}
     if remote:
         # download the file to a dict
-        data = requests.get(json_path).json()
+        data = requests.get(json_path, timeout=config.request_timeout).json()
     else:
         # open the file and load to a dict
         with open(json_path) as file:
@@ -82,7 +82,7 @@ def import_csv_users(csv_path, remote):
     temp_csv = None
     if remote:
         # download the content as text and write to a temp file
-        content = requests.get(csv_path).text
+        content = requests.get(csv_path, timeout=config.request_timeout).text
         # note we leave the temp file open so it exists later for reading
         temp_csv = NamedTemporaryFile(mode="w", encoding="utf-8")
         temp_csv.write(content)

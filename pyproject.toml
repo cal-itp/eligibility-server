@@ -1,10 +1,11 @@
-[build-system]
-requires = ["setuptools>=65", "wheel"]
-build-backend = "setuptools.build_meta"
-
 [project]
-classifiers = ["Programming Language :: Python :: 3 :: Only"]
+name = "eligibility-server"
+version = "2023.09.1"
 description = "Server implementation of the Eligibility Verification API"
+readme = "README.md"
+license = { file = "LICENSE" }
+classifiers = ["Programming Language :: Python :: 3 :: Only"]
+requires-python = ">=3.9"
 dependencies = [
     "eligibility-api==2023.9.1",
     "Flask==2.3.3",
@@ -12,12 +13,6 @@ dependencies = [
     "Flask-SQLAlchemy==3.1.1",
     "requests==2.31.0"
 ]
-version = "2023.08.2"
-keywords = ["flask"]
-license = { file = "LICENSE" }
-name = "eligibility-server"
-readme = "README.md"
-requires-python = ">=3.9"
 
 [project.optional-dependencies]
 dev = [
@@ -36,7 +31,10 @@ Code = "https://github.com/cal-itp/eligibility-server"
 Documentation = "https://docs.calitp.org/eligibility-server"
 Issues = "https://github.com/cal-itp/eligibility-server/issues"
 
-# Configuration for black
+[build-system]
+requires = ["setuptools>=65", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [tool.black]
 line-length = 127
 target-version = ['py310']

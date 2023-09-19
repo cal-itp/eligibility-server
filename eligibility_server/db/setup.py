@@ -98,7 +98,7 @@ def import_csv_users(csv_path, remote):
             file,
             delimiter=config.csv_delimiter,
             quoting=config.csv_quoting,
-            quotechar=config.csv_quotechar,
+            quotechar=config.csv_quotechar if config.csv_quotechar else None,
         )
 
         for row in data:

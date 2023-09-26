@@ -15,12 +15,15 @@ defaults:
   run:
     shell: bash
 
+concurrency:
+  # this expression works like a ternary operation (see https://github.com/actions/runner/issues/409#issuecomment-727565588)
+  group: ${{ github.event_name != 'release' && github.ref_name || github.event.release.prerelease && 'test' || 'prod' }}
+  cancel-in-progress: true
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    # this expression works like a ternary operation (see https://github.com/actions/runner/issues/409#issuecomment-727565588)
     environment: ${{ github.event_name != 'release' && github.ref_name || github.event.release.prerelease && 'test' || 'prod' }}
-    concurrency: ${{ github.event_name != 'release' && github.ref_name || github.event.release.prerelease && 'test' || 'prod' }}
 
     steps:
       - name: Checkout

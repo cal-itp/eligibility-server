@@ -18,8 +18,9 @@ defaults:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: ${{ github.ref_name }}
-    concurrency: ${{ github.ref_name }}
+    # this expression works like a ternary operation (see https://github.com/actions/runner/issues/409#issuecomment-727565588)
+    environment: ${{ github.event_name != 'release' && github.ref_name || github.event.release.prerelease && 'test' || 'prod' }}
+    concurrency: ${{ github.event_name != 'release' && github.ref_name || github.event.release.prerelease && 'test' || 'prod' }}
 
     steps:
       - name: Checkout

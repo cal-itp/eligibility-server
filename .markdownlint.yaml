@@ -13,3 +13,6 @@ MD024: false
 
 # Allow inline HTML
 MD033: false
+
+# Allow fenced code blocks
+MD046: false

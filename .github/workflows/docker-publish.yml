@@ -7,6 +7,9 @@ on:
       - dev
       - test
       - prod
+  release:
+    types:
+      - published
 
 defaults:
   run:

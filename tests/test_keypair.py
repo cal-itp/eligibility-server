@@ -5,6 +5,7 @@ import requests
 
 from eligibility_server import keypair
 from eligibility_server.keypair import _read_key_file
+from eligibility_server.settings import REQUEST_TIMEOUT
 
 
 @pytest.fixture
@@ -50,7 +51,7 @@ def test_read_key_file_remote(sample_key_path_remote, spy_open, spy_requests_get
     # check that there was no call to open
     assert spy_open.call_count == 0
     # check that we made a get request
-    spy_requests_get.assert_called_once_with(sample_key_path_remote, timeout=5)
+    spy_requests_get.assert_called_once_with(sample_key_path_remote, timeout=REQUEST_TIMEOUT)
     assert key
     assert key == requests.get(sample_key_path_remote, timeout=5).text.encode("utf8")
 

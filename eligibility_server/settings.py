@@ -9,7 +9,7 @@ APP_NAME = "eligibility_server.app"
 DEBUG_MODE = True
 HOST = "0.0.0.0"  # nosec
 LOG_LEVEL = "INFO"
-REQUEST_TIMEOUT = 5
+REQUEST_TIMEOUT = (3, 20)
 
 # Database settings
 
@@ -65,7 +65,7 @@ class Configuration:
 
     @property
     def request_timeout(self):
-        return int(current_app.config["REQUEST_TIMEOUT"])
+        return current_app.config["REQUEST_TIMEOUT"]
 
     # API settings
 

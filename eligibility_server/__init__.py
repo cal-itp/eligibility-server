@@ -1,3 +1,7 @@
-__version__ = "2023.08.2"
+from importlib.metadata import version, PackageNotFoundError
 
-VERSION = __version__
+try:
+    __version__ = version("eligibility-server")
+except PackageNotFoundError:
+    # package is not installed
+    pass

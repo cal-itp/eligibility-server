@@ -1,6 +1,7 @@
 """
 Test app
 """
+import re
 
 from eligibility_server.settings import APP_NAME
 from eligibility_server.keypair import get_server_public_key
@@ -31,3 +32,10 @@ def test_publickey(client):
     assert response.status_code == 200
     assert response.mimetype == "text/plain"
     assert response.text == get_server_public_key().decode("utf-8")
+
+
+def test_version():
+    from eligibility_server import __version__
+
+    assert __version__ is not None
+    assert re.match(r"\d{4}\.\d{1,2}\.\d+", __version__)

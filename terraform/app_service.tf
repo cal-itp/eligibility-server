@@ -19,6 +19,7 @@ resource "azurerm_linux_web_app" "main" {
   https_only          = true
 
   site_config {
+    always_on     = false
     ftps_state    = "Disabled"
     http2_enabled = true
 

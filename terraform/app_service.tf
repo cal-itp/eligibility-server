@@ -49,6 +49,7 @@ resource "azurerm_linux_web_app" "main" {
   }
 
   app_settings = {
+    "DOCKER_ENABLE_CI"            = "true",
     "DOCKER_REGISTRY_SERVER_URL"  = "https://ghcr.io/"
     "ELIGIBILITY_SERVER_SETTINGS" = "${local.mount_path}/settings.py"
     # this prevents the filesystem from being obscured by a mount

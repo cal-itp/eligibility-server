@@ -52,6 +52,17 @@ def test_configuration_log_level(mocker, configuration: Configuration):
 
 
 @pytest.mark.usefixtures("flask")
+def test_configuration_request_timeout(mocker, configuration: Configuration):
+    assert configuration.request_timeout == settings.REQUEST_TIMEOUT
+
+    new_value = 1000
+    mocked_config = {"REQUEST_TIMEOUT": new_value}
+    mocker.patch.dict("eligibility_server.settings.current_app.config", mocked_config)
+
+    assert configuration.request_timeout == new_value
+
+
+@pytest.mark.usefixtures("flask")
 def test_configuration_auth_header(mocker, configuration: Configuration):
     assert configuration.auth_header == settings.AUTH_HEADER
 

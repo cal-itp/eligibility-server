@@ -30,7 +30,7 @@ jobs:
 
   deploy:
     needs: test
-    if: always() && !cancelled() && (github.event_name != 'release' || needs.test.result == 'success')
+    if: (!cancelled() && (github.event_name != 'release' || needs.test.result == 'success'))
     runs-on: ubuntu-latest
     environment: ${{ env.DEPLOYMENT_ENVIRONMENT }}
 

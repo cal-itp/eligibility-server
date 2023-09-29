@@ -74,7 +74,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "main" {
   custom_block_response_body        = base64encode("Forbidden")
 
   custom_rule {
-    name     = "healthcheck"
+    name     = "public_access"
     enabled  = true
     type     = "MatchRule"
     priority = 1
@@ -82,8 +82,8 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "main" {
 
     match_condition {
       match_variable = "RequestUri"
-      operator       = "Equal"
-      match_values   = ["https://${azurerm_cdn_frontdoor_endpoint.main.host_name}:443/healthcheck"]
+      operator       = "BeginsWith"
+      match_values   = ["https://${azurerm_cdn_frontdoor_endpoint.main.host_name}:443/healthcheck", "https://${azurerm_cdn_frontdoor_endpoint.main.host_name}:443/static/"]
     }
   }
 

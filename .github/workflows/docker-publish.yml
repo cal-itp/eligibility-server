@@ -23,7 +23,7 @@ concurrency:
 jobs:
   test:
     uses: ./.github/workflows/run-tests.yml
-    if: github.event_name == 'release' && (github.event.release.prerelease || !github.event.release.prerelease)
+    if: github.event_name == 'release'
 
   deploy:
     needs: test

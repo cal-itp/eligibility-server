@@ -60,5 +60,6 @@ jobs:
           file: Dockerfile
           push: true
           tags: |
+            ghcr.io/${{ github.repository }}:${{ env.DEPLOYMENT_ENVIRONMENT }}
             ghcr.io/${{ github.repository }}:${{ github.ref_name }}
             ghcr.io/${{ github.repository }}:${{ github.sha }}

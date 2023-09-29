@@ -28,6 +28,9 @@ jobs:
           cache: pip
           cache-dependency-path: "**/pyproject.toml"
 
+      - name: Create /static directory
+        run: mkdir -p eligibility_server/static
+
       - name: Write python packages to file
         run: |
           python -m venv .venv

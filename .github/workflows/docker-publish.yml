@@ -30,6 +30,8 @@ jobs:
 
   deploy:
     needs: test
+    # !cancelled() is needed because if the whole workflow was cancelled, we don't want this job to run.
+    # (github.event_name != 'release' || needs.test.result == 'success') is needed because if `test` did run, we only want this to run if `test` succeeded.
     if: (!cancelled() && (github.event_name != 'release' || needs.test.result == 'success'))
     runs-on: ubuntu-latest
     environment: ${{ env.DEPLOYMENT_ENVIRONMENT }}

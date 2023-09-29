@@ -15,9 +15,12 @@ defaults:
   run:
     shell: bash
 
-concurrency:
+env:
   # this expression works like a ternary operation (see https://github.com/actions/runner/issues/409#issuecomment-727565588)
-  group: ${{ github.event_name != 'release' && github.ref_name || github.event.release.prerelease && 'test' || 'prod' }}
+  - DEPLOYMENT_ENVIRONMENT: ${{ github.event_name != 'release' && github.ref_name || github.event.release.prerelease && 'test' || 'prod' }}
+
+concurrency:
+  group: ${{ env.DEPLOYMENT_ENVIRONMENT }}
   cancel-in-progress: true
 
 jobs:
@@ -29,7 +32,7 @@ jobs:
     needs: test
     if: always() && !cancelled() && (github.event_name != 'release' || needs.test.result == 'success')
     runs-on: ubuntu-latest
-    environment: ${{ github.event_name != 'release' && github.ref_name || github.event.release.prerelease && 'test' || 'prod' }}
+    environment: ${{ env.DEPLOYMENT_ENVIRONMENT }}
 
     steps:
       - name: Checkout

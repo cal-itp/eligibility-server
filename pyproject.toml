@@ -8,7 +8,7 @@ classifiers = ["Programming Language :: Python :: 3 :: Only"]
 requires-python = ">=3.9"
 dependencies = [
     "eligibility-api==2023.9.1",
-    "Flask==2.3.3",
+    "Flask==3.0.0",
     "Flask-RESTful==0.3.10",
     "Flask-SQLAlchemy==3.1.1",
     "requests==2.31.0"

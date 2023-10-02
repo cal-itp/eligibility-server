@@ -15,12 +15,9 @@ defaults:
   run:
     shell: bash
 
-env:
-  # this expression works like a ternary operation (see https://github.com/actions/runner/issues/409#issuecomment-727565588)
-  - DEPLOYMENT_ENVIRONMENT: ${{ github.event_name != 'release' && github.ref_name || github.event.release.prerelease && 'test' || 'prod' }}
-
 concurrency:
-  group: ${{ env.DEPLOYMENT_ENVIRONMENT }}
+  # this expression gives us the name of the deployment environment. It works like a ternary operation (see https://github.com/actions/runner/issues/409#issuecomment-727565588)
+  group: ${{ github.event_name != 'release' && github.ref_name || github.event.release.prerelease && 'test' || 'prod' }}
   cancel-in-progress: true
 
 jobs:
@@ -34,7 +31,7 @@ jobs:
     # (github.event_name != 'release' || needs.test.result == 'success') is needed because if `test` did run, we only want this to run if `test` succeeded.
     if: (!cancelled() && (github.event_name != 'release' || needs.test.result == 'success'))
     runs-on: ubuntu-latest
-    environment: ${{ env.DEPLOYMENT_ENVIRONMENT }}
+    environment: ${{ github.event_name != 'release' && github.ref_name || github.event.release.prerelease && 'test' || 'prod' }}
 
     steps:
       - name: Checkout
@@ -83,6 +80,6 @@ jobs:
           file: Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:${{ env.DEPLOYMENT_ENVIRONMENT }}
+            ghcr.io/${{ github.repository }}:${{ github.event_name != 'release' && github.ref_name || github.event.release.prerelease && 'test' || 'prod' }}
             ghcr.io/${{ github.repository }}:${{ github.ref_name }}
             ghcr.io/${{ github.repository }}:${{ github.sha }}

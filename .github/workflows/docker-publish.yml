@@ -7,16 +7,34 @@ on:
       - dev
       - test
       - prod
+  release:
+    types:
+      - published
 
 defaults:
   run:
     shell: bash
 
+env:
+  # this expression works like a ternary operation (see https://github.com/actions/runner/issues/409#issuecomment-727565588)
+  - DEPLOYMENT_ENVIRONMENT: ${{ github.event_name != 'release' && github.ref_name || github.event.release.prerelease && 'test' || 'prod' }}
+
+concurrency:
+  group: ${{ env.DEPLOYMENT_ENVIRONMENT }}
+  cancel-in-progress: true
+
 jobs:
+  test:
+    uses: ./.github/workflows/run-tests.yml
+    if: github.event_name == 'release'
+
   deploy:
+    needs: test
+    # !cancelled() is needed because if the whole workflow was cancelled, we don't want this job to run.
+    # (github.event_name != 'release' || needs.test.result == 'success') is needed because if `test` did run, we only want this to run if `test` succeeded.
+    if: (!cancelled() && (github.event_name != 'release' || needs.test.result == 'success'))
     runs-on: ubuntu-latest
-    environment: ${{ github.ref_name }}
-    concurrency: ${{ github.ref_name }}
+    environment: ${{ env.DEPLOYMENT_ENVIRONMENT }}
 
     steps:
       - name: Checkout
@@ -65,5 +83,6 @@ jobs:
           file: Dockerfile
           push: true
           tags: |
+            ghcr.io/${{ github.repository }}:${{ env.DEPLOYMENT_ENVIRONMENT }}
             ghcr.io/${{ github.repository }}:${{ github.ref_name }}
             ghcr.io/${{ github.repository }}:${{ github.sha }}

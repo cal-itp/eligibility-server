@@ -74,7 +74,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "main" {
   custom_block_response_body        = base64encode("Forbidden")
 
   custom_rule {
-    name     = "public_access"
+    name     = "publicaccess"
     enabled  = true
     type     = "MatchRule"
     priority = 1

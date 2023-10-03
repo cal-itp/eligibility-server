@@ -33,3 +33,13 @@ variable "IP_ADDRESS_WHITELIST_PROD" {
   type        = list(string)
   default     = []
 }
+
+variable "TF_RESOURCE_GROUP" {
+  description = "The name of the resource group used for Terraform backend"
+  type        = string
+}
+
+variable "TF_STORAGE_ACCOUNT" {
+  description = "The name of the storage account used for Terraform backend"
+  type        = string
+}

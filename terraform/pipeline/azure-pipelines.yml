@@ -31,4 +31,4 @@ stages:
   - template: deploy.yml
     parameters:
       resource_group: $(agency_card)-eligibility-terraform
-      storage_account: ${{ replace(agency_card, '-', '') }}terraform
+      storage_account: ${{ replace(variables.agency_card, '-', '') }}terraform

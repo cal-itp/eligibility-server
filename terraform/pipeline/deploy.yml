@@ -81,11 +81,11 @@ stages:
             displayName: "Publish tfplan for use in TerraformApply"
             artifact: savedPlan
             condition: |
-                or(
-                  in(variables['Build.SourceBranchName'], 'dev', 'test', 'prod'),
-                  eq(variables['setvars.tag_type'], 'test'),
-                  eq(variables['setvars.tag_type'], 'prod')
-                )
+              or(
+                in(variables['Build.SourceBranchName'], 'dev', 'test', 'prod'),
+                eq(variables['setvars.tag_type'], 'test'),
+                eq(variables['setvars.tag_type'], 'prod')
+              )
   - stage: TerraformApply
     dependsOn: TerraformPlan
     variables:

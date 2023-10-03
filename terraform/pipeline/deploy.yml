@@ -1,12 +1,8 @@
 parameters:
-  - name: agency_card
+  - name: resource_group
     type: string
-
-variables:
-  - name: RESOURCE_GROUP
-    value: ${{ parameters.agency_card }}-eligibility-terraform
-  - name: STORAGE_ACCOUNT
-    value: ${{ replace(parameters.agency_card, '-', '') }}terraform
+  - name: storage_account
+    type: string
 
 stages:
   - stage: TerraformPlan
@@ -51,8 +47,8 @@ stages:
               # service connection
               backendServiceArm: deployer
               # needs to match main.tf
-              backendAzureRmResourceGroupName: $(RESOURCE_GROUP)
-              backendAzureRmStorageAccountName: $(STORAGE_ACCOUNT)
+              backendAzureRmResourceGroupName: ${{ parameters.resource_group }}
+              backendAzureRmStorageAccountName: ${{ parameters.storage_account }}
               backendAzureRmContainerName: tfstate
               backendAzureRmKey: terraform.tfstate
           - task: TerraformTaskV3@3
@@ -133,8 +129,8 @@ stages:
                     # service connection
                     backendServiceArm: deployer
                     # needs to match main.tf
-                    backendAzureRmResourceGroupName: $(RESOURCE_GROUP)
-                    backendAzureRmStorageAccountName: $(STORAGE_ACCOUNT)
+                    backendAzureRmResourceGroupName: ${{ parameters.resource_group }}
+                    backendAzureRmStorageAccountName: ${{ parameters.storage_account }}
                     backendAzureRmContainerName: tfstate
                     backendAzureRmKey: terraform.tfstate
                 - task: TerraformTaskV3@3

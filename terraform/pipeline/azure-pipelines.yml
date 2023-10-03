@@ -24,7 +24,11 @@ pr:
 pool:
   vmImage: ubuntu-latest
 
+variables:
+  agency_card: courtesy-cards
+
 stages:
   - template: deploy.yml
     parameters:
-      agency_card: courtesy-cards
+      resource_group: $(agency_card)-eligibility-terraform
+      storage_account: ${{ replace(agency_card, '-', '') }}terraform

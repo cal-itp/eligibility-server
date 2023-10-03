@@ -26,3 +26,5 @@ pool:
 
 stages:
   - template: deploy.yml
+    parameters:
+      agency_card: courtesy-cards

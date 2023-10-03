@@ -4,14 +4,15 @@ set -e
 
 
 ENV=$1
+SUBSCRIPTION=$2
 
-if [ $# -ne 1 ]; then
-  echo "Usage: $0 <env>"
+if [ $# -ne 2 ]; then
+  echo "Usage: $0 <env> <subscription name>"
   exit 1
 fi
 
 echo "Setting the subscription for the Azure CLI..."
-az account set --subscription="MST IT"
+az account set --subscription="$SUBSCRIPTION"
 
 printf "Intializing Terraform...\n\n"
 terraform init

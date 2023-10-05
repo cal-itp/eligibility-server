@@ -47,10 +47,7 @@ stages:
               command: init
               workingDirectory: "$(System.DefaultWorkingDirectory)/terraform"
               # https://developer.hashicorp.com/terraform/tutorials/automation/automate-terraform#automated-terraform-cli-workflow
-              commandOptions: |
-                -input=false \
-                -backend-config="resource_group=${{ parameters.resource_group }}" \
-                -backend-config="storage_account=${{ parameters.storage_account }}"
+              commandOptions: -input=false
               # service connection
               backendServiceArm: deployer
               # needs to match main.tf
@@ -136,10 +133,7 @@ stages:
                     command: init
                     workingDirectory: "$(System.DefaultWorkingDirectory)/terraform"
                     # https://developer.hashicorp.com/terraform/tutorials/automation/automate-terraform#automated-terraform-cli-workflow
-                    commandOptions: |
-                      -input=false \
-                      -backend-config="resource_group=${{ parameters.resource_group }}" \
-                      -backend-config="storage_account=${{ parameters.storage_account }}"
+                    commandOptions: -input=false
                     # service connection
                     backendServiceArm: deployer
                     # needs to match main.tf

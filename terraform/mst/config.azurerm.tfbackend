@@ -1,0 +1,2 @@
+resource_group_name="mst-courtesy-cards-eligibility-terraform"
+storage_account_name="mstcourtesycardstf"

@@ -20,11 +20,15 @@ printf "Intializing Terraform...\n\n"
 terraform init -backend-config="$AGENCY/config.azurerm.tfbackend"
 
 printf "\n\nSelecting the Terraform workspace...\n"
+
 # matching logic in pipeline/workspace.py
-if [ "$ENV" = "prod" ]; then
-  terraform workspace select default
-else
-  terraform workspace select "$ENV"
+WORKSPACE=$([[ "$ENV" == "prod" ]] && echo "default" || echo "$ENV")
+
+# if the workspace exists, this check will select it
+WORKSPACE_EXISTS=$(terraform workspace select "$WORKSPACE" 2> /dev/null; echo $?)
+# creating a new workspace also selects it
+if [ "$WORKSPACE_EXISTS" -ne 0 ]; then
+  terraform workspace new "$WORKSPACE"
 fi
 
 echo "Done!"

@@ -9,9 +9,6 @@ terraform {
   }
 
   backend "azurerm" {
-    # needs to match pipeline/azure-pipelines.yml
-    resource_group_name  = var.TF_RESOURCE_GROUP
-    storage_account_name = var.TF_STORAGE_ACCOUNT
     container_name       = "tfstate"
     key                  = "terraform.tfstate"
   }

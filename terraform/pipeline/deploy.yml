@@ -1,28 +1,8 @@
-trigger:
-  branches:
-    include:
-      - dev
-      - test
-      - prod
-  tags:
-    include:
-      - 20??.??.?*-rc?*
-      - 20??.??.?*
-  # only run for changes to Terraform files
-  paths:
-    include:
-      - terraform/*
-
-pr:
-  branches:
-    include:
-      - "*"
-  paths:
-    include:
-      - terraform/*
-
-pool:
-  vmImage: ubuntu-latest
+parameters:
+  - name: resource_group
+    type: string
+  - name: storage_account
+    type: string
 
 stages:
   - stage: TerraformPlan
@@ -67,8 +47,8 @@ stages:
               # service connection
               backendServiceArm: deployer
               # needs to match main.tf
-              backendAzureRmResourceGroupName: courtesy-cards-eligibility-terraform
-              backendAzureRmStorageAccountName: courtesycardsterraform
+              backendAzureRmResourceGroupName: ${{ parameters.resource_group }}
+              backendAzureRmStorageAccountName: ${{ parameters.storage_account }}
               backendAzureRmContainerName: tfstate
               backendAzureRmKey: terraform.tfstate
           - task: TerraformTaskV3@3
@@ -97,11 +77,11 @@ stages:
             displayName: "Publish tfplan for use in TerraformApply"
             artifact: savedPlan
             condition: |
-                or(
-                  in(variables['Build.SourceBranchName'], 'dev', 'test', 'prod'),
-                  eq(variables['setvars.tag_type'], 'test'),
-                  eq(variables['setvars.tag_type'], 'prod')
-                )
+              or(
+                in(variables['Build.SourceBranchName'], 'dev', 'test', 'prod'),
+                eq(variables['setvars.tag_type'], 'test'),
+                eq(variables['setvars.tag_type'], 'prod')
+              )
   - stage: TerraformApply
     dependsOn: TerraformPlan
     variables:
@@ -149,8 +129,8 @@ stages:
                     # service connection
                     backendServiceArm: deployer
                     # needs to match main.tf
-                    backendAzureRmResourceGroupName: courtesy-cards-eligibility-terraform
-                    backendAzureRmStorageAccountName: courtesycardsterraform
+                    backendAzureRmResourceGroupName: ${{ parameters.resource_group }}
+                    backendAzureRmStorageAccountName: ${{ parameters.storage_account }}
                     backendAzureRmContainerName: tfstate
                     backendAzureRmKey: terraform.tfstate
                 - task: TerraformTaskV3@3

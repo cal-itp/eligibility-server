@@ -9,9 +9,6 @@ terraform {
   }
 
   backend "azurerm" {
-    # needs to match pipeline/azure-pipelines.yml
-    resource_group_name  = "courtesy-cards-eligibility-terraform"
-    storage_account_name = "courtesycardsterraform"
     container_name       = "tfstate"
     key                  = "terraform.tfstate"
   }

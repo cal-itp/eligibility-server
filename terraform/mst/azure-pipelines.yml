@@ -1,0 +1,31 @@
+trigger:
+  branches:
+    include:
+      - dev
+      - test
+      - prod
+  tags:
+    include:
+      - 20??.??.?*-rc?*
+      - 20??.??.?*
+  # only run for changes to Terraform files
+  paths:
+    include:
+      - terraform/*
+
+pr:
+  branches:
+    include:
+      - "*"
+  paths:
+    include:
+      - terraform/*
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+  - template: ../pipeline/deploy.yml
+    parameters:
+      resource_group: mst-courtesy-cards-eligibility-terraform
+      storage_account: mstcourtesycardstf

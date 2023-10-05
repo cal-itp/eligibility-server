@@ -24,11 +24,8 @@ pr:
 pool:
   vmImage: ubuntu-latest
 
-variables:
-  agency_card: mst-courtesy-cards
-
 stages:
-  - template: deploy.yml
+  - template: ../pipeline/deploy.yml
     parameters:
-      resource_group: $(agency_card)-eligibility-terraform
-      storage_account: ${{ replace(variables.agency_card, '-', '') }}tf
+      resource_group: mst-courtesy-cards-eligibility-terraform
+      storage_account: mstcourtesycardstf

@@ -17,10 +17,6 @@ stages:
             value: $[startsWith(variables['Build.SourceBranch'], 'refs/tags/')]
           - name: TARGET
             value: $[variables['System.PullRequest.TargetBranch']]
-          - name: TF_VAR_TF_RESOURCE_GROUP
-            value: ${{ parameters.resource_group }}
-          - name: TF_VAR_TF_STORAGE_ACCOUNT
-            value: ${{ parameters.storage_account }}
         steps:
           # set the workspace variable at runtime (rather than build time) so that all the necessary variables are available, and we can use Python
           # https://learn.microsoft.com/en-us/azure/devops/pipelines/process/set-variables-scripts?view=azure-devops&tabs=bash#about-tasksetvariable
@@ -93,10 +89,6 @@ stages:
         value: $[ dependencies.TerraformPlan.outputs['Plan.setvars.workspace'] ]
       - name: tag_type
         value: $[ dependencies.TerraformPlan.outputs['Plan.setvars.tag_type'] ]
-      - name: TF_VAR_TF_RESOURCE_GROUP
-        value: ${{ parameters.resource_group }}
-      - name: TF_VAR_TF_STORAGE_ACCOUNT
-        value: ${{ parameters.storage_account }}
     # only run on dev, test, or prod branches OR if it's a tag for test or prod
     condition: |
       or(

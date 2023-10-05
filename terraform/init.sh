@@ -17,7 +17,7 @@ echo "Setting the subscription for the Azure CLI..."
 az account set --subscription="$SUBSCRIPTION"
 
 printf "Intializing Terraform...\n\n"
-terraform init -backend-config="$AGENCY/config.azurerm.tfbackend"
+terraform init -backend-config="$AGENCY/local.tfbackend"
 
 printf "\n\nSelecting the Terraform workspace...\n"
 

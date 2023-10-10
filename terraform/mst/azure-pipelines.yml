@@ -27,4 +27,5 @@ pool:
 stages:
   - template: ../pipeline/deploy.yml
     parameters:
+      # path is relative to the template path (see line above)
       variable_file: ../mst/azure-vars.yml

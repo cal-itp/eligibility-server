@@ -47,7 +47,6 @@ stages:
               commandOptions: -input=false
               # service connection
               backendServiceArm: deployer
-              # needs to match main.tf
               backendAzureRmResourceGroupName: $(TF_RESOURCE_GROUP)
               backendAzureRmStorageAccountName: $(TF_STORAGE_ACCOUNT)
               backendAzureRmContainerName: tfstate
@@ -130,7 +129,6 @@ stages:
                     commandOptions: -input=false
                     # service connection
                     backendServiceArm: deployer
-                    # needs to match main.tf
                     backendAzureRmResourceGroupName: $(TF_RESOURCE_GROUP)
                     backendAzureRmStorageAccountName: $(TF_STORAGE_ACCOUNT)
                     backendAzureRmContainerName: tfstate

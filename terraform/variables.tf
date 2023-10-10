@@ -40,3 +40,8 @@ variable "AGENCY_CARD" {
   description = "The name of the agency's card program"
   type        = string
 }
+
+variable "AGENCY_STORAGE_ACCOUNT_PREFIX" {
+  description = "The prefix to the name of the storage account for each environment"
+  type        = string
+}

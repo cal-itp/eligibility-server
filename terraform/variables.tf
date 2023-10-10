@@ -13,8 +13,13 @@ variable "ENGINEERING_GROUP_OBJECT_ID" {
   type        = string
 }
 
-variable "VELOCITY_ETL_APP_OBJECT_ID" {
+variable "AGENCY_CARD_DATA_ETL_APP_OBJECT_ID" {
   description = "Object ID from the registered application for the Velocity server ETL uploading: https://cloudsight.zendesk.com/hc/en-us/articles/360016785598-Azure-finding-your-service-principal-object-ID"
+  type        = string
+}
+
+variable "AGENCY_CARD_DATA_ETL_FILE" {
+  description = "The name of the hashed data file that's uploaded to the storage account"
   type        = string
 }
 

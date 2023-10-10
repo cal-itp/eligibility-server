@@ -11,7 +11,7 @@ if [ $# -ne 2 ]; then
   exit 1
 fi
 
-source "$AGENCY/env"
+source "$AGENCY/local.env"
 
 echo "Setting the subscription for the Azure CLI..."
 az account set --subscription="$SUBSCRIPTION"

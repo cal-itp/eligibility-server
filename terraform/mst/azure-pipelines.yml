@@ -27,6 +27,4 @@ pool:
 stages:
   - template: ../pipeline/deploy.yml
     parameters:
-      resource_group: mst-courtesy-cards-eligibility-terraform
-      storage_account: mstcourtesycardstf
       variable_file: ../mst/tfvars.yml

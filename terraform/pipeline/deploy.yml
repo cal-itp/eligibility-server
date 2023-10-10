@@ -1,8 +1,4 @@
 parameters:
-  - name: resource_group
-    type: string
-  - name: storage_account
-    type: string
   - name: variable_file
     type: string
 
@@ -52,8 +48,8 @@ stages:
               # service connection
               backendServiceArm: deployer
               # needs to match main.tf
-              backendAzureRmResourceGroupName: ${{ parameters.resource_group }}
-              backendAzureRmStorageAccountName: ${{ parameters.storage_account }}
+              backendAzureRmResourceGroupName: $(TF_RESOURCE_GROUP)
+              backendAzureRmStorageAccountName: $(TF_STORAGE_ACCOUNT)
               backendAzureRmContainerName: tfstate
               backendAzureRmKey: terraform.tfstate
           - task: TerraformTaskV3@3
@@ -135,8 +131,8 @@ stages:
                     # service connection
                     backendServiceArm: deployer
                     # needs to match main.tf
-                    backendAzureRmResourceGroupName: ${{ parameters.resource_group }}
-                    backendAzureRmStorageAccountName: ${{ parameters.storage_account }}
+                    backendAzureRmResourceGroupName: $(TF_RESOURCE_GROUP)
+                    backendAzureRmStorageAccountName: $(TF_STORAGE_ACCOUNT)
                     backendAzureRmContainerName: tfstate
                     backendAzureRmKey: terraform.tfstate
                 - task: TerraformTaskV3@3

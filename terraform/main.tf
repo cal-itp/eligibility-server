@@ -1,5 +1,5 @@
 terraform {
-  // see version in pipeline/azure-pipelines.yml
+  // see version in pipeline/deploy.yml
 
   required_providers {
     azurerm = {

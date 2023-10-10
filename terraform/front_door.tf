@@ -10,7 +10,7 @@ resource "azurerm_cdn_frontdoor_profile" "main" {
 
 resource "azurerm_cdn_frontdoor_endpoint" "main" {
   # used in the front door URL
-  name                     = "mst-courtesy-cards-eligibility-server-${local.env_name}"
+  name                     = "${var.AGENCY_CARD}-eligibility-server-${local.env_name}"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.main.id
 }
 

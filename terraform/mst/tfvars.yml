@@ -1,0 +1,2 @@
+variables:
+  TF_VAR_AGENCY_CARD: 'mst-courtesy-cards'

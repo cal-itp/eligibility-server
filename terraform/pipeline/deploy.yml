@@ -3,9 +3,14 @@ parameters:
     type: string
   - name: storage_account
     type: string
+  - name: variable_file
+    type: string
+
 
 stages:
   - stage: TerraformPlan
+    variables:
+      - template: ${{ parameters.variable_file }}
     jobs:
       - job: Plan
         variables:

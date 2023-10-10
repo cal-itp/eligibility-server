@@ -1,5 +1,5 @@
 terraform {
-  // see version in pipeline/azure-pipelines.yml
+  // see version in pipeline/deploy.yml
 
   required_providers {
     azurerm = {
@@ -9,8 +9,8 @@ terraform {
   }
 
   backend "azurerm" {
-    container_name       = "tfstate"
-    key                  = "terraform.tfstate"
+    container_name = "tfstate"
+    key            = "terraform.tfstate"
   }
 }
 

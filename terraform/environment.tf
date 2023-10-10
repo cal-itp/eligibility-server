@@ -5,5 +5,5 @@ locals {
 }
 
 data "azurerm_resource_group" "main" {
-  name = "${var.AGENCY_CARD}-eligibility-${local.env_name}"
+  name = "${var.AGENCY_RESOURCE_GROUP}-eligibility-${local.env_name}"
 }

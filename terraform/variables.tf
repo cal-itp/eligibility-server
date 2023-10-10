@@ -18,6 +18,11 @@ variable "AGENCY_CARD_DATA_ETL_FILE" {
   type        = string
 }
 
+variable "AGENCY_RESOURCE_GROUP" {
+  description = "The prefix to the name of the resource group for each environment"
+  type        = string
+}
+
 variable "AGENCY_STORAGE_ACCOUNT_PREFIX" {
   description = "The prefix to the name of the storage account for each environment"
   type        = string

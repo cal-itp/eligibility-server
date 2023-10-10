@@ -2,5 +2,6 @@ variables:
   TF_RESOURCE_GROUP: 'mst-courtesy-cards-eligibility-terraform'
   TF_STORAGE_ACCOUNT: 'mstcourtesycardstf'
   TF_VAR_AGENCY_CARD: 'mst-courtesy-cards'
+  TF_VAR_AGENCY_RESOURCE_GROUP: 'courtesy-cards'
   TF_VAR_AGENCY_STORAGE_ACCOUNT_PREFIX: 'mstcceligibility'
   TF_VAR_AGENCY_CARD_DATA_ETL_FILE : 'velocity.csv'

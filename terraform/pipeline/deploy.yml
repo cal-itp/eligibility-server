@@ -90,6 +90,7 @@ stages:
   - stage: TerraformApply
     dependsOn: TerraformPlan
     variables:
+      - template: ${{ parameters.variable_file }}
       - name: workspace
         value: $[ dependencies.TerraformPlan.outputs['Plan.setvars.workspace'] ]
       - name: tag_type

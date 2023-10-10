@@ -27,4 +27,4 @@ pool:
 stages:
   - template: ../pipeline/deploy.yml
     parameters:
-      variable_file: ../mst/tfvars.yml
+      variable_file: ../mst/azure-vars.yml

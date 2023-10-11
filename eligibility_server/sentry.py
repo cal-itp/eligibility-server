@@ -1,3 +1,4 @@
+import logging
 import os
 import subprocess
 
@@ -6,6 +7,8 @@ from sentry_sdk.integrations.flask import FlaskIntegration
 from sentry_sdk.scrubber import EventScrubber, DEFAULT_DENYLIST
 
 from eligibility_server.settings import Configuration
+
+logger = logging.getLogger(__name__)
 
 
 SENTRY_ENVIRONMENT = os.environ.get("SENTRY_ENVIRONMENT", "local")
@@ -30,7 +33,7 @@ def configure(config: Configuration):
     SENTRY_DSN = config.sentry_dsn
     if SENTRY_DSN:
         release = get_release()
-        print(f"Enabling Sentry for environment '{SENTRY_ENVIRONMENT}', release '{release}'...")
+        logger.info(f"Enabling Sentry for environment '{SENTRY_ENVIRONMENT}', release '{release}'...")
 
         sentry_sdk.init(
             dsn=SENTRY_DSN,
@@ -47,4 +50,4 @@ def configure(config: Configuration):
             event_scrubber=EventScrubber(denylist=get_denylist()),
         )
     else:
-        print("SENTRY_DSN not set, so won't send events")
+        logger.warning("SENTRY_DSN not set, so won't send events")

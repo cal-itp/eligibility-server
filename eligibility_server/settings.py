@@ -46,6 +46,7 @@ CSV_QUOTECHAR = '"'
 # Sentry
 
 SENTRY_DSN = None
+SENTRY_TRACES_SAMPLE_RATE = 0.0
 
 
 class Configuration:
@@ -145,3 +146,7 @@ class Configuration:
     def sentry_dsn(self):
         sentry_dsn = current_app.config["SENTRY_DSN"]
         return str(sentry_dsn) if sentry_dsn else None
+
+    @property
+    def sentry_traces_sample_rate(self):
+        return float(current_app.config["SENTRY_TRACES_SAMPLE_RATE"])

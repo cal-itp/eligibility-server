@@ -29,6 +29,17 @@ def get_denylist():
     return denylist
 
 
+def get_traces_sample_rate(config: Configuration):
+    rate = config.sentry_traces_sample_rate
+    if rate < 0.0 or rate > 1.0:
+        logger.warning("SENTRY_TRACES_SAMPLE_RATE was not in the range [0.0, 1.0], defaulting to 0.0")
+        rate = 0.0
+    else:
+        logger.info(f"SENTRY_TRACES_SAMPLE_RATE set to: {rate}")
+
+    return rate
+
+
 def configure(config: Configuration):
     SENTRY_DSN = config.sentry_dsn
     if SENTRY_DSN:
@@ -40,7 +51,7 @@ def configure(config: Configuration):
             integrations=[
                 FlaskIntegration(),
             ],
-            traces_sample_rate=1.0,
+            traces_sample_rate=get_traces_sample_rate(config),
             environment=SENTRY_ENVIRONMENT,
             release=release,
             in_app_include=["eligibility_server"],

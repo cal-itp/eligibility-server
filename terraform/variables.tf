@@ -18,7 +18,7 @@ variable "AGENCY_CARD_DATA_ETL_FILE" {
   type        = string
 }
 
-variable "AGENCY_RESOURCE_GROUP" {
+variable "AGENCY_RESOURCE_GROUP_PREFIX" {
   description = "The prefix to the name of the resource group for each environment"
   type        = string
 }

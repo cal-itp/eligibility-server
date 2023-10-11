@@ -5,6 +5,7 @@ from flask import current_app
 
 # App settings
 
+AGENCY_NAME = "[unset]"
 APP_NAME = "eligibility_server.app"
 DEBUG_MODE = True
 HOST = "0.0.0.0"  # nosec
@@ -51,6 +52,10 @@ SENTRY_TRACES_SAMPLE_RATE = 0.0
 
 class Configuration:
     # App settings
+
+    @property
+    def agency_name(self):
+        return str(current_app.config["AGENCY_NAME"])
 
     @property
     def app_name(self):

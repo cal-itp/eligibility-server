@@ -60,5 +60,7 @@ def configure(config: Configuration):
             send_default_pii=False,
             event_scrubber=EventScrubber(denylist=get_denylist()),
         )
+
+        sentry_sdk.set_tag("agency_name", config.agency_name)
     else:
         logger.warning("SENTRY_DSN not set, so won't send events")

@@ -12,7 +12,7 @@ locals {
 
 resource "azurerm_linux_web_app" "main" {
   # name needs to be globally unique and is more specific because it's used in the app URL
-  name                = "mst-courtesy-cards-eligibility-server-${local.env_name}"
+  name                = "${var.AGENCY_CARD}-eligibility-server-${local.env_name}"
   location            = data.azurerm_resource_group.main.location
   resource_group_name = data.azurerm_resource_group.main.name
   service_plan_id     = azurerm_service_plan.main.id

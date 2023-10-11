@@ -1,11 +1,12 @@
 parameters:
-  - name: resource_group
+  - name: variable_file
     type: string
-  - name: storage_account
-    type: string
+
 
 stages:
   - stage: TerraformPlan
+    variables:
+      - template: ${{ parameters.variable_file }}
     jobs:
       - job: Plan
         variables:
@@ -46,9 +47,8 @@ stages:
               commandOptions: -input=false
               # service connection
               backendServiceArm: deployer
-              # needs to match main.tf
-              backendAzureRmResourceGroupName: ${{ parameters.resource_group }}
-              backendAzureRmStorageAccountName: ${{ parameters.storage_account }}
+              backendAzureRmResourceGroupName: $(TF_RESOURCE_GROUP)
+              backendAzureRmStorageAccountName: $(TF_STORAGE_ACCOUNT)
               backendAzureRmContainerName: tfstate
               backendAzureRmKey: terraform.tfstate
           - task: TerraformTaskV3@3
@@ -85,6 +85,7 @@ stages:
   - stage: TerraformApply
     dependsOn: TerraformPlan
     variables:
+      - template: ${{ parameters.variable_file }}
       - name: workspace
         value: $[ dependencies.TerraformPlan.outputs['Plan.setvars.workspace'] ]
       - name: tag_type
@@ -128,9 +129,8 @@ stages:
                     commandOptions: -input=false
                     # service connection
                     backendServiceArm: deployer
-                    # needs to match main.tf
-                    backendAzureRmResourceGroupName: ${{ parameters.resource_group }}
-                    backendAzureRmStorageAccountName: ${{ parameters.storage_account }}
+                    backendAzureRmResourceGroupName: $(TF_RESOURCE_GROUP)
+                    backendAzureRmStorageAccountName: $(TF_STORAGE_ACCOUNT)
                     backendAzureRmContainerName: tfstate
                     backendAzureRmKey: terraform.tfstate
                 - task: TerraformTaskV3@3

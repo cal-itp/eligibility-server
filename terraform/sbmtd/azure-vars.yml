@@ -1,0 +1,7 @@
+variables:
+  TF_RESOURCE_GROUP: "sbmtd-mobility-pass-tf"
+  TF_STORAGE_ACCOUNT: "sbmtdmobilitypasstf"
+  TF_VAR_AGENCY_CARD: "sbmtd-mobility-pass"
+  TF_VAR_AGENCY_RESOURCE_GROUP_PREFIX: "sbmtd-mobility-pass"
+  TF_VAR_AGENCY_STORAGE_ACCOUNT_PREFIX: "sbmtdmobilitypass"
+  TF_VAR_AGENCY_CARD_DATA_ETL_FILE: "mobilitypass.csv"

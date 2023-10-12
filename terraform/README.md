@@ -30,7 +30,7 @@ For browsing the [Azure portal](https://portal.azure.com), you can [switch your 
 
 ## Access restrictions
 
-We restrict which IP addresses that can access the app service by using a Web Application Firewall (WAF) configured on a Front Door. There is an exception for the `/healthcheck` path, which can be accessed by any IP address.
+We restrict which IP addresses that can access the app service by using a Web Application Firewall (WAF) configured on a Front Door. There is an exception for the `/healthcheck` and `/static` paths, which can be accessed by any IP address.
 
 The app service itself gives access only to our Front Door and to Azure availability tests.
 

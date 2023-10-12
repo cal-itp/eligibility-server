@@ -105,7 +105,7 @@ Terraform is [`plan`](https://www.terraform.io/cli/commands/plan)'d when code is
 1. [Initialize Terraform.](https://www.terraform.io/cli/commands/init) You can also use this script later to switch between [environments](#environments).
 
    ```sh
-   ./init.sh <env>
+   ./init.sh <env> <agency>
    ```
 
 1. Make changes to Terraform files.

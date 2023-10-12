@@ -161,3 +161,13 @@ Enables sending events to Sentry.
     [`environment` config value](https://docs.sentry.io/platforms/python/configuration/options/#environment)
 
 Segments errors by which deployment they occur in. This defaults to `local`, and can be set to match one of the environment names.
+
+### `SENTRY_TRACES_SAMPLE_RATE`
+
+!!! tldr "Sentry docs"
+
+    [`traces_sample_rate` config value](https://docs.sentry.io/platforms/python/configuration/options/#traces-sample-rate)
+
+Control the volume of transactions sent to Sentry. Value must be a float in the range `[0.0, 1.0]`.
+
+The default is `0.0` (i.e. no transactions are tracked).

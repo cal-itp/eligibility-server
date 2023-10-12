@@ -125,4 +125,12 @@ Terraform is [`plan`](https://www.terraform.io/cli/commands/plan)'d when code is
 
 The steps we took to set up MST's environment are documented in [a separate Google Doc](https://docs.google.com/document/d/12uzuKyvyabHAOaeQc6k2jQIG5pQprdEyBpfST_dY2ME/edit#heading=h.1vs880ltbo58).
 
-This is not a complete step-by-step guide; more a list of things to remember. This may be useful as part of incident response.
+In general, the steps that must be done manually before the pipeline can be run are:
+
+- Create Resource Group and storage account dedicated to the Terraform state
+- Create container in storage account for Terraform state
+- Create environment Resource Group for each environment, Region: West US
+    - We create these manually to avoid having to give the pipeline service connection permissions for creating resource groups
+- Create Terraform workspace for each environment
+- Trigger a pipeline run to verify `plan` and `apply`
+- Known chicken-and-egg problem: Terraform both creates the Key Vault and expects a secret within it, so will always fail on the first deploy. Add the Benefits slack email secret and re-run the pipeline.

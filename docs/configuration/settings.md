@@ -6,6 +6,10 @@ The sections below outline in more detail the settings that you either must set 
 
 ## App settings
 
+### `AGENCY_NAME`
+
+The name of the agency that this server is deployed for
+
 ### `APP_NAME`
 
 The name set on the Flask app

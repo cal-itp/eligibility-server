@@ -17,9 +17,9 @@ The following things in Azure are managed outside of Terraform:
 
 | Environment | Azure Resource Group              | Terraform Workspace | Git Branch |
 | ----------- | --------------------------------- | ------------------- | ---------- |
-| Dev         | `courtesy-cards-eligibility-dev`  | `dev`               | `dev`      |
-| Test        | `courtesy-cards-eligibility-test` | `test`              | `test`     |
-| Prod        | `courtesy-cards-eligibility-prod` | `default`           | `prod`     |
+| Dev         | `$(AGENCY_RESOURCE_GROUP_PREFIX)-eligibility-dev`  | `dev`               | `dev`      |
+| Test        | `$(AGENCY_RESOURCE_GROUP_PREFIX)-eligibility-test` | `test`              | `test`     |
+| Prod        | `$(AGENCY_RESOURCE_GROUP_PREFIX)-eligibility-prod` | `default`           | `prod`     |
 
 All resources in these Resource Groups should be reflected in Terraform in this repository. The exceptions are:
 
@@ -70,16 +70,20 @@ See [`Failures`](https://docs.microsoft.com/en-us/azure/azure-monitor/app/asp-ne
 After [setting up the Azure CLI](#making-changes), you can use the following command to [stream live logs](https://docs.microsoft.com/en-us/azure/app-service/troubleshoot-diagnostic-logs#in-local-terminal):
 
 ```sh
+az webapp log tail --resource-group <resource group name> --name <app service name> 2>&1 | grep -v /healthcheck
+```
+
+e.g.
+
+```bash
 az webapp log tail --resource-group courtesy-cards-eligibility-prod --name mst-courtesy-cards-eligibility-server-prod 2>&1 | grep -v /healthcheck
 ```
 
 ### SCM
 
-[Docker logs](https://mst-courtesy-cards-eligibility-server-dev.scm.azurewebsites.net/api/logs/docker)
+Docker logs can be viewed in the Advanced Tools for the instance. The URL pattern is `https://<app service name>.scm.azurewebsites.net/api/logs/docker`
 
 ## Making changes
-
-[![Build Status](https://dev.azure.com/mstransit/courtesy-cards/_apis/build/status/cal-itp.eligibility-server?branchName=dev)](https://dev.azure.com/mstransit/courtesy-cards/_build/latest?definitionId=1&branchName=dev)
 
 Terraform is [`plan`](https://www.terraform.io/cli/commands/plan)'d when code is pushed to any branch on GitHub, then [`apply`](https://www.terraform.io/cli/commands/apply)'d when merged to `dev`. While other automation for this project is done through GitHub Actions, we use an Azure Pipeline (above) for a couple of reasons:
 

@@ -127,6 +127,8 @@ The steps we took to set up MST's environment are documented in [a separate Goog
 
 In general, the steps that must be done manually before the pipeline can be run are:
 
+- Create an Azure DevOps organization and project
+- Request a free grant of parallel jobs using the form at [https://aka.ms/azpipelines-parallelism-request](https://aka.ms/azpipelines-parallelism-request)
 - Create Resource Group and storage account dedicated to the Terraform state
 - Create container in storage account for Terraform state
 - Create environment Resource Group for each environment, Region: West US

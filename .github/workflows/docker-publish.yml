@@ -91,5 +91,5 @@ jobs:
       uses: Azure/pipelines@releases/v1
       with:
         azure-devops-project-url: 'https://dev.azure.com/sbmtd/eligibility-server'
-        azure-pipeline-name: 'cal-itp.eligibility-server' # name of the Azure pipeline to be triggered, required
+        azure-pipeline-name: 'cal-itp.eligibility-server (1)' # name of the Azure pipeline to be triggered, required
         azure-devops-token: '${{ secrets.AZURE_DEVOPS_TOKEN }}' # required field

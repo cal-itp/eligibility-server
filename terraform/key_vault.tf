@@ -1,6 +1,6 @@
 resource "azurerm_key_vault" "main" {
   # name needs to be globally unique
-  name                = "eligibility-server-${local.env_name}"
+  name                = "${var.AGENCY_CARD}-${local.env_name}"
   location            = data.azurerm_resource_group.main.location
   resource_group_name = data.azurerm_resource_group.main.name
   sku_name            = "standard"

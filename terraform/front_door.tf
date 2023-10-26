@@ -10,7 +10,7 @@ resource "azurerm_cdn_frontdoor_profile" "main" {
 
 resource "azurerm_cdn_frontdoor_endpoint" "main" {
   # used in the front door URL
-  name                     = "mst-courtesy-cards-eligibility-server-${local.env_name}"
+  name                     = "${var.AGENCY_CARD}-eligibility-server-${local.env_name}"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.main.id
 }
 
@@ -74,7 +74,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "main" {
   custom_block_response_body        = base64encode("Forbidden")
 
   custom_rule {
-    name     = "healthcheck"
+    name     = "publicaccess"
     enabled  = true
     type     = "MatchRule"
     priority = 1
@@ -82,8 +82,8 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "main" {
 
     match_condition {
       match_variable = "RequestUri"
-      operator       = "Equal"
-      match_values   = ["https://${azurerm_cdn_frontdoor_endpoint.main.host_name}:443/healthcheck"]
+      operator       = "BeginsWith"
+      match_values   = ["https://${azurerm_cdn_frontdoor_endpoint.main.host_name}:443/healthcheck", "https://${azurerm_cdn_frontdoor_endpoint.main.host_name}:443/static/"]
     }
   }
 

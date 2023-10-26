@@ -1,5 +1,5 @@
 terraform {
-  // see version in pipeline/azure-pipelines.yml
+  // see version in pipeline/deploy.yml
 
   required_providers {
     azurerm = {
@@ -9,11 +9,8 @@ terraform {
   }
 
   backend "azurerm" {
-    # needs to match pipeline/azure-pipelines.yml
-    resource_group_name  = "courtesy-cards-eligibility-terraform"
-    storage_account_name = "courtesycardsterraform"
-    container_name       = "tfstate"
-    key                  = "terraform.tfstate"
+    container_name = "tfstate"
+    key            = "terraform.tfstate"
   }
 }
 

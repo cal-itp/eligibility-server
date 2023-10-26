@@ -5,5 +5,5 @@ locals {
 }
 
 data "azurerm_resource_group" "main" {
-  name = "courtesy-cards-eligibility-${local.env_name}"
+  name = "${var.AGENCY_RESOURCE_GROUP_PREFIX}-eligibility-${local.env_name}"
 }

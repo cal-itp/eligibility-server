@@ -7,20 +7,56 @@ on:
       - dev
       - test
       - prod
+  release:
+    types:
+      - published
 
 defaults:
   run:
     shell: bash
 
+concurrency:
+  # this expression gives us the name of the deployment environment. It works like a ternary operation (see https://github.com/actions/runner/issues/409#issuecomment-727565588)
+  group: ${{ github.event_name != 'release' && github.ref_name || github.event.release.prerelease && 'test' || 'prod' }}
+  cancel-in-progress: true
+
 jobs:
+  test:
+    uses: ./.github/workflows/run-tests.yml
+    if: github.event_name == 'release'
+
   deploy:
+    needs: test
+    # !cancelled() is needed because if the whole workflow was cancelled, we don't want this job to run.
+    # (github.event_name != 'release' || needs.test.result == 'success') is needed because if `test` did run, we only want this to run if `test` succeeded.
+    if: (!cancelled() && (github.event_name != 'release' || needs.test.result == 'success'))
     runs-on: ubuntu-latest
-    environment: ${{ github.ref_name }}
-    concurrency: ${{ github.ref_name }}
+    environment: ${{ github.event_name != 'release' && github.ref_name || github.event.release.prerelease && 'test' || 'prod' }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version-file: .github/workflows/.python-version
+          cache: pip
+          cache-dependency-path: "**/pyproject.toml"
+
+      - name: Create /static directory
+        run: mkdir -p eligibility_server/static
+
+      - name: Write python packages to file
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install pipdeptree
+          pip install -e .
+          pipdeptree
+          pipdeptree >> eligibility_server/static/requirements.txt
+
+      - name: Write commit SHA to file
+        run: echo "${{ github.sha }}" >> eligibility_server/static/sha.txt
 
       - name: Docker Login to GitHub Container Registry
         uses: docker/login-action@v3
@@ -44,5 +80,6 @@ jobs:
           file: Dockerfile
           push: true
           tags: |
+            ghcr.io/${{ github.repository }}:${{ github.event_name != 'release' && github.ref_name || github.event.release.prerelease && 'test' || 'prod' }}
             ghcr.io/${{ github.repository }}:${{ github.ref_name }}
             ghcr.io/${{ github.repository }}:${{ github.sha }}

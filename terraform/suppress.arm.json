@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "metricAlertID": {
-      "type": "string"
+      "type": "String"
     }
   },
   "resources": [

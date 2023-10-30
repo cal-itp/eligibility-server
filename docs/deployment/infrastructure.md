@@ -12,6 +12,7 @@ The following things in Azure are managed outside of Terraform:
 - Active Directory (users, groups, service principals, etc.)
 - Service connections
 - Configuration files, stored as blobs
+- Role assignments
 
 ## Environments
 
@@ -136,3 +137,24 @@ In general, the steps that must be done manually before the pipeline can be run 
 - Create Terraform workspace for each environment
 - Trigger a pipeline run to verify `plan` and `apply`
 - Known chicken-and-egg problem: Terraform both creates the Key Vault and expects a secret within it, so will always fail on the first deploy. Add the Benefits slack email secret and re-run the pipeline.
+
+Once the pipeline has run, there are a few more steps to be done manually in the Azure portal. These are related to configuring the service principal used for ETL:
+
+- [Create the service principal](https://learn.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal#app-registration-app-objects-and-service-principals)
+- Give the ETL service principal access to the `prod` storage account created by the pipeline:
+    - Navigate to the storage account
+    - Select **Access Control (IAM)**
+    - Select **Add**, then select **Add role assignment**
+    - In the **Role** tab, select `Storage Blob Data Contributor`
+    - In the **Members** tab, select `Select Members` and search for the ETL service principal. Add it to the role.
+    - Also in the **Members** tab, add a description of `This role assignment gives write access only for the path of the hashed data file.`
+    - In the **Conditions** tab, select **Add condition** and change the editor type to `Code`
+    - Add the following condition into the editor, filling in `<filename>` with the appropriate value:
+
+```text
+(
+ (
+  @Resource[Microsoft.Storage/storageAccounts/blobServices/containers/blobs:path] StringLike '<filename>'
+ )
+)
+```

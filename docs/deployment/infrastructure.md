@@ -142,7 +142,7 @@ Once the pipeline has run, there are a few more steps to be done manually in the
 
 - [Create the service principal](https://learn.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal#app-registration-app-objects-and-service-principals)
 - Give the ETL service principal access to the `prod` storage account created by the pipeline:
-    - Navigate to the storage account
+    - Navigate to the storage account container
     - Select **Access Control (IAM)**
     - Select **Add**, then select **Add role assignment**
     - In the **Role** tab, select `Storage Blob Data Contributor`

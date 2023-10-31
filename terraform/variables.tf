@@ -8,11 +8,6 @@ variable "AGENCY_CARD" {
   type        = string
 }
 
-variable "AGENCY_CARD_DATA_ETL_FILE" {
-  description = "The name of the hashed data file that's uploaded to the storage account"
-  type        = string
-}
-
 variable "AGENCY_RESOURCE_GROUP_PREFIX" {
   description = "The prefix to the name of the resource group for each environment"
   type        = string

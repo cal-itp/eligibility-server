@@ -4,4 +4,3 @@ variables:
   TF_VAR_AGENCY_CARD: "mst-courtesy-cards"
   TF_VAR_AGENCY_RESOURCE_GROUP_PREFIX: "courtesy-cards"
   TF_VAR_AGENCY_STORAGE_ACCOUNT_PREFIX: "mstcceligibility"
-  TF_VAR_AGENCY_CARD_DATA_ETL_FILE: "velocity.csv"

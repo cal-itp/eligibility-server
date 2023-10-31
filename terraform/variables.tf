@@ -8,16 +8,6 @@ variable "AGENCY_CARD" {
   type        = string
 }
 
-variable "AGENCY_CARD_DATA_ETL_APP_OBJECT_ID" {
-  description = "Object ID from the registered application for the Agency Card server ETL uploading: https://cloudsight.zendesk.com/hc/en-us/articles/360016785598-Azure-finding-your-service-principal-object-ID"
-  type        = string
-}
-
-variable "AGENCY_CARD_DATA_ETL_FILE" {
-  description = "The name of the hashed data file that's uploaded to the storage account"
-  type        = string
-}
-
 variable "AGENCY_RESOURCE_GROUP_PREFIX" {
   description = "The prefix to the name of the resource group for each environment"
   type        = string

@@ -15,7 +15,7 @@ def test_init_db_command(runner):
     assert result.exit_code == 0
 
     assert User.query.count() == 31
-    assert Eligibility.query.count() == 1
+    assert Eligibility.query.count() == 2
 
     user_with_one_eligibility = User.query.filter_by(sub="32587", name="Gonzales").first()
     courtesy_card_type = Eligibility.query.filter_by(name="courtesy_card").first()

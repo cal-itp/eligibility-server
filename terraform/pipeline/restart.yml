@@ -3,11 +3,11 @@ parameters:
     type: string
 
 stages:
-  - stage: Restart app services
+  - stage: RestartAppServices
     variables:
       - template: ${{ parameters.variable_file }}
     jobs:
-      - job: Restart app services
+      - job: Restart
         steps:
           - task: AzureAppServiceManage@0
             displayName: 'Restart Azure App Service: dev'

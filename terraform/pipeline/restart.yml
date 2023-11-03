@@ -1,0 +1,29 @@
+parameters:
+  - name: variable_file
+    type: string
+
+stages:
+  - stage: Restart app services
+    variables:
+      - template: ${{ parameters.variable_file }}
+    jobs:
+      - job: Restart app services
+        steps:
+          - task: AzureAppServiceManage@0
+            displayName: 'Restart Azure App Service: dev'
+            inputs:
+              azureSubscription: deployer
+              Action: 'Restart Azure App Service'
+              WebAppName: '$(TF_VAR_AGENCY_CARD)-eligibility-server-dev'
+          - task: AzureAppServiceManage@0
+            displayName: 'Restart Azure App Service: test'
+            inputs:
+              azureSubscription: deployer
+              Action: 'Restart Azure App Service'
+              WebAppName: '$(TF_VAR_AGENCY_CARD)-eligibility-server-test'
+          - task: AzureAppServiceManage@0
+            displayName: 'Restart Azure App Service: prod'
+            inputs:
+              azureSubscription: deployer
+              Action: 'Restart Azure App Service'
+              WebAppName: '$(TF_VAR_AGENCY_CARD)-eligibility-server-prod'

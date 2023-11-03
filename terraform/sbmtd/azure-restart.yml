@@ -1,0 +1,13 @@
+schedules:
+  - cron: 0 10 * * * # timezone is UTC
+    displayName: "Restart app services nightly"
+    always: true
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+  - template: ../pipeline/restart.yml
+    parameters:
+      # path is relative to the template path (see line above)
+      variable_file: ../sbmtd/azure-vars.yml

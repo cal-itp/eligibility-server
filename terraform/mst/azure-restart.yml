@@ -1,6 +1,9 @@
 schedules:
   - cron: 0 10 * * * # timezone is UTC
     displayName: "Restart app services nightly"
+    branches:
+      include:
+      - refactor/restart-app-services
     always: true
 
 pool:

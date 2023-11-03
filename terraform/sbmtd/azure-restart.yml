@@ -6,6 +6,8 @@ schedules:
       - refactor/restart-app-services
     always: true
 
+pr: none
+
 pool:
   vmImage: ubuntu-latest
 

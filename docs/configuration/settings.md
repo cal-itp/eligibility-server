@@ -6,6 +6,10 @@ The sections below outline in more detail the settings that you either must set 
 
 ## App settings
 
+### `AGENCY_NAME`
+
+The name of the agency that this server is deployed for
+
 ### `APP_NAME`
 
 The name set on the Flask app
@@ -133,3 +137,37 @@ These are the possible values for the `CSV_QUOTING` variable:
 - `csv.QUOTE_ALL`: 1 - To be used when all the values in the CSV file are present inside quotation marks
 - `csv.QUOTE_NONNUMERIC`: 2 - To be used when the CSV file uses quotes around non-numeric entries
 - `csv.QUOTE_NONE`: 3 - To be used when the CSV file does not use quotes around entries
+
+## Sentry
+
+### `SENTRY_DSN`
+
+Cal-ITP's Sentry instance collects both [errors ("Issues")](https://sentry.calitp.org/organizations/sentry/issues/?project=4) and app [performance info](https://sentry.calitp.org/organizations/sentry/performance/?project=4).
+
+[Alerts are sent to #benefits-notify in Slack.](https://sentry.calitp.org/organizations/sentry/alerts/rules/eligibility-server/10/details/) [Others can be configured.](https://sentry.calitp.org/organizations/sentry/alerts/rules/)
+
+You can troubleshoot Sentry itself by [turning on debug mode](#debug_mode) and visiting `/error/`.
+
+!!! tldr "Sentry docs"
+
+    [Data Source Name (DSN)](https://docs.sentry.io/product/sentry-basics/dsn-explainer/)
+
+Enables sending events to Sentry.
+
+### `SENTRY_ENVIRONMENT`
+
+!!! tldr "Sentry docs"
+
+    [`environment` config value](https://docs.sentry.io/platforms/python/configuration/options/#environment)
+
+Segments errors by which deployment they occur in. This defaults to `local`, and can be set to match one of the environment names.
+
+### `SENTRY_TRACES_SAMPLE_RATE`
+
+!!! tldr "Sentry docs"
+
+    [`traces_sample_rate` config value](https://docs.sentry.io/platforms/python/configuration/options/#traces-sample-rate)
+
+Control the volume of transactions sent to Sentry. Value must be a float in the range `[0.0, 1.0]`.
+
+The default is `0.0` (i.e. no transactions are tracked).

@@ -5,6 +5,7 @@ from flask import current_app
 
 # App settings
 
+AGENCY_NAME = "[unset]"
 APP_NAME = "eligibility_server.app"
 DEBUG_MODE = True
 HOST = "0.0.0.0"  # nosec
@@ -43,9 +44,18 @@ CSV_DELIMITER = ","
 CSV_QUOTING = 3
 CSV_QUOTECHAR = '"'
 
+# Sentry
+
+SENTRY_DSN = None
+SENTRY_TRACES_SAMPLE_RATE = 0.0
+
 
 class Configuration:
     # App settings
+
+    @property
+    def agency_name(self):
+        return str(current_app.config["AGENCY_NAME"])
 
     @property
     def app_name(self):
@@ -134,3 +144,14 @@ class Configuration:
     @property
     def csv_quotechar(self):
         return str(current_app.config["CSV_QUOTECHAR"])
+
+    # Sentry
+
+    @property
+    def sentry_dsn(self):
+        sentry_dsn = current_app.config["SENTRY_DSN"]
+        return str(sentry_dsn) if sentry_dsn else None
+
+    @property
+    def sentry_traces_sample_rate(self):
+        return float(current_app.config["SENTRY_TRACES_SAMPLE_RATE"])

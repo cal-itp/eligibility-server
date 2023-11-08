@@ -7,7 +7,7 @@ from flask import Flask, jsonify, make_response
 from flask_restful import Api
 from flask.logging import default_handler
 
-from eligibility_server import db
+from eligibility_server import db, sentry
 from eligibility_server.keypair import get_server_public_key
 from eligibility_server.settings import Configuration
 from eligibility_server.verify import Verify
@@ -23,6 +23,7 @@ format_string = "[%(asctime)s] %(levelname)s %(name)s:%(lineno)s %(message)s"
 
 # use an app context for access to config settings
 with app.app_context():
+    sentry.configure(config)
     # configure root logger first, to prevent duplicate log entries from Flask's logger
     logging.basicConfig(level=config.log_level, format=format_string)
     # configure Flask's logger
@@ -35,6 +36,14 @@ def TextResponse(content):
     response = make_response(content, 200)
     response.mimetype = "text/plain"
     return response
+
+
+with app.app_context():
+    if config.debug_mode:
+
+        @app.route("/error")
+        def trigger_error():
+            raise ValueError("testing Sentry for eligibility-server")
 
 
 @app.route("/healthcheck")

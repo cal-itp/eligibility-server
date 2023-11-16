@@ -1,6 +1,6 @@
 import pytest
-
 from sqlalchemy import inspect
+
 from eligibility_server.db import db
 from eligibility_server.db.models import Eligibility, User
 
@@ -14,7 +14,7 @@ def test_init_db_command(runner):
 
     assert result.exit_code == 0
 
-    assert User.query.count() == 31
+    assert User.query.count() == 38
     assert Eligibility.query.count() == 2
 
     user_with_one_eligibility = User.query.filter_by(sub="32587", name="Gonzales").first()

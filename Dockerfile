@@ -6,12 +6,17 @@ ENV FLASK_APP=eligibility_server/app.py
 RUN python -m pip install --upgrade pip
 
 # copy source files
+COPY .git .git
 COPY bin bin
 COPY eligibility_server/ eligibility_server/
 COPY pyproject.toml pyproject.toml
 
 # install source as a package
 RUN pip install -e .
+
+USER root
+RUN rm -rf .git/
+USER $USER
 
 # start app
 ENTRYPOINT ["/bin/bash"]

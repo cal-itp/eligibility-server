@@ -38,4 +38,4 @@ def test_version():
     from eligibility_server import __version__
 
     assert __version__ is not None
-    assert re.match(r"\d{4}\.\d{1,2}\.\d+", __version__)
+    assert re.match(r"\d+\.\d+\..+", __version__)

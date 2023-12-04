@@ -20,6 +20,7 @@ dev = [
     "black",
     "flake8",
     "pre-commit",
+    "setuptools_scm>=8"
 ]
 test = [
     "coverage",

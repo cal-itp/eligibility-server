@@ -1,5 +1,4 @@
 import csv
-import json
 from tempfile import NamedTemporaryFile
 
 import click
@@ -36,7 +35,7 @@ def init_db_command():
 
 def import_users():
     """
-    Imports user data to database, from either a local or remote JSON or CSV file,
+    Imports user data to database, from either a local or remote CSV file,
     given the `IMPORT_FILE_PATH` setting.
     CSV files take extra settings: `CSV_DELIMITER`, `CSV_QUOTING`, `CSV_QUOTECHAR`
     """
@@ -47,34 +46,15 @@ def import_users():
     format = path.split(".")[-1].lower()
     remote = path.lower().startswith("http")
 
-    if format not in ["json", "csv"]:
+    if format not in ["csv"]:
         click.warning(f"File format is not supported: {format}")
         return
 
-    if format == "json":
-        import_json_users(path, remote)
     elif format == "csv":
         import_csv_users(path, remote)
 
     click.echo(f"Users added: {User.query.count()}")
     click.echo(f"Eligibility types added: {Eligibility.query.count()}")
-
-
-def import_json_users(json_path, remote):
-    data = {}
-    if remote:
-        # download the file to a dict
-        data = requests.get(json_path, timeout=config.request_timeout).json()
-    else:
-        # open the file and load to a dict
-        with open(json_path) as file:
-            data = json.load(file)
-    if "users" in data:
-        data = data["users"]
-    # unpack from the key/value pairs in data
-    # sub = [name, types]
-    for sub, (name, types) in data.items():
-        save_user(sub, name, types)
 
 
 def import_csv_users(csv_path, remote):

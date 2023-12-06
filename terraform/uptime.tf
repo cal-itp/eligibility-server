@@ -11,17 +11,18 @@ module "healthcheck" {
 
 # ignore when app restarts as data is being reloaded
 # https://learn.microsoft.com/en-us/azure/azure-monitor/alerts/alerts-processing-rules
-# the Terraform resource doesn't support time windows, so need to drop down to an ARM template instead
-# https://github.com/hashicorp/terraform-provider-azurerm/issues/16726
-resource "azurerm_resource_group_template_deployment" "suppress_nightly_downtime" {
+resource "azurerm_monitor_alert_processing_rule_suppression" "suppress_nightly_downtime" {
   name                = "suppress-nightly-downtime"
+  description         = "Suppresses alerts during the scheduled nightly downtime"
   resource_group_name = data.azurerm_resource_group.main.name
-  deployment_mode     = "Incremental"
-  parameters_content = jsonencode({
-    "metricAlertID" = {
-      value = module.healthcheck.metric_alert_id
+  scopes              = [module.healthcheck.metric_alert_id]
+  schedule {
+    time_zone = "Pacific Standard Time"
+    recurrence {
+      daily {
+        start_time = "02:55:00"
+        end_time   = "03:30:00"
+      }
     }
-  })
-  # https://learn.microsoft.com/en-us/azure/templates/microsoft.alertsmanagement/actionrules?tabs=json&pivots=deployment-language-arm-template
-  template_content = file("${path.module}/suppress.arm.json")
+  }
 }

@@ -105,7 +105,7 @@ A regular expression that the request's `sub` field must match.
 
 ### `IMPORT_FILE_PATH`\*
 
-The path to file containing data to be imported into the server's database. Must be either CSV or JSON.
+The path to file containing data to be imported into the server's database. Must be CSV.
 
 ### `INPUT_HASH_ALGO`
 

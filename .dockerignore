@@ -1,4 +1,8 @@
-.github/
-.vscode/
-.flake8
-.*ignore
+__pycache__/
+.pytest_cache/
+.coverage
+.DS_Store
+.env
+config/*
+!config/sample.py
+eligibility_server.egg-info

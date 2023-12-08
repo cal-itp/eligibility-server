@@ -15,12 +15,12 @@ WORKDIR /home/calitp/app
 
 ENV FLASK_APP=eligibility_server.app:app
 
-COPY --from=build_wheel /build/dist ./dist
+COPY --from=build_wheel /build/dist /build/dist
 
 # copy source files
 COPY bin bin
 # install source as a package
-RUN pip install $(find -name eligibility_server*.whl)
+RUN pip install $(find /build/dist -name eligibility_server*.whl)
 
 # start app
 ENTRYPOINT ["/bin/bash"]

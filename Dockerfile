@@ -7,6 +7,9 @@ RUN python -m pip install --upgrade pip
 
 COPY . .
 RUN git config --global --add safe.directory /build
+
+# build as root user so unnecessary files are not copied into tarball
+USER root
 RUN pip install build && python -m build
 
 FROM ghcr.io/cal-itp/docker-python-web:main as appcontainer

@@ -6,6 +6,11 @@ schedules:
       - dev
     always: true
 
+trigger:
+  branches:
+    exclude:
+      - "*"
+
 pr: none
 
 pool:

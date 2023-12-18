@@ -4,14 +4,13 @@ Simple Test Eligibility Verification API Server.
 import logging
 
 from flask import Flask, jsonify, make_response
-from flask_restful import Api
 from flask.logging import default_handler
+from flask_restful import Api
 
-from eligibility_server import db, sentry
+from eligibility_server import __version__, db, sentry
 from eligibility_server.keypair import get_server_public_key
 from eligibility_server.settings import Configuration
 from eligibility_server.verify import Verify
-
 
 config = Configuration()
 
@@ -29,6 +28,7 @@ with app.app_context():
     # configure Flask's logger
     app.logger.setLevel(config.log_level)
     default_handler.formatter = logging.Formatter(format_string)
+    app.logger.info(f"Starting Eligibility Server {__version__}")
 
 
 def TextResponse(content):

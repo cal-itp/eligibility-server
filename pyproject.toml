@@ -1,6 +1,6 @@
 [project]
 name = "eligibility-server"
-version = "2023.09.1"
+dynamic = ["version"]
 description = "Server implementation of the Eligibility Verification API"
 readme = "README.md"
 license = { file = "LICENSE" }
@@ -20,6 +20,7 @@ dev = [
     "black",
     "flake8",
     "pre-commit",
+    "setuptools_scm>=8"
 ]
 test = [
     "coverage",
@@ -33,7 +34,7 @@ Documentation = "https://docs.calitp.org/eligibility-server"
 Issues = "https://github.com/cal-itp/eligibility-server/issues"
 
 [build-system]
-requires = ["setuptools>=65", "wheel"]
+requires = ["setuptools>=65", "setuptools-scm>=8"]
 build-backend = "setuptools.build_meta"
 
 [tool.black]
@@ -51,3 +52,6 @@ include = ["eligibility_server", "tests"]
 
 [tool.setuptools]
 packages = ["eligibility_server"]
+
+[tool.setuptools_scm]
+# intentionally left blank, but we need the section header to activate the tool

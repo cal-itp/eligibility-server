@@ -6,6 +6,7 @@ schedules:
       - dev
     always: true
 
+trigger: none
 pr: none
 
 pool:

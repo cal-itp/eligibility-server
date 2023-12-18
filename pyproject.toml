@@ -51,7 +51,7 @@ source = ["eligibility_server"]
 include = ["eligibility_server", "tests"]
 
 [tool.setuptools]
-packages = ["eligibility_server"]
+package-dir = {"" = "eligibility_server"}
 
 [tool.setuptools_scm]
 # intentionally left blank, but we need the section header to activate the tool

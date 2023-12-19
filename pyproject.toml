@@ -50,8 +50,9 @@ source = ["eligibility_server"]
 [tool.pyright]
 include = ["eligibility_server", "tests"]
 
-[tool.setuptools]
-package-dir = {"" = "eligibility_server"}
+[tool.setuptools.packages.find]
+include = ["eligibility_server*"]
+namespaces = false
 
 [tool.setuptools_scm]
 # intentionally left blank, but we need the section header to activate the tool

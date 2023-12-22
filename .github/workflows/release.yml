@@ -1,0 +1,23 @@
+on:
+    push:
+      tags:
+      # pre-release tag
+      - "202[3-9].[0-9][0-9].[0-9]+-rc[0-9]+"
+      # release tags
+      - "202[3-9].[0-9][0-9].[0-9]+"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      # https://github.com/softprops/action-gh-release#permissions
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          prerelease: ${{ contains(github.ref, '-rc') }}
+          generate_release_notes: ${{ !contains(github.ref, '-rc') }}

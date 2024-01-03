@@ -16,11 +16,13 @@ The following things in Azure are managed outside of Terraform:
 
 ## Environments
 
-| Environment | Azure Resource Group              | Terraform Workspace | Git Branch |
-| ----------- | --------------------------------- | ------------------- | ---------- |
-| Dev         | `$(AGENCY_RESOURCE_GROUP_PREFIX)-eligibility-dev`  | `dev`               | `dev`      |
-| Test        | `$(AGENCY_RESOURCE_GROUP_PREFIX)-eligibility-test` | `test`              | `test`     |
-| Prod        | `$(AGENCY_RESOURCE_GROUP_PREFIX)-eligibility-prod` | `default`           | `prod`     |
+| Environment | Azure Resource Group                               | Terraform Workspace | Git Reference         |
+| ----------- | -------------------------------------------------- | ------------------- | --------------------- |
+| Dev         | `$(AGENCY_RESOURCE_GROUP_PREFIX)-eligibility-dev`  | `dev`               | `main`                |
+| Test        | `$(AGENCY_RESOURCE_GROUP_PREFIX)-eligibility-test` | `test`              | release candidate tag |
+| Prod        | `$(AGENCY_RESOURCE_GROUP_PREFIX)-eligibility-prod` | `default`           | release tag           |
+
+(See [Version number format](../releases.md#version-number-format) for naming pattern for release candidate/release tags.)
 
 All resources in these Resource Groups should be reflected in Terraform in this repository. The exceptions are:
 

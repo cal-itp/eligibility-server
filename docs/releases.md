@@ -4,8 +4,6 @@ The `eligibility-server` is published as a Docker image on the GitHub Container 
 
 Every push to the `main` (default) branch that changes files relevant to the application builds and updates the `dev` package, via the [`docker-publish`](https://github.com/cal-itp/eligibility-server/blob/main/.github/workflows/docker-publish.yml) GitHub Action.
 
-Every release created also pushes a new package publication.
-
 ## Versions
 
 All versions of the package may be viewed on the [package all versions page](https://github.com/cal-itp/eligibility-server/pkgs/container/eligibility-server/versions).

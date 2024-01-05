@@ -22,12 +22,12 @@ format_string = "[%(asctime)s] %(levelname)s %(name)s:%(lineno)s %(message)s"
 
 # use an app context for access to config settings
 with app.app_context():
-    sentry.configure(config)
     # configure root logger first, to prevent duplicate log entries from Flask's logger
     logging.basicConfig(level=config.log_level, format=format_string)
     # configure Flask's logger
     app.logger.setLevel(config.log_level)
     default_handler.formatter = logging.Formatter(format_string)
+    sentry.configure(config)
     app.logger.info(f"Starting Eligibility Server {__version__}")
 
 

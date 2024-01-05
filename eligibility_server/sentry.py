@@ -1,11 +1,11 @@
 import logging
 import os
-import subprocess
 
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
 from sentry_sdk.scrubber import EventScrubber, DEFAULT_DENYLIST
 
+from eligibility_server import __version__
 from eligibility_server.settings import Configuration
 
 logger = logging.getLogger(__name__)
@@ -14,13 +14,8 @@ logger = logging.getLogger(__name__)
 SENTRY_ENVIRONMENT = os.environ.get("SENTRY_ENVIRONMENT", "local")
 
 
-# https://stackoverflow.com/a/21901260/358804
-def get_git_revision_hash():
-    return subprocess.check_output(["git", "rev-parse", "HEAD"]).decode("ascii").strip()
-
-
 def get_release() -> str:
-    return get_git_revision_hash()
+    return __version__
 
 
 def get_denylist():

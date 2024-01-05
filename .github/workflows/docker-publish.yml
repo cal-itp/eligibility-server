@@ -7,9 +7,11 @@ on:
       - dev
       - test
       - prod
-  release:
-    types:
-      - published
+    tags:
+      # pre-release tag
+      - "202[3-9].[0-9][0-9].[0-9]+-rc[0-9]+"
+      # release tags
+      - "202[3-9].[0-9][0-9].[0-9]+"
 
 defaults:
   run:
@@ -17,21 +19,21 @@ defaults:
 
 concurrency:
   # this expression gives us the name of the deployment environment. It works like a ternary operation (see https://github.com/actions/runner/issues/409#issuecomment-727565588)
-  group: ${{ github.event_name != 'release' && github.ref_name || github.event.release.prerelease && 'test' || 'prod' }}
+  group: ${{ !startsWith(github.ref, 'refs/tags/') && github.ref_name || contains(github.ref, '-rc') && 'test' || 'prod' }}
   cancel-in-progress: true
 
 jobs:
   test:
     uses: ./.github/workflows/run-tests.yml
-    if: github.event_name == 'release'
+    if: startsWith(github.ref, 'refs/tags/')
 
   deploy:
     needs: test
     # !cancelled() is needed because if the whole workflow was cancelled, we don't want this job to run.
-    # (github.event_name != 'release' || needs.test.result == 'success') is needed because if `test` did run, we only want this to run if `test` succeeded.
-    if: (!cancelled() && (github.event_name != 'release' || needs.test.result == 'success'))
+    # (!startsWith(github.ref, 'refs/tags/') || needs.test.result == 'success') is needed because if `test` did run, we only want this to run if `test` succeeded.
+    if: (!cancelled() && (!startsWith(github.ref, 'refs/tags/') || needs.test.result == 'success'))
     runs-on: ubuntu-latest
-    environment: ${{ github.event_name != 'release' && github.ref_name || github.event.release.prerelease && 'test' || 'prod' }}
+    environment: ${{ !startsWith(github.ref, 'refs/tags/') && github.ref_name || contains(github.ref, '-rc') && 'test' || 'prod' }}
 
     steps:
       - name: Checkout
@@ -85,6 +87,6 @@ jobs:
           file: Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:${{ github.event_name != 'release' && github.ref_name || github.event.release.prerelease && 'test' || 'prod' }}
+            ghcr.io/${{ github.repository }}:${{ !startsWith(github.ref, 'refs/tags/') && github.ref_name || contains(github.ref, '-rc') && 'test' || 'prod' }}
             ghcr.io/${{ github.repository }}:${{ github.ref_name }}
             ghcr.io/${{ github.repository }}:${{ github.sha }}

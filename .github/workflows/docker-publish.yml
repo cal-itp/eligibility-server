@@ -51,7 +51,7 @@ jobs:
           cache-dependency-path: "**/pyproject.toml"
 
       - name: Create /static directory
-        run: mkdir -p eligibility_server/static
+        run: mkdir -p static
 
       - name: Write python packages to file
         run: |
@@ -60,10 +60,10 @@ jobs:
           pip install pipdeptree
           pip install -e .
           pipdeptree
-          pipdeptree >> eligibility_server/static/requirements.txt
+          pipdeptree >> static/requirements.txt
 
       - name: Write commit SHA to file
-        run: echo "${{ github.sha }}" >> eligibility_server/static/sha.txt
+        run: echo "${{ github.sha }}" >> static/sha.txt
 
       - name: Docker Login to GitHub Container Registry
         uses: docker/login-action@v3

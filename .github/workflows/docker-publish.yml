@@ -45,7 +45,7 @@ jobs:
       - name: Git describe (1)
         run: |
           git describe
-          git descibe --long
+          git describe --long
 
       - uses: actions/setup-python@v5
         with:
@@ -72,7 +72,7 @@ jobs:
       - name: Git describe (2)
         run: |
           git describe
-          git descibe --long
+          git describe --long
 
       # - name: Write commit SHA to file
       #   run: echo "${{ github.sha }}" >> static/sha.txt

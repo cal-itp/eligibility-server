@@ -18,6 +18,9 @@ FROM ghcr.io/cal-itp/docker-python-web:main as appcontainer
 
 WORKDIR /home/calitp/app
 
+# upgrade pip
+RUN python -m pip install --upgrade pip
+
 ENV FLASK_APP=eligibility_server.app:app
 
 COPY --from=build_wheel /build/dist /build/dist

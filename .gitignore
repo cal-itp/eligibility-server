@@ -3,6 +3,7 @@ __pycache__/
 .coverage
 .DS_Store
 .env
+.venv/
 config/*
 !config/sample.py
 eligibility_server.egg-info

@@ -3,7 +3,7 @@ schedules:
     displayName: "Restart app services nightly"
     branches:
       include:
-      - dev
+        - main
     always: true
 
 trigger: none

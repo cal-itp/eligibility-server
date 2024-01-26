@@ -4,9 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - dev
-      - test
-      - prod
+      - main
     tags:
       # pre-release tag
       - "202[3-9].[0-9][0-9].[0-9]+-rc[0-9]+"

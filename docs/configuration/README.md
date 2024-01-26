@@ -14,7 +14,7 @@ If you want to run with different settings, you should:
 
 !!! note
 
-    The default settings that will always be loaded are in [eligibility_server/settings.py](https://github.com/cal-itp/eligibility-server/blob/dev/eligibility_server/settings.py)
+    The default settings that will always be loaded are in [eligibility_server/settings.py](https://github.com/cal-itp/eligibility-server/blob/main/eligibility_server/settings.py)
 
 ## Creating a new keypair
 

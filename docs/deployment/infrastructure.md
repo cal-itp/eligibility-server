@@ -86,7 +86,7 @@ Docker logs can be viewed in the Advanced Tools for the instance. The URL patter
 
 ## Making changes
 
-Terraform is [`plan`](https://www.terraform.io/cli/commands/plan)'d when code is pushed to any branch on GitHub, then [`apply`](https://www.terraform.io/cli/commands/apply)'d when merged to `dev`. While other automation for this project is done through GitHub Actions, we use an Azure Pipeline (above) for a couple of reasons:
+Terraform is [`plan`](https://www.terraform.io/cli/commands/plan)'d when code is pushed to any branch on GitHub, then [`apply`](https://www.terraform.io/cli/commands/apply)'d when merged to `main`. While other automation for this project is done through GitHub Actions, we use an Azure Pipeline (above) for a couple of reasons:
 
 - Easier authentication with the Azure API using a service connnection
 - Log output is hidden, avoiding accidentally leaking secrets

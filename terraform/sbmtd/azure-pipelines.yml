@@ -1,9 +1,7 @@
 trigger:
   branches:
     include:
-      - dev
-      - test
-      - prod
+      - main
       - refs/tags/20??.??.?*-rc?*
       - refs/tags/20??.??.?*
   # only run for changes to Terraform files

@@ -2,7 +2,6 @@ parameters:
   - name: variable_file
     type: string
 
-
 stages:
   - stage: TerraformPlan
     variables:
@@ -78,7 +77,7 @@ stages:
             artifact: savedPlan
             condition: |
               or(
-                in(variables['Build.SourceBranchName'], 'dev', 'test', 'prod'),
+                eq(variables['Build.SourceBranchName'], 'main'),
                 eq(variables['setvars.tag_type'], 'test'),
                 eq(variables['setvars.tag_type'], 'prod')
               )
@@ -90,10 +89,10 @@ stages:
         value: $[ dependencies.TerraformPlan.outputs['Plan.setvars.workspace'] ]
       - name: tag_type
         value: $[ dependencies.TerraformPlan.outputs['Plan.setvars.tag_type'] ]
-    # only run on dev, test, or prod branches OR if it's a tag for test or prod
+    # only run on main branch OR if it's a tag for test or prod
     condition: |
       or(
-        in(variables['Build.SourceBranchName'], 'dev', 'test', 'prod'),
+        eq(variables['Build.SourceBranchName'], 'main'),
         eq(variables['tag_type'], 'test'),
         eq(variables['tag_type'], 'prod')
       )

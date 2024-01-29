@@ -1,6 +1,7 @@
 """
 Simple Test Eligibility Verification API Server.
 """
+
 import logging
 
 from flask import Flask, jsonify, make_response

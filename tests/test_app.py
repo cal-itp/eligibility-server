@@ -1,6 +1,7 @@
 """
 Test app
 """
+
 import re
 
 from eligibility_server.settings import APP_NAME

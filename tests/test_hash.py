@@ -1,6 +1,7 @@
 """
 Test hash class method
 """
+
 import pytest
 
 from eligibility_server.hash import Hash

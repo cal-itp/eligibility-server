@@ -71,7 +71,7 @@ Starting the Dev Container will run `bin/init.sh`, which runs a command to initi
 
 ### Run unit tests
 
-Unit tests are implemented with [`pytest`](https://docs.pytest.org/en/6.2.x/) and can be found in the [`tests/`](https://github.com/cal-itp/eligibility-server/tree/dev/tests) directory in the repository. `pytest` is installed and available to run directly in the devcontainer.
+Unit tests are implemented with [`pytest`](https://docs.pytest.org/en/6.2.x/) and can be found in the [`tests/`](https://github.com/cal-itp/eligibility-server/tree/main/tests) directory in the repository. `pytest` is installed and available to run directly in the devcontainer.
 
 The test suite runs against every pull request via a GitHub Action.
 

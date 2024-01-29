@@ -8,15 +8,12 @@ SOURCE = os.environ.get("OTHER_SOURCE") or os.environ["INDIVIDUAL_SOURCE"]
 TARGET = os.environ["TARGET"]
 IS_TAG = os.environ["IS_TAG"].lower() == "true"
 
-# the branches that correspond to environments
-ENV_BRANCHES = ["dev", "test", "prod"]
-
-if REASON == "PullRequest" and TARGET in ENV_BRANCHES:
-    # it's a pull request against one of the environment branches, so use the target branch
-    environment = TARGET
-elif REASON in ["IndividualCI", "Manual"] and SOURCE in ENV_BRANCHES:
-    # it's being run on one of the environment branches, so use that
-    environment = SOURCE
+if REASON == "PullRequest" and TARGET == "main":
+    # it's a pull request against main, this is for the dev environment
+    environment = "dev"
+elif REASON in ["IndividualCI", "Manual"] and SOURCE == "main":
+    # it's being run on the main branch, this is for the dev environment
+    environment = "dev"
 elif REASON in ["IndividualCI"] and IS_TAG and re.fullmatch(r"20\d\d.\d\d.\d+-rc\d+", SOURCE):
     environment = "test"
 elif REASON in ["IndividualCI"] and IS_TAG and re.fullmatch(r"20\d\d.\d\d.\d+", SOURCE):

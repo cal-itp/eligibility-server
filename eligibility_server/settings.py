@@ -1,6 +1,7 @@
 """
 Default settings for server.
 """
+
 from flask import current_app
 
 # App settings

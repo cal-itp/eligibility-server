@@ -16,11 +16,13 @@ The following things in Azure are managed outside of Terraform:
 
 ## Environments
 
-| Environment | Azure Resource Group              | Terraform Workspace | Git Branch |
-| ----------- | --------------------------------- | ------------------- | ---------- |
-| Dev         | `$(AGENCY_RESOURCE_GROUP_PREFIX)-eligibility-dev`  | `dev`               | `dev`      |
-| Test        | `$(AGENCY_RESOURCE_GROUP_PREFIX)-eligibility-test` | `test`              | `test`     |
-| Prod        | `$(AGENCY_RESOURCE_GROUP_PREFIX)-eligibility-prod` | `default`           | `prod`     |
+| Environment | Azure Resource Group                               | Terraform Workspace | Git Reference         |
+| ----------- | -------------------------------------------------- | ------------------- | --------------------- |
+| Dev         | `$(AGENCY_RESOURCE_GROUP_PREFIX)-eligibility-dev`  | `dev`               | `main`                |
+| Test        | `$(AGENCY_RESOURCE_GROUP_PREFIX)-eligibility-test` | `test`              | release candidate tag |
+| Prod        | `$(AGENCY_RESOURCE_GROUP_PREFIX)-eligibility-prod` | `default`           | release tag           |
+
+(See [Version number format](../releases.md#version-number-format) for naming pattern for release candidate/release tags.)
 
 All resources in these Resource Groups should be reflected in Terraform in this repository. The exceptions are:
 
@@ -86,7 +88,14 @@ Docker logs can be viewed in the Advanced Tools for the instance. The URL patter
 
 ## Making changes
 
-Terraform is [`plan`](https://www.terraform.io/cli/commands/plan)'d when code is pushed to any branch on GitHub, then [`apply`](https://www.terraform.io/cli/commands/apply)'d when merged to `main`. While other automation for this project is done through GitHub Actions, we use an Azure Pipeline (above) for a couple of reasons:
+Terraform is [`plan`](https://www.terraform.io/cli/commands/plan)'d when commits that change any file under the `terraform` directory are either:
+
+- merged into the `main` branch
+- tagged with a release candidate or release tag
+
+Then, the Azure DevOps pipeline that ran the `plan` will wait for approval to run [`apply`](https://www.terraform.io/cli/commands/apply).
+
+While other automation for this project is done through GitHub Actions, we use an Azure DevOps Pipeline (above) for a couple of reasons:
 
 - Easier authentication with the Azure API using a service connnection
 - Log output is hidden, avoiding accidentally leaking secrets
@@ -133,7 +142,7 @@ In general, the steps that must be done manually before the pipeline can be run 
 - Create Resource Group and storage account dedicated to the Terraform state
 - Create container in storage account for Terraform state
 - Create environment Resource Group for each environment, Region: West US
-    - We create these manually to avoid having to give the pipeline service connection permissions for creating resource groups
+  - We create these manually to avoid having to give the pipeline service connection permissions for creating resource groups
 - Create Terraform workspace for each environment
 - Trigger a pipeline run to verify `plan` and `apply`
 - Known chicken-and-egg problem: Terraform both creates the Key Vault and expects a secret within it, so will always fail on the first deploy. Add the Benefits slack email secret and re-run the pipeline.
@@ -142,14 +151,14 @@ Once the pipeline has run, there are a few more steps to be done manually in the
 
 - [Create the service principal](https://learn.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal#app-registration-app-objects-and-service-principals)
 - Give the ETL service principal access to the `prod` storage account created by the pipeline:
-    - Navigate to the storage account container
-    - Select **Access Control (IAM)**
-    - Select **Add**, then select **Add role assignment**
-    - In the **Role** tab, select `Storage Blob Data Contributor`
-    - In the **Members** tab, select `Select Members` and search for the ETL service principal. Add it to the role.
-    - Also in the **Members** tab, add a description of `This role assignment gives write access only for the path of the hashed data file.`
-    - In the **Conditions** tab, select **Add condition** and change the editor type to `Code`
-    - Add the following condition into the editor, filling in `<filename>` with the appropriate value:
+  - Navigate to the storage account container
+  - Select **Access Control (IAM)**
+  - Select **Add**, then select **Add role assignment**
+  - In the **Role** tab, select `Storage Blob Data Contributor`
+  - In the **Members** tab, select `Select Members` and search for the ETL service principal. Add it to the role.
+  - Also in the **Members** tab, add a description of `This role assignment gives write access only for the path of the hashed data file.`
+  - In the **Conditions** tab, select **Add condition** and change the editor type to `Code`
+  - Add the following condition into the editor, filling in `<filename>` with the appropriate value:
 
 ```text
 (

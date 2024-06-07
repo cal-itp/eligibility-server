@@ -41,15 +41,10 @@ resource "azurerm_linux_web_app" "main" {
       action      = "Allow"
       service_tag = "ApplicationInsightsAvailability"
     }
-
-    application_stack {
-      docker_image     = "ghcr.io/cal-itp/eligibility-server"
-      docker_image_tag = local.env_name
-    }
   }
 
   app_settings = {
-    "DOCKER_ENABLE_CI"            = "true",
+    "DOCKER_ENABLE_CI"            = "false",
     "DOCKER_REGISTRY_SERVER_URL"  = "https://ghcr.io/"
     "ELIGIBILITY_SERVER_SETTINGS" = "${local.mount_path}/settings.py"
     # this prevents the filesystem from being obscured by a mount

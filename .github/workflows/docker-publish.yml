@@ -80,6 +80,18 @@ jobs:
           file: Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:${{ github.ref_type != 'tag' && github.ref_name || contains(github.ref, '-rc') && 'test' || 'prod' }}
-            ghcr.io/${{ github.repository }}:${{ github.ref_name }}
             ghcr.io/${{ github.repository }}:${{ github.sha }}
+
+      - name: Deploy to MST Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ vars.MST_AZURE_WEBAPP_NAME }}
+          images: ghcr.io/${{ github.repository }}:${{ github.sha }}
+          publish-profile: ${{ secrets.MST_AZURE_WEBAPP_PUBLISH_PROFILE }}
+
+      - name: Deploy to SBMTD Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ vars.SBMTD_AZURE_WEBAPP_NAME }}
+          images: ghcr.io/${{ github.repository }}:${{ github.sha }}
+          publish-profile: ${{ secrets.SBMTD_AZURE_WEBAPP_PUBLISH_PROFILE }}

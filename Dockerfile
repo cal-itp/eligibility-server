@@ -16,8 +16,6 @@ RUN pip install build && python -m build
 
 FROM ghcr.io/cal-itp/docker-python-web:main as appcontainer
 
-WORKDIR /home/calitp/app
-
 # upgrade pip
 RUN python -m pip install --upgrade pip
 

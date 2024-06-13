@@ -1,0 +1,66 @@
+name: New Release
+description: Publish a new release of eligibility-server
+title: Make a Release
+labels:
+  - release
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Prepare a new release
+
+        Use the form below to prepare a new release of eligibility-server.
+
+        Each release is coordinated by a **Release Manager**. The release manager may assign sub-tasks or ask for help
+        as-needed, but is otherwise responsible for all aspects of the release.
+
+        Each release also identifies a **Smoke Tester** responsible for carrying out Smoke Tests.
+
+        After this issue is created, use the checklist to manage the steps
+        of the release process, marking items as completed. [Read more about the
+        release process](https://docs.calitp.org/eligibility-server/releases/).
+
+        Close this issue when the checklist is complete.
+    validations:
+      required: true
+  - type: input
+    id: manager
+    attributes:
+      label: Release manager
+      description: GitHub handle of who is responsible for this release; assign this issue to this user
+      placeholder: "@cal-itp-bot"
+    validations:
+      required: true
+  - type: input
+    id: smoke-tester
+    attributes:
+      label: Smoke tester
+      description: GitHub handle of who is responsible for smoke testing this release
+      placeholder: "@cal-itp-bot"
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Release version
+      description: Calver-formatted version for this release
+      placeholder: YYYY.0M.R
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: |
+        ## Release checklist
+  - type: checkboxes
+    id: release-checklist
+    attributes:
+      label: Release checklist
+      description: Complete these items in sequence as the release progresses
+      options:
+        - label: Edit the title of this release issue to include the release version
+        - label: Create a release candidate tag on `main` and push it
+        - label: QA the app in test
+        - label: Create a release tag on `main` and push it
+        - label: Smoke test the app in prod, leaving a comment on this issue indicating smoke testing results
+        - label: Edit release notes with additional context, images, animations, etc. as-needed
+        - label: Edit release notes to link to release issue

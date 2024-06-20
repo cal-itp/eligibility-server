@@ -4,7 +4,7 @@
   "dockerComposeFile": ["../compose.yml"],
   "service": "dev",
   "runServices": ["dev", "docs"],
-  "workspaceFolder": "/home/calitp/app",
+  "workspaceFolder": "/calitp/app",
   "postAttachCommand": ["/bin/bash", ".devcontainer/postAttach.sh"],
   "postStartCommand": ["/bin/bash", "bin/init.sh"],
   "customizations": {

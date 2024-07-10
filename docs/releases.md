@@ -21,3 +21,15 @@ All versions of the package may be viewed on the [package all versions page](htt
   e.g. `1` for the first release of the month, `2` for the second, and so on.
 
 Version numbers for release candidates append `-rcR`, where `R` is the 1-based release counter for the anticipated release. For example, the first release candidate for the `2024.01.1` release would be `2024.01.1-rc1`.
+
+## Making a release
+
+This list outlines the manual steps needed to make a new release of `eligibility-server`.
+
+A release is made by pushing an annotated tag. The name of the tag must use the version number format mentioned above. This kicks off a deployment to the production environment and creates a GitHub release. The version number for the app and the release will be the tag's name.
+
+More details about the deployment steps and release creation can be found in the [`docker-publish`](https://github.com/cal-itp/eligibility-server/tree/main/.github/workflows/docker-publish.yml) workflow. [`release`](https://github.com/cal-itp/eligibility-server/tree/main/.github/workflows/release.yml) workflow.
+
+The list of releases can be found on the [repository Releases page](https://github.com/cal-itp/eligibility-server/tags) on GitHub.
+
+[Start a new Release on Github](https://github.com/cal-itp/eligibility-server/issues/new?labels=release&template=release.yml&title=Make+a+Release){ .md-button }

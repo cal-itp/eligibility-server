@@ -7,7 +7,7 @@ resource "azurerm_service_plan" "main" {
 }
 
 locals {
-  mount_path = "/home/calitp/app/config"
+  mount_path = "/calitp/app/config"
 }
 
 resource "azurerm_linux_web_app" "main" {

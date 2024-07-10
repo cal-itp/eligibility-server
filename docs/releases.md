@@ -2,17 +2,13 @@
 
 The `eligibility-server` is published as a Docker image on the GitHub Container Registry. It can be accessed from the [repository package page](https://github.com/cal-itp/eligibility-server/pkgs/container/eligibility-server).
 
-Every push to the `main` (default) branch that changes files relevant to the application builds and updates the `dev` package, via the [`docker-publish`](https://github.com/cal-itp/eligibility-server/blob/main/.github/workflows/docker-publish.yml) GitHub Action.
+Every push to the `main` (default) branch that changes files relevant to the application builds and pushes a new package tagged with the corresponding Git commit hash, via the [`docker-publish`](https://github.com/cal-itp/eligibility-server/blob/main/.github/workflows/docker-publish.yml) GitHub Action.
 
-Commits that are tagged with our version number format for release candidates and releases will update the `test` and `prod` packages, respectively.
+Commits that are tagged with our version number format for release candidates and releases will also push a new package.
 
 ## Versions
 
 All versions of the package may be viewed on the [package all versions page](https://github.com/cal-itp/eligibility-server/pkgs/container/eligibility-server/versions).
-
-The `main` (default) branch is published at the `dev` tag.
-
-The official releases will be tagged with a version number.
 
 ## Version number format
 

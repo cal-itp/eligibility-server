@@ -16,3 +16,6 @@ MD033: false
 
 # Allow fenced code blocks
 MD046: false
+
+# Allow first line in a file to not be a top-level heading
+MD041: false

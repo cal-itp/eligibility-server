@@ -19,22 +19,13 @@ Steps to reproduce the behavior:
 
 A clear and concise description of what you expected to happen.
 
-## Screenshots
+## Environment
 
-If applicable, add screenshots to help explain your problem.
+List the environments with the bug - dev, test, production or a combination
 
-## Desktop (please complete the following information)
+## Agency
 
-- OS: [e.g. iOS]
-- Browser [e.g. chrome, safari]
-- Version [e.g. 22]
-
-## Smartphone (please complete the following information)
-
-- Device: [e.g. iPhone6]
-- OS: [e.g. iOS8.1]
-- Browser [e.g. stock browser, safari]
-- Version [e.g. 22]
+List the transit agency/agencies with the bug
 
 ## Additional context
 

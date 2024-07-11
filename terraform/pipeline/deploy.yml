@@ -104,7 +104,7 @@ stages:
     jobs:
       - deployment: Apply
         condition: succeeded()
-        environment: $(environment)
+        environment: ${{ variables.environment }}
         variables:
           - name: workspace
             value: $[ stageDependencies.TerraformPlan.Plan.outputs['setvars.workspace'] ]

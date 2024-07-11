@@ -62,19 +62,19 @@ def test_Verify_init_keypair():
 
 test_data = [
     # This sub/name pair is in the database
-    ("", "32587", "Gonzales", ["courtesy_card"], ["courtesy_card"]),
+    ("", "32587", "Gonzales", ["agency_card"], ["agency_card"]),
     # This sub/name pair does not have the type
     ("", "32587", "Gonzales", ["something"], []),
     # This sub/name pair does not exist
-    ("", "12345", "Aaron", ["courtesy_card"], []),
+    ("", "12345", "Aaron", ["agency_card"], []),
     # Correct sub/name pair and correct hash algo type
-    ("sha512", "89768", "Muñoz", ["courtesy_card"], ["courtesy_card"]),
+    ("sha512", "89768", "Muñoz", ["agency_card"], ["agency_card"]),
     # This sub/name pair does not have the type
     ("sha512", "89768", "Muñoz", ["something"], []),
     # This sub/name pair does not exist
-    ("sha512", "12345", "Smith", ["courtesy_card"], []),
+    ("sha512", "12345", "Smith", ["agency_card"], []),
     # Wrong hash algo type
-    ("sha256", "89768", "Muñoz", ["courtesy_card"], []),
+    ("sha256", "89768", "Muñoz", ["agency_card"], []),
 ]
 
 

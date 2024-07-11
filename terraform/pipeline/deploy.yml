@@ -99,6 +99,7 @@ stages:
     jobs:
       - deployment: Apply
         condition: succeeded()
+        environment: Approval
         variables:
           - name: workspace
             value: $[ stageDependencies.TerraformPlan.Plan.outputs['setvars.workspace'] ]

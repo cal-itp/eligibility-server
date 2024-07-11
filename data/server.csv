@@ -1,20 +1,20 @@
 sub,name,type
-71162,Box,courtesy_card
-32587,Gonzales,courtesy_card
-03552,McCulley,courtesy_card
-42687,Álvarez,courtesy_card
-65149,Álvarez,courtesy_card
-65149,Álvarez,courtesy_card
-89768,Muñoz,courtesy_card
-41782,Núñez,courtesy_card
-48727,de Merida,courtesy_card
-38246,la Peña,courtesy_card
-78077,De Bell,courtesy_card
-71650,De la Cruz,courtesy_card
-71650,De la Cruz,courtesy_card
-71650,De la Cruz,courtesy_card
-03218,D'Andrea,courtesy_card
-51828,Grafton-Herbert,courtesy_card
+71162,Box,agency_card
+32587,Gonzales,agency_card
+03552,McCulley,agency_card
+42687,Álvarez,agency_card
+65149,Álvarez,agency_card
+65149,Álvarez,agency_card
+89768,Muñoz,agency_card
+41782,Núñez,agency_card
+48727,de Merida,agency_card
+38246,la Peña,agency_card
+78077,De Bell,agency_card
+71650,De la Cruz,agency_card
+71650,De la Cruz,agency_card
+71650,De la Cruz,agency_card
+03218,D'Andrea,agency_card
+51828,Grafton-Herbert,agency_card
 00596884ca82d6df736892667163ea13ca95404d3f746e516d2443a0c12cc9e199a8bf113142ebe0bbdbbdcecde179fd1ba45c226033d88cec5606b1e29517d6,b654c445c17985721f9899fb310a320fb9f55a1fde191327aaf241aeabd177172e5cef8bf3b8d628213c62d84d4aff8f50e42d5bc849784a079fe84d8fad0de0,courtesy_card
 21320c3329d6fe8febd435e93343cd8bb491c14ea21f567e32253be23f625c1b59980e5c904209cbc112d87d26939d7aabbcbcf18eff15c75d9d6dd6f1b232ae,d33f779614d2b3123b5251aebea26cc3c9179d6bd50be9de287b50f6a8c4a34e56e5964ca8e5d09ed6131a5aa3cc09fa64f51af37fefc4e42cde25b797043863,courtesy_card
 76abba90ebdb506633af20f40ed50ca2c2446f1916e121fe7d9e59b3e043f0e8b1343abfa4dfc737298ede495197b62a7b8defb53e42d0bdbd8f041874ff10f3,a5a69f778724a4a34c56cf89c7d4d39ba28fd56fffa869a201c435c7cc9d1eb02dcb4c6f33eb22e244914f282fc2aedd43504e0593c50ff88ba4ee21d50bfcfa,courtesy_card

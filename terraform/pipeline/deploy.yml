@@ -24,6 +24,9 @@ stages:
               WORKSPACE=$(python terraform/pipeline/workspace.py)
               echo "##vso[task.setvariable variable=workspace;isOutput=true]$WORKSPACE"
 
+              ENVIRONMENT=$(case $WORKSPACE in "dev") echo "dev" ;; "test") echo "test" ;; "default") echo "prod" ;; *) echo "dev" ;; esac)
+              echo "##vso[task.setvariable variable=environment;isOutput=true]$ENVIRONMENT"
+
               TAG_TYPE=$(python terraform/pipeline/tag.py)
               echo "##vso[task.setvariable variable=tag_type;isOutput=true]$TAG_TYPE"
             name: setvars
@@ -87,6 +90,8 @@ stages:
       - template: ${{ parameters.variable_file }}
       - name: workspace
         value: $[ dependencies.TerraformPlan.outputs['Plan.setvars.workspace'] ]
+      - name: environment
+        value: $[ dependencies.TerraformPlan.outputs['Plan.setvars.environment'] ]
       - name: tag_type
         value: $[ dependencies.TerraformPlan.outputs['Plan.setvars.tag_type'] ]
     # only run on main branch OR if it's a tag for test or prod
@@ -99,10 +104,12 @@ stages:
     jobs:
       - deployment: Apply
         condition: succeeded()
-        environment: Approval
+        environment: $(environment)
         variables:
           - name: workspace
             value: $[ stageDependencies.TerraformPlan.Plan.outputs['setvars.workspace'] ]
+          - name: environment
+            value: $[ stageDependencies.TerraformPlan.Plan.outputs['setvars.environment'] ]
           - name: tag_type
             value: $[ stageDependencies.TerraformPlan.Plan.outputs['setvars.tag_type'] ]
         strategy:

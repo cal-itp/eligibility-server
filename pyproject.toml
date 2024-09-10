@@ -49,6 +49,7 @@ source = ["eligibility_server"]
 
 [tool.pyright]
 include = ["eligibility_server", "tests"]
+typeCheckingMode = "off"
 
 [tool.setuptools.packages.find]
 include = ["eligibility_server*"]

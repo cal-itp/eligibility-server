@@ -18,7 +18,7 @@ class Eligibility(db.Model):
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    sub = db.Column(db.String, unique=True, nullable=False)
+    sub = db.Column(db.String, unique=False, nullable=False)
     name = db.Column(db.String, unique=False, nullable=False)
     types = db.relationship("Eligibility", secondary=user_eligibility, lazy="subquery", backref=db.backref("users", lazy=True))
 

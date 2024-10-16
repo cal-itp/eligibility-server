@@ -2,7 +2,7 @@
 
 This website provides technical documentation for the `eligibility-server` application, a part of the [`benefits`](https://docs.calitp.org/benefits) application, from the [California Integrated Travel Project (Cal-ITP)](https://www.calitp.org).
 
-Documentation for the `main` (default) branch is available [online](https://docs.calitp.org/eligibility-server).
+Eligibility Server is open-source software that is designed, developed, and maintained by <a href="https://compiler.la" target="_blank">Compiler LLC</a> on behalf of Caltrans, Cal-ITP, and our agency partners.
 
 ## Overview
 

@@ -11,7 +11,7 @@ maintainers = [
 ]
 dependencies = [
     "eligibility-api==2023.9.1",
-    "Flask==3.0.3",
+    "Flask==3.1.0",
     "Flask-RESTful==0.3.10",
     "Flask-SQLAlchemy==3.1.1",
     "requests==2.32.3",

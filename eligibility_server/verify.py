@@ -108,6 +108,8 @@ class Verify(Resource):
             sub = self.hash.hash_input(sub)
             name = self.hash.hash_input(name)
 
+            logger.debug(f"Hashed sub, name: {sub},{name}")
+
         existing_user = User.query.filter_by(sub=sub, name=name).first()
         if existing_user:
             existing_user_types = [type.name for type in existing_user.types]

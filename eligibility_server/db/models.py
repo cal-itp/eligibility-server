@@ -1,6 +1,16 @@
 from eligibility_server.db import db
 
 
+class Metadata(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    timestamp = db.Column(db.String, unique=True, nullable=False)
+    users = db.Column(db.Integer, nullable=False)
+    eligibility = db.Column(db.PickleType, nullable=False)
+
+    def __repr__(self):
+        return f"<Metadata [{self.timestamp}]: {self.users} users, {len(self.eligibility)} type{'s' if len(self.eligibility) > 1 else ''}>"  # noqa: E501
+
+
 user_eligibility = db.Table(
     "user_eligibility",
     db.Column("user_id", db.Integer, db.ForeignKey("user.id"), primary_key=True),

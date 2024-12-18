@@ -118,6 +118,7 @@ class Verify(Resource):
             logger.debug(f"Existing types on user: {existing_user_types}")
         else:
             existing_user_types = []
+            logger.debug("User not found")
 
         matching_types = set(existing_user_types) & set(types)
         logger.debug(f"Matching types: {matching_types}")
@@ -129,6 +130,7 @@ class Verify(Resource):
             logger.debug(f"User's types do not contain any of the requested types: {types}")
             return []
         else:
+            logger.debug("Returning matching types for existing user")
             return list(matching_types)
 
     def get(self):

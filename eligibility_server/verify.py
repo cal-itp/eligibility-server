@@ -103,18 +103,25 @@ class Verify(Resource):
         if len(types) < 1:
             logger.debug("List of types to check was empty.")
             return []
+        else:
+            logger.debug(f"Types to check: {types}")
 
         if self.hash:
             sub = self.hash.hash_input(sub)
             name = self.hash.hash_input(name)
 
+            logger.debug(f"Hashed sub, name: {sub},{name}")
+
         existing_user = User.query.filter_by(sub=sub, name=name).first()
         if existing_user:
             existing_user_types = [type.name for type in existing_user.types]
+            logger.debug(f"Existing types on user: {existing_user_types}")
         else:
             existing_user_types = []
+            logger.debug("User not found")
 
         matching_types = set(existing_user_types) & set(types)
+        logger.debug(f"Matching types: {matching_types}")
 
         if existing_user is None:
             logger.debug("Database does not contain requested user.")
@@ -123,6 +130,7 @@ class Verify(Resource):
             logger.debug(f"User's types do not contain any of the requested types: {types}")
             return []
         else:
+            logger.debug("Returning matching types for existing user")
             return list(matching_types)
 
     def get(self):

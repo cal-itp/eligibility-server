@@ -1,13 +1,14 @@
 import csv
+from datetime import datetime, timezone
 from tempfile import NamedTemporaryFile
 
 import click
 from flask import current_app
-from sqlalchemy import inspect
+from sqlalchemy import column, inspect
 import requests
 
 from eligibility_server.db import db
-from eligibility_server.db.models import User, Eligibility
+from eligibility_server.db.models import User, Eligibility, Metadata
 from eligibility_server.settings import Configuration
 
 
@@ -29,8 +30,9 @@ def init_db_command():
             click.echo("Creating table...")
             db.create_all()
             click.echo("Table created.")
-
             import_users()
+
+    update_metadata()
 
 
 def import_users():
@@ -135,3 +137,17 @@ def drop_db_command():
             click.echo("Database dropped.")
         else:
             click.echo("Database does not exist.")
+
+
+def update_metadata():
+    Metadata.query.delete()
+
+    ts = datetime.now(tz=timezone.utc).isoformat(timespec="seconds")
+    users = User.query.count()
+    eligibility = [e.name for e in Eligibility.query.add_column(column("name"))]
+
+    metadata = Metadata(timestamp=ts, users=users, eligibility=eligibility)
+    db.session.add(metadata)
+    db.session.commit()
+
+    click.echo("Database metadata updated.")

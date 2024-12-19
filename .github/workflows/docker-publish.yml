@@ -28,8 +28,7 @@ jobs:
   deploy:
     needs: test
     # !cancelled() is needed because if the whole workflow was cancelled, we don't want this job to run.
-    # (github.ref_type != 'tag' || needs.test.result == 'success') is needed because if `test` did run, we only want this to run if `test` succeeded.
-    if: (!cancelled() && (github.ref_type != 'tag' || needs.test.result == 'success'))
+    if: (!cancelled())
     runs-on: ubuntu-latest
     environment: ${{ github.ref_type != 'tag' && github.ref_name || contains(github.ref, '-rc') && 'test' || 'prod' }}
 

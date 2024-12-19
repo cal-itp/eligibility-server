@@ -9,6 +9,7 @@ from flask.logging import default_handler
 from flask_restful import Api
 
 from eligibility_server import __version__, db, sentry
+from eligibility_server.db.models import Metadata
 from eligibility_server.keypair import get_server_public_key
 from eligibility_server.settings import Configuration
 from eligibility_server.verify import Verify
@@ -51,6 +52,17 @@ with app.app_context():
 def healthcheck():
     app.logger.info("Request healthcheck")
     return TextResponse("Healthy")
+
+
+@app.route("/metadata")
+def metadata():
+    app.logger.info("Request metadata")
+
+    md = Metadata.query.first()
+    return {
+        "app": {"version": __version__},
+        "db": {"timestamp": md.timestamp, "users": md.users, "eligibility": md.eligibility},
+    }
 
 
 @app.route("/publickey")

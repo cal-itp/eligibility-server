@@ -83,7 +83,11 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "main" {
     match_condition {
       match_variable = "RequestUri"
       operator       = "BeginsWith"
-      match_values   = ["https://${azurerm_cdn_frontdoor_endpoint.main.host_name}:443/healthcheck", "https://${azurerm_cdn_frontdoor_endpoint.main.host_name}:443/static/"]
+      match_values   = [
+        "https://${azurerm_cdn_frontdoor_endpoint.main.host_name}:443/healthcheck",
+        "https://${azurerm_cdn_frontdoor_endpoint.main.host_name}:443/metadata",
+        "https://${azurerm_cdn_frontdoor_endpoint.main.host_name}:443/static/"
+      ]
     }
   }
 

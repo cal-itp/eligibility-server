@@ -7,4 +7,5 @@ __pycache__/
 config/*
 !config/sample.py
 eligibility_server.egg-info
+metadata.json
 static/

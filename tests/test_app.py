@@ -4,6 +4,7 @@ Test app
 
 import re
 
+from eligibility_server import __version__
 from eligibility_server.settings import APP_NAME
 from eligibility_server.keypair import get_server_public_key
 
@@ -18,6 +19,23 @@ def test_healthcheck(client):
     assert response.mimetype == "text/plain"
     assert response.text == "Healthy"
     assert "Strict-Transport-Security" in response.headers
+
+
+def test_metadata(client):
+    response = client.get("metadata")
+    assert response.status_code == 200
+    assert response.mimetype == "application/json"
+    assert "Strict-Transport-Security" in response.headers
+
+    data = response.json
+
+    assert "app" in data
+    assert data["app"]["version"] == __version__
+    assert "db" in data
+    assert isinstance(data["db"]["timestamp"], str)
+    assert isinstance(data["db"]["users"], int)
+    assert isinstance(data["db"]["eligibility"], list)
+    assert len(data["db"]["eligibility"]) > 0
 
 
 def test_404(client):

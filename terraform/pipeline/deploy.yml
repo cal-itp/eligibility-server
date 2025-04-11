@@ -35,8 +35,8 @@ stages:
             displayName: Install Terraform
             inputs:
               terraformVersion: 1.8.5
-          # https://github.com/microsoft/azure-pipelines-terraform/tree/main/Tasks/TerraformTask/TerraformTaskV3#readme
-          - task: TerraformTaskV3@3
+          # https://github.com/microsoft/azure-pipelines-terraform/tree/main/Tasks/TerraformTask/TerraformTaskV4#readme
+          - task: TerraformTaskV4@4
             displayName: Terraform init
             inputs:
               provider: azurerm
@@ -50,7 +50,7 @@ stages:
               backendAzureRmStorageAccountName: $(TF_STORAGE_ACCOUNT)
               backendAzureRmContainerName: tfstate
               backendAzureRmKey: terraform.tfstate
-          - task: TerraformTaskV3@3
+          - task: TerraformTaskV4@4
             displayName: Select environment
             inputs:
               provider: azurerm
@@ -60,7 +60,7 @@ stages:
               workingDirectory: "$(System.DefaultWorkingDirectory)/terraform"
               # service connection
               environmentServiceNameAzureRM: deployer
-          - task: TerraformTaskV3@3
+          - task: TerraformTaskV4@4
             displayName: Terraform plan
             inputs:
               provider: azurerm
@@ -117,8 +117,8 @@ stages:
                   displayName: Install Terraform
                   inputs:
                     terraformVersion: 1.8.5
-                # https://github.com/microsoft/azure-pipelines-terraform/tree/main/Tasks/TerraformTask/TerraformTaskV3#readme
-                - task: TerraformTaskV3@3
+                # https://github.com/microsoft/azure-pipelines-terraform/tree/main/Tasks/TerraformTask/TerraformTaskV4#readme
+                - task: TerraformTaskV4@4
                   displayName: Terraform init
                   inputs:
                     provider: azurerm
@@ -132,7 +132,7 @@ stages:
                     backendAzureRmStorageAccountName: $(TF_STORAGE_ACCOUNT)
                     backendAzureRmContainerName: tfstate
                     backendAzureRmKey: terraform.tfstate
-                - task: TerraformTaskV3@3
+                - task: TerraformTaskV4@4
                   displayName: Select environment
                   inputs:
                     provider: azurerm
@@ -142,7 +142,7 @@ stages:
                     workingDirectory: "$(System.DefaultWorkingDirectory)/terraform"
                     # service connection
                     environmentServiceNameAzureRM: deployer
-                - task: TerraformTaskV3@3
+                - task: TerraformTaskV4@4
                   displayName: Terraform apply
                   inputs:
                     provider: azurerm

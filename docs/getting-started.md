@@ -101,4 +101,4 @@ To run the docs locally:
 docker compose up docs
 ```
 
-Read more on how to run the docs [here](https://docs.calitp.org/benefits/getting-started/documentation/).
+Read more on [how to run the docs locally](https://docs.calitp.org/benefits/getting-started/documentation/).

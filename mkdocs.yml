@@ -9,20 +9,7 @@ theme:
     - navigation.tabs
     - toc.integrate
   palette:
-    - media: "(prefers-color-scheme: light)"
-      scheme: default
-      primary: blue
-      accent: amber
-      toggle:
-        icon: material/toggle-switch-off-outline
-        name: Switch to dark mode
-    - media: "(prefers-color-scheme: dark)"
-      scheme: slate
-      primary: blue
-      accent: amber
-      toggle:
-        icon: material/toggle-switch
-        name: Switch to light mode
+    scheme: default
 
 extra:
   analytics:
@@ -38,6 +25,7 @@ extra_javascript:
 
 extra_css:
   - https://use.fontawesome.com/releases/v5.13.0/css/all.css
+  - https://docs.calitp.org/benefits/styles/theme.css
 
 markdown_extensions:
   - admonition

@@ -144,7 +144,7 @@ These are the possible values for the `CSV_QUOTING` variable:
 
 Cal-ITP's Sentry instance collects both [errors ("Issues")](https://sentry.calitp.org/organizations/sentry/issues/?project=4) and app [performance info](https://sentry.calitp.org/organizations/sentry/performance/?project=4).
 
-[Alerts are sent to #benefits-notify in Slack.](https://sentry.calitp.org/organizations/sentry/alerts/rules/eligibility-server/10/details/) [Others can be configured.](https://sentry.calitp.org/organizations/sentry/alerts/rules/)
+[Alerts are sent to #notify-benefits in Slack.](https://sentry.calitp.org/organizations/sentry/alerts/rules/eligibility-server/10/details/) [Others can be configured.](https://sentry.calitp.org/organizations/sentry/alerts/rules/)
 
 You can troubleshoot Sentry itself by [turning on debug mode](#debug_mode) and visiting `/error/`.
 

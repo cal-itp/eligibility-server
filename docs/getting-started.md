@@ -45,7 +45,7 @@ After initialization, the server is running on `http://localhost` at a port dyna
 
 ### Run healthcheck
 
-To check if the server is running successfully, use your browser to get to the Healthcheck endpoint: `http://localhost:50252/healthcheck`
+To check if the server is running successfully, use your browser to get to the Healthcheck endpoint: `http://localhost:8000/healthcheck` (substituting the dynamically assigned port).
 
 The page should read "Healthy"
 

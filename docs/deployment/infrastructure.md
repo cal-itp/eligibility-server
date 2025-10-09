@@ -33,13 +33,13 @@ For browsing the [Azure portal](https://portal.azure.com), you can [switch your 
 
 ## Access restrictions
 
-We restrict which IP addresses that can access the app service by using a Web Application Firewall (WAF) configured on a Front Door. There is an exception for the `/healthcheck` and `/static` paths, which can be accessed by any IP address.
+We restrict which IP addresses can access the app service by using a Web Application Firewall (WAF) configured on a Front Door. There is an exception for the `/healthcheck` and `/static` paths, which can be accessed by any IP address.
 
 The app service itself gives access only to our Front Door and to Azure availability tests.
 
 ## Monitoring
 
-We have [ping tests](https://docs.microsoft.com/en-us/azure/azure-monitor/app/monitor-web-app-availability) set up to notify about availability of each environment. Alerts go to [#benefits-notify](https://cal-itp.slack.com/archives/C022HHSEE3F).
+We have [ping tests](https://docs.microsoft.com/en-us/azure/azure-monitor/app/monitor-web-app-availability) set up to notify about availability of each environment. Alerts go to [#notify-benefits](https://cal-itp.slack.com/archives/C022HHSEE3F).
 
 ## Logs
 

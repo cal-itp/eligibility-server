@@ -27,7 +27,7 @@ cp .env.sample .env
 docker compose build server
 ```
 
-### Use the Docker container locally
+### Use the published Docker container locally
 
 ```bash
 docker pull ghcr.io/cal-itp/eligibility-server:dev

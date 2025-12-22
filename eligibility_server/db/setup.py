@@ -86,7 +86,7 @@ def import_csv_users(csv_path, remote):
         for row in data:
             # type lists are expected to be a comma-separated value and quoted if the CSV delimiter is a comma
             types = row["type"]
-            types = [types.replace(config.csv_quotechar, "") for type in types.split(",") if type]
+            types = [t.replace(config.csv_quotechar, "") for t in types.split(",") if t]
             save_user(row["sub"], row["name"], types)
 
     # close and remove the temp file if needed

@@ -133,3 +133,22 @@ class TestVerify:
 
         verify = Verify()
         assert verify._check_user(sub, name, types) == expected
+
+    def test_check_user_hash_mismatch(self, mocker, seed_db):
+        """
+        Verify that if the DB is seeded with one hash but the app uses another,
+        no user is found.
+        """
+        # Seed DB with sha256 hashes
+        seed_db(hash_algo="sha256")
+
+        # Configure app to hash inputs with sha512
+        mocked_config = {"INPUT_HASH_ALGO": "sha512"}
+        mocker.patch.dict("eligibility_server.settings.current_app.config", mocked_config)
+
+        verify = Verify()
+
+        # This should return an empty list because the sha512 hash of '32587'
+        # won't match the sha256 hash stored in the DB.
+        result = verify._check_user("32587", "Gonzales", ["agency_card"])
+        assert result == []

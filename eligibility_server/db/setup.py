@@ -176,7 +176,7 @@ def update_metadata(file_mtime: str = None):
 
     ts = datetime.now(tz=timezone.utc).isoformat(timespec="seconds")
     users = User.query.count()
-    eligibility = [e.name for e in Eligibility.query.add_column(column("name"))]
+    eligibility = [e.name for e in Eligibility.query.add_columns(column("name"))]
 
     metadata = Metadata(load_ts=ts, file_ts=file_mtime, users=users, eligibility=eligibility)
     db.session.add(metadata)

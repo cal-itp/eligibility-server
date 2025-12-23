@@ -1,3 +1,6 @@
+from datetime import datetime, timedelta, timezone
+import os
+
 import pytest
 from sqlalchemy import inspect
 
@@ -25,6 +28,44 @@ def patch_import_file_path(mocker, mock_csv_file):
 
 @pytest.mark.usefixtures("flask")
 class TestDatabaseCommands:
+
+    def test_init_db_captures_local_mtime(self, runner, mock_csv_file, flask):
+        """Verify file_ts reflects the local filesystem modification time."""
+        # Set a specific mtime for the file (2 hours ago)
+        past_time = datetime.now(tz=timezone.utc) - timedelta(hours=2)
+        os.utime(mock_csv_file, (past_time.timestamp(), past_time.timestamp()))
+
+        runner.invoke(args="drop-db")
+        result = runner.invoke(args="init-db")
+
+        assert result.exit_code == 0
+        with flask.app_context():
+            metadata = Metadata.query.first()
+            # file_ts should match the file's modification time
+            assert metadata.file_ts == past_time.isoformat(timespec="seconds")
+            # load_ts should be 'now'
+            load_dt = datetime.fromisoformat(metadata.load_ts)
+            assert datetime.now(tz=timezone.utc) - load_dt < timedelta(seconds=2)
+
+    def test_init_db_captures_remote_header(self, runner, mocker, flask):
+        """Verify file_ts reflects the HTTP headers for remote files."""
+        # re-patch to a "remote" file
+        mocker.patch("eligibility_server.settings.Configuration.import_file_path", "http://fake.com/data.csv")
+
+        # Mock requests.get to return custom headers
+        mock_response = mocker.Mock()
+        mock_response.text = "sub,name,type\n54321,RemoteUser,agency_card"
+        # Simulating the header format found in the manual HEAD check
+        mock_response.headers = {"Date": "Tue, 23 Dec 2025 18:18:06 GMT"}
+        mocker.patch("requests.get", return_value=mock_response)
+
+        runner.invoke(args="drop-db")
+        runner.invoke(args="init-db")
+
+        with flask.app_context():
+            metadata = Metadata.query.first()
+            # Verify timezone conversion from HTTP GMT to ISO format
+            assert metadata.file_ts == "2025-12-23T18:18:06+00:00"
 
     def test_data_integrity_and_eligibility(self, runner, flask):
         """Ensure users and their eligibility types are correctly linked."""

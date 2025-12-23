@@ -61,7 +61,7 @@ def metadata():
     md = Metadata.query.first()
     return {
         "app": {"version": __version__},
-        "db": {"timestamp": md.timestamp, "users": md.users, "eligibility": md.eligibility},
+        "db": {"load_ts": md.load_ts, "file_ts": md.file_ts, "users": md.users, "eligibility": md.eligibility},
     }
 
 

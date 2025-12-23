@@ -31,8 +31,11 @@ def test_metadata(client):
 
     assert "app" in data
     assert data["app"]["version"] == __version__
+
     assert "db" in data
-    assert isinstance(data["db"]["timestamp"], str)
+    # Validate the presence and types of the metadata fields
+    assert isinstance(data["db"]["load_ts"], str)
+    assert isinstance(data["db"]["file_ts"], str)
     assert isinstance(data["db"]["users"], int)
     assert isinstance(data["db"]["eligibility"], list)
     assert len(data["db"]["eligibility"]) > 0

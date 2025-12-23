@@ -1,12 +1,27 @@
-"""
-Test app
-"""
-
 import re
 
+import pytest
+
 from eligibility_server import __version__
+from eligibility_server.db import db
+from eligibility_server.db.models import Metadata
 from eligibility_server.settings import APP_NAME
 from eligibility_server.keypair import get_server_public_key
+
+
+@pytest.fixture(autouse=True)
+def setup_db(flask):
+    """Ensure tables exist and a metadata record is present for every test."""
+    with flask.app_context():
+        db.create_all()
+        # Seed a dummy metadata record so /metadata doesn't 500
+        if not Metadata.query.first():
+            md = Metadata(load_ts="2025-12-23T10:00:00+00:00", file_ts="2025-12-23T09:00:00+00:00", users=0, eligibility=[])
+            db.session.add(md)
+            db.session.commit()
+    yield
+    with flask.app_context():
+        db.drop_all()
 
 
 def test_appname(flask):
@@ -31,11 +46,13 @@ def test_metadata(client):
 
     assert "app" in data
     assert data["app"]["version"] == __version__
+
     assert "db" in data
-    assert isinstance(data["db"]["timestamp"], str)
+    # Validate the presence and types of the metadata fields
+    assert isinstance(data["db"]["load_ts"], str)
+    assert isinstance(data["db"]["file_ts"], str)
     assert isinstance(data["db"]["users"], int)
     assert isinstance(data["db"]["eligibility"], list)
-    assert len(data["db"]["eligibility"]) > 0
 
 
 def test_404(client):

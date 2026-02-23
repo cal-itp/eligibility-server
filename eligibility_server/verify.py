@@ -14,7 +14,6 @@ from eligibility_server.db.models import User
 from eligibility_server.hash import Hash
 from eligibility_server.settings import Configuration
 
-
 config = Configuration()
 logger = logging.getLogger(__name__)
 

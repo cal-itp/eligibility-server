@@ -5,7 +5,6 @@ Hashing tool.
 import hashlib
 import logging
 
-
 logger = logging.getLogger(__name__)
 
 

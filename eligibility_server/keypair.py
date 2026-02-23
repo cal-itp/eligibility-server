@@ -4,7 +4,6 @@ import requests
 
 from eligibility_server.settings import Configuration
 
-
 config = Configuration()
 logger = logging.getLogger(__name__)
 

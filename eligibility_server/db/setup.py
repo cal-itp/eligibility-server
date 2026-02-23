@@ -13,7 +13,6 @@ from eligibility_server.db import db
 from eligibility_server.db.models import User, Eligibility, Metadata
 from eligibility_server.settings import Configuration
 
-
 config = Configuration()
 
 

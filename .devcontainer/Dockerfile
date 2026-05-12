@@ -9,5 +9,7 @@ COPY .git .git
 COPY eligibility_server/ eligibility_server/
 COPY pyproject.toml pyproject.toml
 
+RUN git config --global --add safe.directory /calitp/app
+
 # install devcontainer requirements
 RUN pip install -e .[dev,test]

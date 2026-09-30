@@ -1,0 +1,19 @@
+name: "Project triage: dependencies"
+
+# ??
+# this is a copy of an action that doesnt supply explicit permissions ('medium' severity issue)
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  add-to-project-dependencies:
+    runs-on: ubuntu-latest
+    # see https://docs.github.com/en/code-security/dependabot/working-with-dependabot/automating-dependabot-with-github-actions#responding-to-events
+    if: github.actor == 'dependabot[bot]' || github.actor == 'pre-commit-ci[bot]'
+    steps:
+      - uses: actions/add-to-project@main
+        with:
+          project-url: ${{ secrets.USB_PROJECT_URL }}
+          github-token: ${{ secrets.USB_PROJECT_TOKEN }}

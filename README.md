@@ -1,5 +1,7 @@
 # Eligibility Server
 
+No code scan should not block a PR from being merged.
+
 Server implementation of the [Eligibility Verification API](https://docs.calitp.org/eligibility-api/specification). See
 the client implementation in [`benefits`](https://github.com/cal-itp/benefits).
 

@@ -1,5 +1,4 @@
 name: Publish docs
-# default CodeQL flags it as a 'medium' severity issue that this file doesn't declared needed permissions explicitly
 on:
   workflow_dispatch:
   push:

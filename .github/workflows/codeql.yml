@@ -1,7 +1,7 @@
 # https://codeql.github.com/
 name: CodeQL
 
-# default CodeQL flags this file for lacking an explicit permissions declaration
+# default CodeQL flags it as a 'medium' severity issue that this file doesn't declared needed permissions explicitly
 
 on:
   push:

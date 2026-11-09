@@ -1,0 +1,957 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://docs.calitp.org/eligibility-server/deployment/infrastructure/">
+      
+      
+        <link rel="prev" href="../../releases/">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.17">
+    
+    
+      
+        <title>Infrastructure - cal-itp/eligibility-server: documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.bcfcd587.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
+    
+      <link rel="stylesheet" href="https://docs.calitp.org/benefits/styles/theme.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function n(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],n("js",new Date),n("config","G-SZB618VNBZ"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){this.value&&n("event","search",{search_term:this.value})}),document$.subscribe(function(){var a=document.forms.feedback;if(void 0!==a)for(var e of a.querySelectorAll("[type=submit]"))e.addEventListener("click",function(e){e.preventDefault();var t=document.location.pathname,e=this.getAttribute("data-md-value");n("event","feedback",{page:t,data:e}),a.firstElementChild.disabled=!0;e=a.querySelector(".md-feedback__note [data-md-value='"+e+"']");e&&(e.hidden=!1)}),a.hidden=!1}),location$.subscribe(function(e){n("config","G-SZB618VNBZ",{page_path:e.pathname})})});var e=document.createElement("script");e.async=!0,e.src="https://www.googletagmanager.com/gtag/js?id=G-SZB618VNBZ",document.getElementById("__analytics").insertAdjacentElement("afterEnd",e)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#infrastructure" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="cal-itp/eligibility-server: documentation" class="md-header__button md-logo" aria-label="cal-itp/eligibility-server: documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            cal-itp/eligibility-server: documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Infrastructure
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/cal-itp/eligibility-server" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../getting-started/" class="md-tabs__link">
+        
+  
+    
+  
+  Getting started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../configuration/" class="md-tabs__link">
+          
+  
+  Configuration
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../releases/" class="md-tabs__link">
+        
+  
+    
+  
+  Releases
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  Deployment
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="cal-itp/eligibility-server: documentation" class="md-nav__button md-logo" aria-label="cal-itp/eligibility-server: documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    cal-itp/eligibility-server: documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/cal-itp/eligibility-server" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Configuration
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Configuration
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuring the Eligibility server
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../configuration/settings/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Settings
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../releases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Releases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Deployment
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Deployment
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Infrastructure
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Infrastructure
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resources-outside-of-terraform" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resources outside of Terraform
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#environments" class="md-nav__link">
+    <span class="md-ellipsis">
+      Environments
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#access-restrictions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Access restrictions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitoring
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Logs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Logs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#azure-app-service-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Azure App Service Logs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azure-monitor-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Azure Monitor Logs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#live-tail" class="md-nav__link">
+    <span class="md-ellipsis">
+      Live tail
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scm" class="md-nav__link">
+    <span class="md-ellipsis">
+      SCM
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#making-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Making changes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Making changes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#local-development" class="md-nav__link">
+    <span class="md-ellipsis">
+      Local development
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#azure-environment-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Azure environment setup
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="infrastructure">Infrastructure<a class="headerlink" href="#infrastructure" title="Permanent link"> ¶</a></h1>
+<p>The infrastructure is configured as code via <a href="https://www.terraform.io/">Terraform</a>, for <a href="https://techcommunity.microsoft.com/t5/fasttrack-for-azure/the-benefits-of-infrastructure-as-code/ba-p/2069350">various reasons</a>.</p>
+<h2 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link"> ¶</a></h2>
+<h2 id="resources-outside-of-terraform">Resources outside of Terraform<a class="headerlink" href="#resources-outside-of-terraform" title="Permanent link"> ¶</a></h2>
+<p>The following things in Azure are managed outside of Terraform:</p>
+<ul>
+<li>Subcriptions</li>
+<li>Active Directory (users, groups, service principals, etc.)</li>
+<li>Service connections</li>
+<li>Configuration files, stored as blobs</li>
+<li>Role assignments</li>
+</ul>
+<h2 id="environments">Environments<a class="headerlink" href="#environments" title="Permanent link"> ¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Environment</th>
+<th>Azure Resource Group</th>
+<th>Terraform Workspace</th>
+<th>Git Reference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dev</td>
+<td><code>$(AGENCY_RESOURCE_GROUP_PREFIX)-eligibility-dev</code></td>
+<td><code>dev</code></td>
+<td><code>main</code></td>
+</tr>
+<tr>
+<td>Test</td>
+<td><code>$(AGENCY_RESOURCE_GROUP_PREFIX)-eligibility-test</code></td>
+<td><code>test</code></td>
+<td>release candidate tag</td>
+</tr>
+<tr>
+<td>Prod</td>
+<td><code>$(AGENCY_RESOURCE_GROUP_PREFIX)-eligibility-prod</code></td>
+<td><code>default</code></td>
+<td>release tag</td>
+</tr>
+</tbody>
+</table>
+<p>(See <a href="../../releases/#version-number-format">Version number format</a> for naming pattern for release candidate/release tags.)</p>
+<p>All resources in these Resource Groups should be reflected in Terraform in this repository. The exceptions are:</p>
+<ul>
+<li>Secrets, such as values under <a href="https://azure.microsoft.com/en-us/services/key-vault/">Key Vault</a>. <a href="https://developer.hashicorp.com/terraform/tutorials/state/resource-lifecycle#prevent-resource-deletion"><code>prevent_destroy</code></a> is used on these Resources.</li>
+<li>Things managed outside of <a href="#resources-outside-of-terraform">Terraform</a></li>
+</ul>
+<p>For browsing the <a href="https://portal.azure.com">Azure portal</a>, you can <a href="https://docs.microsoft.com/en-us/azure/azure-portal/set-preferences">switch your <code>Default subscription filter</code></a>.</p>
+<h2 id="access-restrictions">Access restrictions<a class="headerlink" href="#access-restrictions" title="Permanent link"> ¶</a></h2>
+<p>We restrict which IP addresses can access the app service by using a Web Application Firewall (WAF) configured on a Front Door. There is an exception for the <code>/healthcheck</code> and <code>/static</code> paths, which can be accessed by any IP address.</p>
+<p>The app service itself gives access only to our Front Door and to Azure availability tests.</p>
+<h2 id="monitoring">Monitoring<a class="headerlink" href="#monitoring" title="Permanent link"> ¶</a></h2>
+<p>We have <a href="https://docs.microsoft.com/en-us/azure/azure-monitor/app/monitor-web-app-availability">ping tests</a> set up to notify about availability of each environment. Alerts go to <a href="https://cal-itp.slack.com/archives/C022HHSEE3F">#notify-benefits</a>.</p>
+<h2 id="logs">Logs<a class="headerlink" href="#logs" title="Permanent link"> ¶</a></h2>
+<p>Logs can be found a couple of places:</p>
+<h3 id="azure-app-service-logs">Azure App Service Logs<a class="headerlink" href="#azure-app-service-logs" title="Permanent link"> ¶</a></h3>
+<p><a href="https://docs.google.com/document/d/11EPDIROBvg7cRtU2V42c6VBxcW_o8HhcyORALNtL_XY/edit#heading=h.6pxjhslhxwvj">Open the <code>Logs</code> for the environment you are interested in.</a> The following tables are likely of interest:</p>
+<ul>
+<li><code>AppServiceConsoleLogs</code>: <code>stdout</code> and <code>stderr</code> coming from the container</li>
+<li><code>AppServiceHTTPLogs</code>: requests coming through App Service</li>
+<li><code>AppServicePlatformLogs</code>: deployment information</li>
+</ul>
+<p>For some pre-defined queries, click <code>Queries</code>, then <code>Group by: Query type</code>, and look under <code>Query pack queries</code>.</p>
+<h3 id="azure-monitor-logs"><a href="https://docs.microsoft.com/en-us/azure/azure-monitor/logs/data-platform-logs">Azure Monitor Logs</a><a class="headerlink" href="#azure-monitor-logs" title="Permanent link"> ¶</a></h3>
+<p><a href="https://docs.google.com/document/d/11EPDIROBvg7cRtU2V42c6VBxcW_o8HhcyORALNtL_XY/edit#heading=h.n0oq4r1jo7zs">Open the <code>Logs</code> for the environment you are interested in.</a></p>
+<p>The following <a href="https://docs.microsoft.com/en-us/azure/azure-monitor/app/opencensus-python#telemetry-type-mappings">tables</a> are likely of interest:</p>
+<ul>
+<li><code>requests</code></li>
+<li><code>traces</code></li>
+</ul>
+<p>In the latter two, you should see recent log output. Note <a href="https://docs.microsoft.com/en-us/azure/azure-monitor/logs/data-ingestion-time">there is some latency</a>.</p>
+<p>See <a href="https://docs.microsoft.com/en-us/azure/azure-monitor/app/asp-net-exceptions#diagnose-failures-using-the-azure-portal"><code>Failures</code></a> in the sidebar (or <code>exceptions</code> under <code>Logs</code>) for application errors/exceptions.</p>
+<h3 id="live-tail">Live tail<a class="headerlink" href="#live-tail" title="Permanent link"> ¶</a></h3>
+<p>After <a href="#making-changes">setting up the Azure CLI</a>, you can use the following command to <a href="https://docs.microsoft.com/en-us/azure/app-service/troubleshoot-diagnostic-logs#in-local-terminal">stream live logs</a>:</p>
+<div class="highlight"><pre><span></span><code>az<span class="w"> </span>webapp<span class="w"> </span>log<span class="w"> </span>tail<span class="w"> </span>--resource-group<span class="w"> </span>&lt;resource<span class="w"> </span>group<span class="w"> </span>name&gt;<span class="w"> </span>--name<span class="w"> </span>&lt;app<span class="w"> </span>service<span class="w"> </span>name&gt;<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-v<span class="w"> </span>/healthcheck
+</code></pre></div>
+<p>e.g.</p>
+<div class="highlight"><pre><span></span><code>az<span class="w"> </span>webapp<span class="w"> </span>log<span class="w"> </span>tail<span class="w"> </span>--resource-group<span class="w"> </span>courtesy-cards-eligibility-prod<span class="w"> </span>--name<span class="w"> </span>mst-courtesy-cards-eligibility-server-prod<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-v<span class="w"> </span>/healthcheck
+</code></pre></div>
+<h3 id="scm">SCM<a class="headerlink" href="#scm" title="Permanent link"> ¶</a></h3>
+<p>Docker logs can be viewed in the Advanced Tools for the instance. The URL pattern is <code>https://&lt;app service name&gt;.scm.azurewebsites.net/api/logs/docker</code></p>
+<h2 id="making-changes">Making changes<a class="headerlink" href="#making-changes" title="Permanent link"> ¶</a></h2>
+<p>Terraform is <a href="https://www.terraform.io/cli/commands/plan"><code>plan</code></a>&lsquo;d when commits that change any file under the <code>terraform</code> directory are either:</p>
+<ul>
+<li>merged into the <code>main</code> branch</li>
+<li>tagged with a release candidate or release tag</li>
+</ul>
+<p>Then, the Azure DevOps pipeline that ran the <code>plan</code> will wait for approval to run <a href="https://www.terraform.io/cli/commands/apply"><code>apply</code></a>.</p>
+<p>While other automation for this project is done through GitHub Actions, we use an Azure DevOps Pipeline (above) for a couple of reasons:</p>
+<ul>
+<li>Easier authentication with the Azure API using a service connnection</li>
+<li>Log output is hidden, avoiding accidentally leaking secrets</li>
+</ul>
+<h3 id="local-development">Local development<a class="headerlink" href="#local-development" title="Permanent link"> ¶</a></h3>
+<ol>
+<li>Get access to the Azure account.</li>
+<li>
+<p>Install dependencies:</p>
+</li>
+<li>
+<p><a href="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli">Azure CLI</a></p>
+</li>
+<li>
+<p><a href="https://www.terraform.io/downloads">Terraform</a> - see exact version in <a href="pipeline/deploy.yml"><code>pipeline/deploy.yml</code></a></p>
+</li>
+<li>
+<p><a href="https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/guides/azure_cli">Authenticate using the Azure CLI</a>.</p>
+</li>
+</ol>
+<div class="highlight"><pre><span></span><code>az<span class="w"> </span>login
+</code></pre></div>
+<ol>
+<li>Outside the <a href="https://docs.calitp.org/eligibility-server/getting-started/">dev container</a>, navigate to the <code>terraform/</code> directory.</li>
+<li>Create a <a href="https://developer.hashicorp.com/terraform/language/values/variables#variable-definitions-tfvars-files"><code>terraform.tfvars</code> file</a> and specify the <a href="variables.tf">variables</a>.</li>
+<li><a href="https://www.terraform.io/cli/commands/init">Initialize Terraform.</a> You can also use this script later to switch between <a href="#environments">environments</a>.</li>
+</ol>
+<div class="highlight"><pre><span></span><code>./init.sh<span class="w"> </span>&lt;env&gt;<span class="w"> </span>&lt;agency&gt;
+</code></pre></div>
+<ol>
+<li>Make changes to Terraform files.</li>
+<li>Preview the changes, as necessary.</li>
+</ol>
+<div class="highlight"><pre><span></span><code>terraform<span class="w"> </span>plan
+</code></pre></div>
+<ol>
+<li>Submit the changes via pull request.</li>
+</ol>
+<h2 id="azure-environment-setup">Azure environment setup<a class="headerlink" href="#azure-environment-setup" title="Permanent link"> ¶</a></h2>
+<p>The steps we took to set up MST&rsquo;s environment are documented in <a href="https://docs.google.com/document/d/12uzuKyvyabHAOaeQc6k2jQIG5pQprdEyBpfST_dY2ME/edit#heading=h.1vs880ltbo58">a separate Google Doc</a>.</p>
+<p>In general, the steps that must be done manually before the pipeline can be run are:</p>
+<ul>
+<li>Create an Azure DevOps organization and project</li>
+<li>Request a free grant of parallel jobs using the form at <a href="https://aka.ms/azpipelines-parallelism-request">https://aka.ms/azpipelines-parallelism-request</a></li>
+<li>Create Resource Group and storage account dedicated to the Terraform state</li>
+<li>Create container in storage account for Terraform state</li>
+<li>Create environment Resource Group for each environment, Region: West US</li>
+<li>We create these manually to avoid having to give the pipeline service connection permissions for creating resource groups</li>
+<li>Create Terraform workspace for each environment</li>
+<li>Trigger a pipeline run to verify <code>plan</code> and <code>apply</code></li>
+<li>Known chicken-and-egg problem: Terraform both creates the Key Vault and expects a secret within it, so will always fail on the first deploy. Add the Benefits slack email secret and re-run the pipeline.</li>
+</ul>
+<p>Once the pipeline has run, there are a few more steps to be done manually in the Azure portal. These are related to configuring the service principal used for ETL:</p>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal#app-registration-app-objects-and-service-principals">Create the service principal</a></li>
+<li>Give the ETL service principal access to the <code>prod</code> storage account created by the pipeline:</li>
+<li>Navigate to the storage account container</li>
+<li>Select <strong>Access Control (IAM)</strong></li>
+<li>Select <strong>Add</strong>, then select <strong>Add role assignment</strong></li>
+<li>In the <strong>Role</strong> tab, select <code>Storage Blob Data Contributor</code></li>
+<li>In the <strong>Members</strong> tab, select <code>Select Members</code> and search for the ETL service principal. Add it to the role.</li>
+<li>Also in the <strong>Members</strong> tab, add a description of <code>This role assignment gives write access only for the path of the hashed data file.</code></li>
+<li>In the <strong>Conditions</strong> tab, select <strong>Add condition</strong> and change the editor type to <code>Code</code></li>
+<li>Add the following condition into the editor, filling in <code>&lt;filename&gt;</code> with the appropriate value:</li>
+</ul>
+<div class="highlight"><pre><span></span><code>(
+ (
+  @Resource[Microsoft.Storage/storageAccounts/blobServices/containers/blobs:path] StringLike &#39;&lt;filename&gt;&#39;
+ )
+)
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "toc.integrate"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.1e8ae164.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@8.5.0/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,4 +1,4 @@
-FROM ghcr.io/cal-itp/docker-python-web:main as build_wheel
+FROM ghcr.io/cal-itp/docker-python-web:2.0.0 AS build_wheel
 
 WORKDIR /build
 
@@ -14,7 +14,7 @@ RUN mkdir -p static
 USER root
 RUN pip install build && python -m build
 
-FROM ghcr.io/cal-itp/docker-python-web:main as appcontainer
+FROM ghcr.io/cal-itp/docker-python-web:2.0.0 AS appcontainer
 
 # upgrade pip
 RUN python -m pip install --upgrade pip

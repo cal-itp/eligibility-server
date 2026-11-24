@@ -27,8 +27,8 @@ jobs:
 
   deploy:
     needs: test
-    # !cancelled() is needed because if the whole workflow was cancelled, we don't want this job to run.
-    if: (!cancelled())
+    # this convoluted syntax allows skipped and successful prerequisite runs and disallows failures
+    if: (always() && !cancelled() && !failure())
     runs-on: ubuntu-latest
     environment: ${{ github.ref_type != 'tag' && github.ref_name || contains(github.ref, '-rc') && 'test' || 'prod' }}
 
